@@ -11,12 +11,15 @@ namespace ApplicationDbContext.UOW
     {
         public IProductRepo ProductRepo { get; set; }
 
+        public ICetegoryRepo CategoryRepo { get; set; }
+
         protected readonly ECommerceDBContext _db;
 
         public UnitOfWork(ECommerceDBContext db)
         {
             _db = db;
             ProductRepo = new ProductRepo(db);
+            CategoryRepo = new CategoryRepo(db);
         }
 
         public void RollBack()

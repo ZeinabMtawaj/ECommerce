@@ -9,6 +9,8 @@ namespace ApplicationDbContext.UOW
     {
         public IProductRepo ProductRepo { get; set; }
 
+        public ICetegoryRepo CategoryRepo { get; set; }
+
         public void SaveChanges ();
 
         public void RollBack();
