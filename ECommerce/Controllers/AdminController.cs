@@ -15,6 +15,7 @@ namespace Ecommerce.Controllers
 
         public ProductViewModel convertToVM(Product item)
         {
+//
             var product = new ProductViewModel();
             product.Name = item.Name;
             product.Description = item.Description;
