@@ -1,0 +1,65 @@
+﻿@model ProductViewModel
+@{
+    ViewData["Title"] = "Create Product";
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+    <div class="pagetitle ">
+      <h1>Form Layouts</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Forms</li>
+          <li class="breadcrumb-item active">Layouts</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Product Form</h5>
+
+              <!-- Vertical Form -->
+              <form class="row g-3">
+                <div class="col-12">
+                  <label for="Name" class="form-label" asp-for="Name"></label>
+                  <input type="text" class="form-control" id="inputNanme4">
+                </div>
+                <div class="col-12">
+                  <label for="Price" class="form-label" asp-for="Price"></label>
+@*                  <input type="email" class="form-control" id="inputEmail4">
+*@               
+                <input type="Number" class="form-control" id="inputEmail4">    
+                </div>
+                <div class="col-12">
+                  <label for="Image" class="form-label" asp-for="Image"></label>
+                  <input type="file" class="form-control" id="inputPassword4">
+                </div>
+                <div class="col-12">
+                  <label for="Quantity" class="form-label" asp-for="Quantity"></label>
+                  <input type="Number" class="form-control" id="inputAddress" >
+                </div>
+                <div class="col-12">
+                  <label for="Quantity" class="form-label" asp-for="Sku"></label>
+                  <input type="Number" class="form-control" id="inputAddress" >
+                </div>
+                <div class="col-12">
+                  <label for="Quantity" class="form-label" asp-for="Description"></label>
+                  <input type="text" class="form-control" id="inputAddress" >
+                </div>
+
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="reset" class="btn btn-secondary">Reset</button>
+                </div>
+              </form><!-- Vertical Form -->
+
+            </div>
+          </div>
+
+
+
+

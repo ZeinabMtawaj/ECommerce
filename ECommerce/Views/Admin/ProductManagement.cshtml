@@ -1,0 +1,107 @@
+﻿@model List<ProductViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+
+
+    
+    <a asp-controller="Product" asp-action= "Create"> <i class="btn btn-success btn-sm">Create</i> </a>
+<br />
+<br />
+
+@if(!Model.Any())
+{
+  <h1>Nothing there </h1>  
+}
+else
+{
+<div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th >
+                                <label asp-for="@Model[0].Name"></label>
+                            </th>
+                            <th > 
+                                <label asp-for="@Model[0].Price"></label>
+                            </th>
+                            <th >
+                                 <label asp-for="@Model[0].Image"></label>
+                            </th>
+                            <th>  
+                                 <label asp-for="@Model[0].Quantity"></label>
+                            </th>
+                            <th>
+                                 <label asp-for="@Model[0].Sku"></label>
+                            </th>
+                            <th>
+                                 <label asp-for="@Model[0].Description"></label>
+                            </th>
+                            <th>  
+                                <label asp-for="@Model[0].CreatedAt"></label>
+                            </th>
+                            <th>
+                                <label asp-for="@Model[0].UpdatedAt"></label>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                                @foreach (var obj in Model)
+                                {
+                                <tr>
+                                    <td>
+                                        @obj.Name
+                                    </td>
+                                    <td>
+                                        @obj.Price
+                                    </td>
+                                    <td>
+                                        @obj.Image
+                                    </td>
+                                    <td>
+                                        @obj.Quantity
+                                    </td>
+                                    <td > 
+                                        @obj.Sku
+                                    </td>
+                                    <td>
+                                        @obj.Description
+                                    </td>
+                                    <td>
+                                        @obj.CreatedAt
+                                    </td>
+                                    <td>
+                                        @obj.UpdatedAt
+                                    </td>
+                                    <td>
+                                        <a href="">
+                                            <i class="fa fa-edit btn btn-info btn-sm">Edit</i>
+                                        </a> |
+                                        <a href="">
+                                            <i class="btn btn-warning btn-sm">Details</i>
+                                        </a> |
+                                        <a href="">
+                                            <i class="btn btn-danger btn-sm">Delete</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    }
