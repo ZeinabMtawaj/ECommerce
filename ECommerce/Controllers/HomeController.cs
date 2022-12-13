@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ApplicationDbContext.UOW;
-
+using AutoMapper;
 
 namespace Ecommerce.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(IUnitOfWork uow):base(uow)
+        public HomeController(IUnitOfWork uow, IMapper mapper):base(uow, mapper)
         {
                 
         }

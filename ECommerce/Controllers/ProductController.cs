@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using ApplicationDbContext.Models;
 using System.Linq;
 using Ecommerce.Models;
+using AutoMapper;
 
 namespace Ecommerce.Controllers
 {
     public class ProductController : BaseController
     {
-        public ProductController(IUnitOfWork uow) : base(uow)
+        public ProductController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
 
         }

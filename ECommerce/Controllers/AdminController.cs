@@ -3,50 +3,24 @@ using Microsoft.AspNetCore.Mvc;
 using ApplicationDbContext.Models;
 using System.Linq;
 using Ecommerce.Models;
+using AutoMapper;
 
 namespace Ecommerce.Controllers
 
 {
     public class AdminController : BaseController
     {
-        public AdminController(IUnitOfWork uow) : base(uow)
+
+        public AdminController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
         }
 
-        public ProductViewModel convertToVM(Product item)
+        
+        public IActionResult CategoryManagement()
         {
-//
-            var product = new ProductViewModel();
-            product.Name = item.Name;
-            product.Description = item.Description;
-            product.Price = item.Price;
-            product.Sku = item.Sku;
-            product.Quantity = item.Quantity;
-            product.Image = item.Image;
-            product.CreatedAt = item.CreatedAt;
-            product.UpdatedAt = item.UpdatedAt; 
-
-
-            return product;
-
-        }
-        public IActionResult ProductManagement()
-        {
-            //ProductController pc = new ProductController(_uow);
-
-            var products =  _uow.ProductRepo.GetAll();
-            var productsVM = new List<ProductViewModel>();
-            foreach (var item in products)
-            {
-                var product = convertToVM(item);
-
-
-                productsVM.Add(product);    
-                    
-
-            }
-
-            return View(productsVM);
+            var categoryController = new CategoryController(_uow, _mapper);
+            var items = categoryController.GetAllCategories();
+            return View(items);
         }
 
 

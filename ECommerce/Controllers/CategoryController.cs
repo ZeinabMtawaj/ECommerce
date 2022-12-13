@@ -3,23 +3,31 @@ using Microsoft.AspNetCore.Mvc;
 using ApplicationDbContext.Models;
 using System.Linq;
 using Ecommerce.Models;
+using AutoMapper;
 
 namespace Ecommerce.Controllers
 {
     public class CategoryController : BaseController
     {
-        public CategoryController(IUnitOfWork uow) : base(uow)
+        public CategoryController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
-
+            
         }
 
-        public IActionResult Index()
-        {
-            var a = _uow.ProductRepo.GetAll();
-            ViewBag.Msg = "Hello from Index";
-            // ViewData["Message"] = 
 
-            TempData["Message"] = "Hello from Students Index (TempData)";
+        public IEnumerable<CategoryViewModel> GetAllCategories()
+        {
+            var items = _uow.CategoryRepo.GetAll();
+            var viewItems = items.Select(item => _mapper.Map<CategoryViewModel>(item));
+            return viewItems;
+        }
+
+
+
+        public IActionResult Index()
+        {   
+            var items = _uow.CategoryRepo.GetAll();
+            var viewItems = items.Select(item => _mapper.Map<CategoryViewModel>(item));
             return View();
         }
 
