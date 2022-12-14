@@ -1,6 +1,7 @@
 using ApplicationDbContext.Models;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDbContext.UOW;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<ECommerceDBContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
+builder.Services.AddIdentity<User, UserRole>()
+            .AddEntityFrameworkStores<ECommerceDBContext>()
+            .AddDefaultTokenProviders();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();

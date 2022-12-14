@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ApplicationDbContext.Models
 {
-    public partial class ECommerceDBContext : DbContext
+    public partial class ECommerceDBContext : IdentityDbContext<User,UserRole,int>
     {
-        public ECommerceDBContext()
-        {
-        }
+        //public ECommerceDBContext()
+        //{
+        //}
 
         public ECommerceDBContext(DbContextOptions<ECommerceDBContext> options)
             : base(options)
@@ -508,6 +510,9 @@ namespace ApplicationDbContext.Models
             });
 
             OnModelCreatingPartial(modelBuilder);
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<IdentityUser>()
+                    .ToTable("User", "dbo");
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
