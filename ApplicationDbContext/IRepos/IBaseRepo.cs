@@ -6,7 +6,7 @@ namespace ApplicationDbContext.IRepos
     {
         T Find(int id);
 
-        // T Get(string id);
+        T Find(Expression<Func<T,bool>> match, string[] includes =null);
 
         void Add(T item);
 
