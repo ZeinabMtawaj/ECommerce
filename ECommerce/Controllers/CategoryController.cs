@@ -3,23 +3,38 @@ using Microsoft.AspNetCore.Mvc;
 using ApplicationDbContext.Models;
 using System.Linq;
 using Ecommerce.Models;
+using AutoMapper;
 
 namespace Ecommerce.Controllers
 {
     public class CategoryController : BaseController
     {
-        public CategoryController(IUnitOfWork uow) : base(uow)
+        public CategoryController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
-
+            
         }
 
-        public IActionResult Index()
-        {
-            var a = _uow.ProductRepo.GetAll();
-            ViewBag.Msg = "Hello from Index";
-            // ViewData["Message"] = 
 
-            TempData["Message"] = "Hello from Students Index (TempData)";
+        public IEnumerable<CategoryViewModel> GetAll()
+        {
+            var items = _uow.CategoryRepo.GetAll();
+            var viewItems = items.Select(item => _mapper.Map<CategoryViewModel>(item));
+            return viewItems;
+        }
+
+        public IEnumerable<String> GetColNames()
+        {
+            IEnumerable<String> res = new List<String>();
+            res.Append("Name");
+            return res;
+        }
+
+
+
+        public IActionResult Index()
+        {   
+            var items = _uow.CategoryRepo.GetAll();
+            var viewItems = items.Select(item => _mapper.Map<CategoryViewModel>(item));
             return View();
         }
 
@@ -46,7 +61,7 @@ namespace Ecommerce.Controllers
 
         public IActionResult Edit(int id)
         {
-            var obj = _uow.ProductRepo.Get(id);
+            var obj = _uow.ProductRepo.Find(id);
             return View(obj);
         }
 

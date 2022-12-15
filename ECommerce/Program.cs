@@ -4,7 +4,7 @@ using ApplicationDbContext.UOW;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
@@ -37,7 +37,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Admin}/{action=ProductManagement}/{id?}");
+    pattern: "{controller=Admin}/{action=SpecificationManagement}/{id?}");
 
 //pattern: "{controller=Home}/{action=Index}/{id?}");
 

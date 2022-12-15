@@ -4,7 +4,7 @@ namespace ApplicationDbContext.IRepos
 {
     public interface IBaseRepo<T> where T : class
     {
-        T Get(int id);
+        T Find(int id);
 
         // T Get(string id);
 

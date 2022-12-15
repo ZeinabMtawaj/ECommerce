@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using ApplicationDbContext.Models;
 using System.Linq;
 using Ecommerce.Models;
+using AutoMapper;
 
 namespace Ecommerce.Controllers
 {
     public class ProductController : BaseController
     {
-        public ProductController(IUnitOfWork uow) : base(uow)
+        public ProductController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
 
         }
@@ -95,7 +96,7 @@ namespace Ecommerce.Controllers
 
         public IActionResult Edit(int id)
         {
-            var obj = _uow.ProductRepo.Get(id);
+            var obj = _uow.ProductRepo.Find(id);
             return View(obj);
         }
 
