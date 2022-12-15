@@ -11,6 +11,8 @@ namespace ApplicationDbContext.UOW
 
         public ICetegoryRepo CategoryRepo { get; set; }
 
+        public ISpecificationRepo SpecificationRepo { get; set; }
+
         public void SaveChanges ();
 
         public void RollBack();

@@ -15,11 +15,18 @@ namespace Ecommerce.Controllers
         }
 
 
-        public IEnumerable<CategoryViewModel> GetAllCategories()
+        public IEnumerable<CategoryViewModel> GetAll()
         {
             var items = _uow.CategoryRepo.GetAll();
             var viewItems = items.Select(item => _mapper.Map<CategoryViewModel>(item));
             return viewItems;
+        }
+
+        public IEnumerable<String> GetColNames()
+        {
+            IEnumerable<String> res = new List<String>();
+            res.Append("Name");
+            return res;
         }
 
 

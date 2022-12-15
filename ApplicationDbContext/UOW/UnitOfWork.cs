@@ -13,6 +13,8 @@ namespace ApplicationDbContext.UOW
 
         public ICetegoryRepo CategoryRepo { get; set; }
 
+        public ISpecificationRepo SpecificationRepo { get; set; }
+
         protected readonly ECommerceDBContext _db;
 
         public UnitOfWork(ECommerceDBContext db)
@@ -20,6 +22,7 @@ namespace ApplicationDbContext.UOW
             _db = db;
             ProductRepo = new ProductRepo(db);
             CategoryRepo = new CategoryRepo(db);
+            SpecificationRepo = new SpecificationRepo(db);
         }
 
         public void RollBack()
