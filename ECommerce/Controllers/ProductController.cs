@@ -9,6 +9,7 @@ namespace Ecommerce.Controllers
 {
     public class ProductController : BaseController
     {
+        private string[] includes = { "CategoryViewModel", "ProductGroupViewModel", "TrendViewModel" };
 
         public ProductController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
@@ -51,12 +52,15 @@ namespace Ecommerce.Controllers
 
         public void Delete(ProductViewModel obj)
         {
-            //if (_uow.Find() == null)
+            var newObj = _mapper.Map<Product>(obj);
+            var element = _uow.ProductRepo.Find(x => (x.Id == newObj.Id), includes);
+            //if (element!=null)
             //{
-
+            //    foreach (var include in includes) { 
+            //        if (element==)
+            //    }
             //    return;
             //}
-            var newObj = _mapper.Map<Product>(obj);
             _uow.ProductRepo.Delete(newObj.Id);
             _uow.SaveChanges();
             return;
