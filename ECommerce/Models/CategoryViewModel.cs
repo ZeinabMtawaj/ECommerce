@@ -10,8 +10,12 @@ namespace Ecommerce.Models
             CategorySpecificationValues = new HashSet<CategorySpecificationValueViewModel>();
             Products = new HashSet<ProductViewModel>();
         }
-
+        [RegularExpression(@"^.{3,}$", ErrorMessage = "Minimum 3 characters required")]
+        [Required(ErrorMessage = "Required")]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "Maximum 20 characters")]
         public string? Name { get; set; }
+
+        [RegularExpression(@"^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$", ErrorMessage = "Should be URL")]
         public string? Image { get; set; }
         public string? Description { get; set; }
         [Display(Name = "Created At")]
@@ -20,7 +24,7 @@ namespace Ecommerce.Models
         [Display(Name = "Updated At")]
         public DateTime? UpdatedAt { get; set; }
 
-        public virtual ICollection<CategorySpecificationValueViewModel> CategorySpecificationValues { get; set; }
-        public virtual ICollection<ProductViewModel> Products { get; set; }
+        public virtual ICollection<CategorySpecificationValueViewModel>? CategorySpecificationValues { get; set; }
+        public virtual ICollection<ProductViewModel>? Products { get; set; }
     }
 }

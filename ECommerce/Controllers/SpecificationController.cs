@@ -27,12 +27,16 @@ namespace Ecommerce.Controllers
         {
             List<string> res = new List<string>();
             res.Add("Name");
+            res.Add("Created At");
+            res.Add("Updated At");
             return res;
         }
 
         public void Create(SpecificationViewModel obj)
         {
             var newObj = _mapper.Map<Specification>(obj);
+            newObj.CreatedAt = DateTime.Now;
+            newObj.UpdatedAt = DateTime.Now;
             _uow.SpecificationRepo.Add(newObj);
             _uow.SaveChanges();
             return;
@@ -41,6 +45,7 @@ namespace Ecommerce.Controllers
         public void Edit(SpecificationViewModel obj)
         {
             var newObj = _mapper.Map<Specification>(obj);
+            newObj.UpdatedAt = DateTime.Now;
             _uow.SpecificationRepo.Update(newObj);
             _uow.SaveChanges();
             return;

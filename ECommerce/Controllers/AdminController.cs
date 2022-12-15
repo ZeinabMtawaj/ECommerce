@@ -15,11 +15,18 @@ namespace Ecommerce.Controllers
         {
         }
 
-        
+
         public IActionResult CategoryManagement()
         {
-            var categoryController = new CategoryController(_uow, _mapper);
-            var items = categoryController.GetAll();
+            var categoryContorller = new CategoryController(_uow, _mapper);
+            var items = categoryContorller.GetAll();
+            ViewBag.cols = categoryContorller.GetColNames();
+            ViewBag.createController = "Admin";
+            ViewBag.createAction = "CreateCategory";
+            ViewBag.editController = "Admin";
+            ViewBag.editAction = "EditCategory";
+            ViewBag.deleteController = "Admin";
+            ViewBag.deleteAction = "DeleteCategory";
             return View(items);
         }
 

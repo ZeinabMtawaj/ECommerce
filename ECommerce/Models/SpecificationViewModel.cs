@@ -14,9 +14,12 @@ namespace Ecommerce.Models
 
 
         [RegularExpression(@"^.{3,}$", ErrorMessage = "Minimum 3 characters required")]
-        [Required(ErrorMessage = "Required")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Maximum 20 characters")]
         public string? Name { get; set; }
+        [Display(Name = "Created At")]
+        public DateTime? CreatedAt { get; set; }
+        [Display(Name = "Updated At")]
+        public DateTime? UpdatedAt { get; set; }
 
         //public virtual ICollection<CategorySpecificationValueViewModel> CategorySpecificationValues { get; set; }
         //public virtual ICollection<ProductSpecificationValueViewModel> ProductSpecificationValues { get; set; }

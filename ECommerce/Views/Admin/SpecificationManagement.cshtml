@@ -51,6 +51,24 @@
 								@item.Name
 							</td>
 							<td>
+								@if(item.CreatedAt != null){
+									@item.CreatedAt.Value.ToString("g");
+								}
+								else
+								{
+									@Html.Raw("No Date")
+								}
+							</td>
+							<td>
+								@if(item.UpdatedAt != null){
+									@item.UpdatedAt.Value.ToString("g");
+								}
+								else
+								{
+									@Html.Raw("No Date")
+								}
+							</td>
+							<td>
 								<div class="form-button-action">
 									<a asp-controller="@ViewBag.editController" asp-action="@ViewBag.editAction" asp-route-id="@item.Id">
 										<button type="button" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-link btn-simple-primary btn-lg" data-original-title="Edit Task">
