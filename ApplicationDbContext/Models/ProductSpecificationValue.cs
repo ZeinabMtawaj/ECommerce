@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ApplicationDbContext.Models
 {
-    public partial class ProductSpecificationValue
+    public partial class ProductSpecificationValue: BaseEntity
     {
         public int Id { get; set; }
         public string? Value { get; set; }

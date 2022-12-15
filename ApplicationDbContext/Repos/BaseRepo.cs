@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace ApplicationDbContext.Repos
@@ -44,5 +45,44 @@ namespace ApplicationDbContext.Repos
         {
             _dbSet.Update(item);
         }
+
+        public T Find(Expression<Func<T, bool>> match, string[] includes = null) 
+        {
+            IQueryable<T> query = _dbSet;
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+            return query.FirstOrDefault(match);  
+        }
+
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, string[] includes = null, Expression<Func<T, Object>> orderBy = null, String orderByDirection = null)
+        {
+            IQueryable<T> query = _dbSet;
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+            query = query.Where(match);
+            if (orderBy != null) {
+                if (orderByDirection == "DESC")
+                {
+                    query =  query.OrderByDescending(orderBy);
+                }
+                else
+                {
+                    query =  query.OrderBy(orderBy);
+                }
+            }
+            return query.ToList();  
+
+        }
+
     }
 }
