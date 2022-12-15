@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ecommerce.Models
 {
-    public class SpecificationViewModel
+    public class SpecificationViewModel: BaseEntity
     {
         public SpecificationViewModel()
         {

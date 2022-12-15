@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ecommerce.Models
 {
-    public class DiscountViewModel
+    public class DiscountViewModel: BaseEntity
     {
         public DiscountViewModel()
         {
@@ -15,8 +15,8 @@ namespace Ecommerce.Models
         public string? Description { get; set; }
         public decimal? DiscountPercent { get; set; }
         public int? Active { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        //public DateTime CreatedAt { get; set; }
+        //public DateTime UpdatedAt { get; set; }
 
         public virtual ICollection<ProductGroupViewModel> ProductGroups { get; set; }
     }

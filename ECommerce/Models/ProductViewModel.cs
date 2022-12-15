@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ecommerce.Models
 {
-    public class ProductViewModel
+    public class ProductViewModel: BaseEntity
     {
         public ProductViewModel()
         {
@@ -20,8 +20,8 @@ namespace Ecommerce.Models
         public string? Image { get; set; }
         public int? Quantity { get; set; }
         public string? Sku { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        //public DateTime? CreatedAt { get; set; }
+        //public DateTime? UpdatedAt { get; set; }
         public int? CategoryId { get; set; }
         public string? Description { get; set; }
         public int? ProductGroupId { get; set; }
