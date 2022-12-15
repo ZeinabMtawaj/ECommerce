@@ -20,7 +20,7 @@ namespace ApplicationDbContext.IRepos
 
         T Find(Expression<Func<T, bool>> match, string[] includes = null);
 
-        IEnumerable<T> FindAll(Expression<Func<T, bool>> match, string[] includes = null, Expression<Func<T,Object>> orderBy=null, String orderByDirection = null);
+        IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take, string[] includes = null, Expression<Func<T,Object>> orderBy=null, String orderByDirection = null);
 
 
     }

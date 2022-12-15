@@ -84,7 +84,7 @@ namespace ApplicationDbContext.Models
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                    .HasColumnName("UpdatedDate");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Addresses)
@@ -113,7 +113,7 @@ namespace ApplicationDbContext.Models
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                    .HasColumnName("UpdatedDate");
             });
 
             modelBuilder.Entity<CategorySpecificationValue>(entity =>
@@ -157,7 +157,7 @@ namespace ApplicationDbContext.Models
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                    .HasColumnName("UpdatedDate");
             });
 
             modelBuilder.Entity<Notification>(entity =>
@@ -182,7 +182,7 @@ namespace ApplicationDbContext.Models
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                    .HasColumnName("UpdatedDate");
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -201,7 +201,7 @@ namespace ApplicationDbContext.Models
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                    .HasColumnName("UpdatedDate");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Orders)
@@ -223,7 +223,7 @@ namespace ApplicationDbContext.Models
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                    .HasColumnName("UpdatedDate");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Photos)
@@ -262,7 +262,7 @@ namespace ApplicationDbContext.Models
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                    .HasColumnName("UpdatedDate");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Products)
@@ -291,9 +291,8 @@ namespace ApplicationDbContext.Models
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
 
                 entity.Property(e => e.UpdatedDate)
-                    .HasMaxLength(10)
-                    .HasColumnName("Updated_at")
-                    .IsFixedLength();
+                    .HasColumnType("datetime")
+                    .HasColumnName("UpdatedDate");
 
                 entity.HasOne(d => d.Discount)
                     .WithMany(p => p.ProductGroups)
@@ -317,7 +316,7 @@ namespace ApplicationDbContext.Models
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                    .HasColumnName("UpdatedDate");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.ProductOrders)
@@ -337,6 +336,14 @@ namespace ApplicationDbContext.Models
                 entity.Property(e => e.Value)
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+               entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("CreatedDate");
+
+                entity.Property(e => e.UpdatedDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("UpdatedDate");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductSpecificationValues)
@@ -361,7 +368,7 @@ namespace ApplicationDbContext.Models
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                    .HasColumnName("UpdatedDate");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Ratings)
@@ -400,7 +407,7 @@ namespace ApplicationDbContext.Models
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                    .HasColumnName("UpdatedDate");
 
                 entity.HasOne(d => d.Address)
                     .WithOne(p => p.Shipping)
@@ -421,6 +428,14 @@ namespace ApplicationDbContext.Models
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.Property(e => e.CreatedDate)
+                      .HasColumnType("datetime")
+                      .HasColumnName("CreatedDate");
+
+                entity.Property(e => e.UpdatedDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("UpdatedDate");
             });
 
             modelBuilder.Entity<Trend>(entity =>
@@ -436,7 +451,7 @@ namespace ApplicationDbContext.Models
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                    .HasColumnName("UpdatedDate");
 
                 entity.HasOne(d => d.Product)
                     .WithOne(p => p.Trend)
@@ -478,12 +493,20 @@ namespace ApplicationDbContext.Models
 
             //    entity.Property(e => e.UpdatedDate)
             //        .HasColumnType("datetime")
-            //        .HasColumnName("Updated_at");
+            //        .HasColumnName("UpdatedDate");
             //});
 
             modelBuilder.Entity<UserHasNotification>(entity =>
             {
                 entity.ToTable("UserHasNotification");
+
+                entity.Property(e => e.CreatedDate)
+                      .HasColumnType("datetime")
+                      .HasColumnName("CreatedDate");
+
+                entity.Property(e => e.UpdatedDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("UpdatedDate");
 
                 entity.HasIndex(e => new { e.NotificationId, e.UserId }, "IX_UserHasNotification")
                     .IsUnique();
@@ -516,7 +539,7 @@ namespace ApplicationDbContext.Models
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                    .HasColumnName("UpdatedDate");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.WishLists)

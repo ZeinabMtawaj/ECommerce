@@ -23,11 +23,14 @@ namespace Ecommerce.Controllers
         }
 
 
-        public List<string> GetColNames()
+        public String[] GetColNames()
         {
-            List<string> res = new List<string>();
-            res.Add("Name", "");
-            return res;
+            var names = typeof(Product).GetProperties()
+                        .Select(property => property.Name)
+                        .ToArray();
+            //List<string> res = new List<string>();
+            //res =["Name", "Price", "Image", "Quantity", "Sku", "Description", "CreatedDate", "UpdatedDate"];
+            return names;
         }
 
         public void Create(SpecificationViewModel obj)
@@ -48,6 +51,11 @@ namespace Ecommerce.Controllers
 
         public void Delete(SpecificationViewModel obj)
         {
+            if (_uow.Find() == null)
+            {
+
+                return;
+            }
             var newObj = _mapper.Map<Specification>(obj);
             _uow.SpecificationRepo.Delete(newObj.Id);
             _uow.SaveChanges();

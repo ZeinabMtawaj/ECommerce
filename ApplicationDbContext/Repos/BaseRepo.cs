@@ -56,12 +56,14 @@ namespace ApplicationDbContext.Repos
                     query = query.Include(include);
                 }
             }
-            return query.FirstOrDefault(match);  
+            return query.SingleOrDefault(match);  
         }
 
-        public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, string[] includes = null, Expression<Func<T, Object>> orderBy = null, String orderByDirection = null)
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take, string[] includes = null, Expression<Func<T, Object>> orderBy = null, String orderByDirection = null)
         {
-            IQueryable<T> query = _dbSet;
+            IQueryable<T> query = _dbSet.Where(match);
+            if (take.HasValue)
+                query = query.Take(take.Value);
             if (includes != null)
             {
                 foreach (var include in includes)
@@ -69,7 +71,6 @@ namespace ApplicationDbContext.Repos
                     query = query.Include(include);
                 }
             }
-            query = query.Where(match);
             if (orderBy != null) {
                 if (orderByDirection == "DESC")
                 {
