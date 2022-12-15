@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace ApplicationDbContext.Models
 {
-    public partial class User
+    public partial class User: IdentityUser<int>
     {
-        public User()
+        public User():base()
         {
             Addresses = new HashSet<Address>();
             Orders = new HashSet<Order>();
@@ -14,7 +15,7 @@ namespace ApplicationDbContext.Models
             WishLists = new HashSet<WishList>();
         }
 
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string Email { get; set; } = null!;
@@ -22,7 +23,7 @@ namespace ApplicationDbContext.Models
         public string? PhoneNumber { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public int RoleId { get; set; }
+        //public int RoleId { get; set; }
 
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<Order> Orders { get; set; }

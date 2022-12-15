@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ApplicationDbContext.Models
 {
-    public partial class ECommerceDBContext : DbContext
+    public partial class ECommerceDBContext : IdentityDbContext<User,UserRole,int>
     {
-        public ECommerceDBContext()
-        {
-        }
+        //public ECommerceDBContext()
+        //{
+        //}
 
         public ECommerceDBContext(DbContextOptions<ECommerceDBContext> options)
             : base(options)
@@ -31,7 +33,7 @@ namespace ApplicationDbContext.Models
         public virtual DbSet<Shipping> Shippings { get; set; } = null!;
         public virtual DbSet<Specification> Specifications { get; set; } = null!;
         public virtual DbSet<Trend> Trends { get; set; } = null!;
-        public virtual DbSet<User> Users { get; set; } = null!;
+        //public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserHasNotification> UserHasNotifications { get; set; } = null!;
         public virtual DbSet<WishList> WishLists { get; set; } = null!;
 
@@ -46,6 +48,8 @@ namespace ApplicationDbContext.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
+
             modelBuilder.Entity<Address>(entity =>
             {
                 entity.ToTable("Address");
@@ -421,41 +425,41 @@ namespace ApplicationDbContext.Models
                     .HasConstraintName("FK_Trend_Product");
             });
 
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.ToTable("User");
+            //modelBuilder.Entity<User>(entity =>
+            //{
+            //    entity.ToTable("User");
 
-                entity.HasIndex(e => e.Email, "IX_Customer")
-                    .IsUnique();
+            //    entity.HasIndex(e => e.Email, "IX_Customer")
+            //        .IsUnique();
 
-                entity.Property(e => e.CreatedAt)
-                    .HasColumnType("datetime")
-                    .HasColumnName("Created_at");
+            //    entity.Property(e => e.CreatedAt)
+            //        .HasColumnType("datetime")
+            //        .HasColumnName("Created_at");
 
-                entity.Property(e => e.Email)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
+            //    entity.Property(e => e.Email)
+            //        .HasMaxLength(200)
+            //        .IsUnicode(false);
 
-                entity.Property(e => e.FirstName)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+            //    entity.Property(e => e.FirstName)
+            //        .HasMaxLength(50)
+            //        .IsUnicode(false);
 
-                entity.Property(e => e.LastName)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+            //    entity.Property(e => e.LastName)
+            //        .HasMaxLength(50)
+            //        .IsUnicode(false);
 
-                entity.Property(e => e.Password)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
+            //    entity.Property(e => e.Password)
+            //        .HasMaxLength(200)
+            //        .IsUnicode(false);
 
-                entity.Property(e => e.PhoneNumber)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+            //    entity.Property(e => e.PhoneNumber)
+            //        .HasMaxLength(50)
+            //        .IsUnicode(false);
 
-                entity.Property(e => e.UpdatedAt)
-                    .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
-            });
+            //    entity.Property(e => e.UpdatedAt)
+            //        .HasColumnType("datetime")
+            //        .HasColumnName("Updated_at");
+            //});
 
             modelBuilder.Entity<UserHasNotification>(entity =>
             {
@@ -507,7 +511,17 @@ namespace ApplicationDbContext.Models
                     .HasConstraintName("FK_WishList_User");
             });
 
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>().ToTable("User", "dbo");
+            modelBuilder.Entity<UserRole>().ToTable("Role", "dbo");
+            //modelBuilder.Entity<IdentityUserToken<string>>().ToTable("user_token", "dbo");
+            //modelBuilder.Entity<IdentityUserRole<string>>().ToTable("user_role", "dbo");
+            //modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("role_claim", "dbo");
+            //modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("user_claim", "dbo");
+            //modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("user_login", "dbo");
+
             OnModelCreatingPartial(modelBuilder);
+           
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
