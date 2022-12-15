@@ -15,10 +15,10 @@ namespace Ecommerce.Controllers
 
         }
 
-        public IEnumerable<SpecificationViewModel> GetAll()
+        public IEnumerable<ProductViewModel> GetAll()
         {
-            var items = _uow.SpecificationRepo.GetAll();
-            var viewItems = items.Select(item => _mapper.Map<SpecificationViewModel>(item));
+            var items = _uow.ProductRepo.GetAll();
+            var viewItems = items.Select(item => _mapper.Map<ProductViewModel>(item));
             return viewItems;
         }
 
@@ -33,45 +33,45 @@ namespace Ecommerce.Controllers
             return names;
         }
 
-        public void Create(SpecificationViewModel obj)
+        public void Create(ProductViewModel obj)
         {
-            var newObj = _mapper.Map<Specification>(obj);
-            _uow.SpecificationRepo.Add(newObj);
+            var newObj = _mapper.Map<Product>(obj);
+            _uow.ProductRepo.Add(newObj);
             _uow.SaveChanges();
             return;
         }
 
-        public void Edit(SpecificationViewModel obj)
+        public void Edit(ProductViewModel obj)
         {
-            var newObj = _mapper.Map<Specification>(obj);
-            _uow.SpecificationRepo.Update(newObj);
+            var newObj = _mapper.Map<Product>(obj);
+            _uow.ProductRepo.Update(newObj);
             _uow.SaveChanges();
             return;
         }
 
-        public void Delete(SpecificationViewModel obj)
+        public void Delete(ProductViewModel obj)
         {
-            if (_uow.Find() == null)
-            {
+            //if (_uow.Find() == null)
+            //{
 
-                return;
-            }
-            var newObj = _mapper.Map<Specification>(obj);
-            _uow.SpecificationRepo.Delete(newObj.Id);
+            //    return;
+            //}
+            var newObj = _mapper.Map<Product>(obj);
+            _uow.ProductRepo.Delete(newObj.Id);
             _uow.SaveChanges();
             return;
         }
 
-        public SpecificationViewModel? Find(int? id)
+        public ProductViewModel? Find(int? id)
         {
             if (id == null || id.Value == 0)
             {
                 return null;
             }
-            var obj = _uow.SpecificationRepo.Find(id.Value);
+            var obj = _uow.ProductRepo.Find(id.Value);
             if (obj == null)
                 return null;
-            var res = _mapper.Map<SpecificationViewModel>(obj);
+            var res = _mapper.Map<ProductViewModel>(obj);
             return res;
         }
 
