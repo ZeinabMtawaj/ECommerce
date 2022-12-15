@@ -30,7 +30,7 @@ namespace ApplicationDbContext.Repos
             _dbSet.Remove(entity);
         }
 
-        public T Get(int id)
+        public T Find(int id)
         {
             return _dbSet.Find(id);
         }

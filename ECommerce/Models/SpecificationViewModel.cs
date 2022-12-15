@@ -10,7 +10,12 @@ namespace Ecommerce.Models
             //CategorySpecificationValues = new HashSet<CategorySpecificationValueViewModel>();
             //ProductSpecificationValues = new HashSet<ProductSpecificationValueViewModel>();
         }
+        public int Id { get; set; }
 
+
+        [RegularExpression(@"^.{3,}$", ErrorMessage = "Minimum 3 characters required")]
+        [Required(ErrorMessage = "Required")]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "Maximum 20 characters")]
         public string? Name { get; set; }
 
         //public virtual ICollection<CategorySpecificationValueViewModel> CategorySpecificationValues { get; set; }

@@ -61,7 +61,7 @@ namespace Ecommerce.Controllers
 
         public IActionResult Edit(int id)
         {
-            var obj = _uow.ProductRepo.Get(id);
+            var obj = _uow.ProductRepo.Find(id);
             return View(obj);
         }
 

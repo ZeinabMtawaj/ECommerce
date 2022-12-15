@@ -8,7 +8,7 @@ namespace ECommerce.Profiles
     {
         public SpecificationProfile()
         {
-            CreateMap<Specification, SpecificationViewModel>();
+            CreateMap<Specification, SpecificationViewModel>().ReverseMap();
         }
     }
 }
