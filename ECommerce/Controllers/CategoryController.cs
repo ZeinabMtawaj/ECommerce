@@ -22,69 +22,54 @@ namespace Ecommerce.Controllers
             return viewItems;
         }
 
-        public IEnumerable<String> GetColNames()
+        public List<String> GetColNames()
         {
-            IEnumerable<String> res = new List<String>();
-            res.Append("Name");
+            List<string> res = new List<string>();
+            res.Add("Image");
+            res.Add("Name");
+            res.Add("Description");
+            res.Add("Specifications");
+            res.Add("Created At");
+            res.Add("Updated At");
             return res;
         }
 
-
-
-        public IActionResult Index()
-        {   
-            var items = _uow.CategoryRepo.GetAll();
-            var viewItems = items.Select(item => _mapper.Map<CategoryViewModel>(item));
-            return View();
+        public void Create(CategoryViewModel obj)
+        {
+            var newObj = _mapper.Map<Category>(obj);
+            newObj.CreatedAt = DateTime.Now;
+            newObj.UpdatedAt = DateTime.Now;
+            _uow.CategoryRepo.Add(newObj);
+            _uow.SaveChanges();
+            return;
+        }
+        public void Edit(CategoryViewModel obj)
+        {
+            var newObj = _mapper.Map<Category>(obj);
+            newObj.UpdatedAt = DateTime.Now;
+            _uow.CategoryRepo.Update(newObj);
+            _uow.SaveChanges();
+            return;
+        }
+        public void Delete(CategoryViewModel obj)
+        {
+            var newObj = _mapper.Map<Category>(obj);
+            _uow.CategoryRepo.Delete(newObj.Id);
+            _uow.SaveChanges();
+            return;
         }
 
-        [HttpGet]
-        public IActionResult Create()
+        public CategoryViewModel? Find(int? id)
         {
-
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Create(ProductViewModel pvm)
-        {
-            if (ModelState.IsValid)
+            if (id == null || id.Value == 0)
             {
-                //_uow.ProductRepo.Add( pvm );
-                //_uow.SaveChanges();
-                return RedirectToAction("Index");
+                return null;
             }
-                return View(pvm);
-           
-        }
-
-
-        public IActionResult Edit(int id)
-        {
-            var obj = _uow.ProductRepo.Find(id);
-            return View(obj);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(ProductViewModel pvm)
-        {
-            if (ModelState.IsValid)
-            {
-                //_uow.ProductRepo.Update( pvm );
-                //_uow.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-                return View(pvm);
-                        
-        }
-
-        [HttpPost]
-        public IActionResult Delete(int id)
-        {
-            _uow.ProductRepo.Delete(id);
-            return RedirectToAction("Index");
-
+            var obj = _uow.CategoryRepo.Find(id.Value);
+            if (obj == null)
+                return null;
+            var res = _mapper.Map<CategoryViewModel>(obj);
+            return res;
         }
     }
 }

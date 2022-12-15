@@ -37,7 +37,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Admin}/{action=SpecificationManagement}/{id?}");
+    pattern: "{controller=Admin}/{action=CategoryManagement}/{id?}");
 
 //pattern: "{controller=Home}/{action=Index}/{id?}");
 

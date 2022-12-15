@@ -30,6 +30,88 @@ namespace Ecommerce.Controllers
             return View(items);
         }
 
+
+        [HttpGet]
+        public IActionResult CreateCategory()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateCategory(CategoryViewModel obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var categoryContorller = new CategoryController(_uow, _mapper);
+                categoryContorller.Create(obj);
+                return RedirectToAction("CategoryManagement");
+            }
+            return View(obj);
+        }
+
+        [HttpGet]
+        public IActionResult EditCategory(int? id)
+        {
+            var categoryContorller = new CategoryController(_uow, _mapper);
+            var obj = categoryContorller.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditCategory(CategoryViewModel obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var categoryContorller = new CategoryController(_uow, _mapper);
+                categoryContorller.Edit(obj);
+                return RedirectToAction("CategoryManagement");
+            }
+            return View(obj);
+        }
+
+
+        [HttpGet]
+        public IActionResult DeleteCategory(int? id)
+        {
+            var categoryContorller = new CategoryController(_uow, _mapper);
+            var obj = categoryContorller.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteCategory(CategoryViewModel obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var categoryContorller = new CategoryController(_uow, _mapper);
+                categoryContorller.Delete(obj);
+                return RedirectToAction("CategoryManagement");
+            }
+            return View(obj);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         public IActionResult SpecificationManagement()
         {
             var specificationContorller = new SpecificationController(_uow, _mapper);
