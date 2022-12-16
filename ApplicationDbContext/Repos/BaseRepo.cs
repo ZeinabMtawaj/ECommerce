@@ -59,9 +59,11 @@ namespace ApplicationDbContext.Repos
             return query.SingleOrDefault(match);  
         }
 
-        public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take, string[] includes = null, Expression<Func<T, Object>> orderBy = null, String orderByDirection = null)
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take,int? skip, string[] includes = null, Expression<Func<T, Object>> orderBy = null, String orderByDirection = null)
         {
             IQueryable<T> query = _dbSet.Where(match);
+            if (skip.HasValue)
+                query = query.Skip(skip.Value);
             if (take.HasValue)
                 query = query.Take(take.Value);
             if (includes != null)

@@ -53,6 +53,8 @@ namespace ApplicationDbContext.Models
                 {
                     ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.Now;
                 }
+                else
+                    Entry(((BaseEntity)entityEntry.Entity)).Property(x => x.CreatedDate).IsModified = false;
             }
 
             return base.SaveChanges();
