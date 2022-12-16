@@ -27,6 +27,8 @@ namespace Ecommerce.Models
         [Display(Name = "Updated At")]
         public DateTime? UpdatedAt { get; set; }
 
+
+        [Display(Name = "Specifications")]
         public virtual ICollection<CategorySpecificationValueViewModel>? CategorySpecificationValues { get; set; }
         public virtual ICollection<ProductViewModel>? Products { get; set; }
     }

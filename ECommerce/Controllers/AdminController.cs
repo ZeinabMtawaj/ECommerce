@@ -4,6 +4,8 @@ using ApplicationDbContext.Models;
 using System.Linq;
 using Ecommerce.Models;
 using AutoMapper;
+using ECommerce.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Ecommerce.Controllers
 
@@ -34,7 +36,18 @@ namespace Ecommerce.Controllers
         [HttpGet]
         public IActionResult CreateCategory()
         {
-            return View();
+            var specificationController = new SpecificationController(_uow, _mapper);
+            var specs = specificationController.GetAll();
+            CategoryVM categoryVM = new CategoryVM()
+            {
+                Category = new CategoryViewModel(),
+                Specifications = specs.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                })
+            };
+            return View(categoryVM);
         }
 
         [HttpPost]
