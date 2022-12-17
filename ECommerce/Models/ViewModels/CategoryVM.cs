@@ -10,6 +10,6 @@ namespace ECommerce.Models.ViewModels
     {
         public CategoryViewModel? Category { get; set; }
         public IEnumerable<SelectListItem>? Specifications { get; set; }
-        //public IEnumerable<string>? SpecificationValues { get; set; }
+        public IEnumerable<string>? SpecificationValues { get; set; }
     }
 }

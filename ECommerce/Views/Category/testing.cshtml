@@ -1,0 +1,19 @@
+﻿
+
+
+@model CategoryVM
+
+
+
+<p>
+    @Model.Category.Name
+</p>
+<p>
+    @Model.Category.Image
+</p>
+<p>
+    @Model.Category.Description
+</p>
+<p>
+   @string.Join("-", Model.SpecificationValues)
+</p>

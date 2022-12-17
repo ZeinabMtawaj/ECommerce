@@ -58,63 +58,20 @@
                                               
                                 </div>
                                 <div class="card mt-2 rounded">
-		                            <div class="box">
-                                        <div id="con-1" class="card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]" data-toggle="collapse" data-target="#coll-1" aria-expanded="false" aria-controls="coll-1">
-			                                Color
-		                                </div>
+                                    @foreach(var spec in Model.Specifications)
+                                    {
+                                        <div class="box">
+                                            <div id="con-@spec.Value" class="card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]" data-toggle="collapse" data-target="#coll-@spec.Value" aria-expanded="false" aria-controls="coll-@spec.Value">
+			                                    @spec.Text
+		                                    </div>
 
-		                                <div id="coll-1" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-			                                <div class="card-body">
-				                                <input class="form-control inp-coll" id="inp-1" type="text" placeholder="Enter Value"/>
-			                                </div>
-		                                </div>
-                                    </div>
-                                    <div class="box">
-                                        <div id="con-2" class="card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]" data-toggle="collapse" data-target="#coll-2" aria-expanded="false" aria-controls="coll-2">
-			                                Size
-		                                </div>
-
-		                                <div id="coll-2" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-			                                <div class="card-body">
-				                                <input class="form-control inp-coll" id="inp-2" type="text" placeholder="Enter Value"/>
-			                                </div>
-		                                </div>
-                                    </div>
-
-                                    <div class="box">
-                                        <div id="con-3" class="card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]" data-toggle="collapse" data-target="#coll-3" aria-expanded="false" aria-controls="coll-3">
-			                                Weight
-		                                </div>
-
-		                                <div id="coll-3" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-			                                <div class="card-body">
-				                                <input class="form-control inp-coll" id="inp-3" type="text" placeholder="Enter Value"/>
-			                                </div>
-		                                </div>
-                                    </div>
-                                    <div class="box">
-                                        <div id="con-4" class="card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]" data-toggle="collapse" data-target="#coll-4" aria-expanded="false" aria-controls="coll-4">
-			                                Solid
-		                                </div>
-
-		                                <div id="coll-4" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-			                                <div class="card-body">
-				                                <input class="form-control inp-coll" id="inp-4" type="text" placeholder="Enter Value"/>
-			                                </div>
-		                                </div>
-                                    </div>
-                                    <div class="box">
-                                        <div id="con-5" class="card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]" data-toggle="collapse" data-target="#coll-5" aria-expanded="false" aria-controls="coll-5">
-			                                Quantity
-		                                </div>
-
-		                                <div id="coll-5" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-			                                <div class="card-body">
-				                                <input class="form-control inp-coll" id="inp-5" type="text" placeholder="Enter Value"/>
-			                                </div>
-		                                </div>
-                                    </div>
-
+		                                    <div id="coll-@spec.Value" class="collapse" aria-labelledby="head-@spec.Value" data-parent="#accordion">
+			                                    <div class="card-body">
+				                                    <input name="SpecificationValues" class="form-control inp-coll" id="inp-@spec.Value" type="text" placeholder="Enter Value"/>
+			                                    </div>
+		                                    </div>
+                                        </div>
+                                    }
 	                            </div>
 
 			                </div>
@@ -126,7 +83,7 @@
                 </div>
 
                 </div>
-                <span asp-validation-for="Category.CategorySpecificationValues" class="text-danger"></span>
+               @* <span asp-validation-for="Category.CategorySpecificationValues" class="text-danger"></span>*@
             </div>
         </div>
 

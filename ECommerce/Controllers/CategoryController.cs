@@ -45,7 +45,8 @@ namespace Ecommerce.Controllers
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
-                })
+                }),
+                SpecificationValues = new List<string>()
             };
             return View(categoryVM);
         }
@@ -53,8 +54,13 @@ namespace Ecommerce.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CategoryViewModel obj)
+        public IActionResult Create(CategoryVM obj)
         {
+
+            return View("~/Views/Category/testing.cshtml", obj);
+
+
+
             if (ModelState.IsValid)
             {
                 var newObj = _mapper.Map<Category>(obj);
