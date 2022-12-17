@@ -91,7 +91,7 @@ namespace ApplicationDbContext.Models
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Addresses)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Address_User");
             });
 
@@ -230,7 +230,7 @@ namespace ApplicationDbContext.Models
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Photos)
                     .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Photo_Product");
             });
 
@@ -299,7 +299,7 @@ namespace ApplicationDbContext.Models
                 entity.HasOne(d => d.Discount)
                     .WithMany(p => p.ProductGroups)
                     .HasForeignKey(d => d.DiscountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_ProductGroup_Discount");
             });
 
@@ -375,13 +375,13 @@ namespace ApplicationDbContext.Models
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Ratings)
                     .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Rating_Product");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Ratings)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Rating_Customer");
             });
 
@@ -414,7 +414,7 @@ namespace ApplicationDbContext.Models
                 entity.HasOne(d => d.Address)
                     .WithOne(p => p.Shipping)
                     .HasForeignKey<Shipping>(d => d.AddressId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Shipping_Address");
 
                 entity.HasOne(d => d.Order)
@@ -458,7 +458,7 @@ namespace ApplicationDbContext.Models
                 entity.HasOne(d => d.Product)
                     .WithOne(p => p.Trend)
                     .HasForeignKey<Trend>(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Trend_Product");
             });
 
@@ -516,13 +516,13 @@ namespace ApplicationDbContext.Models
                 entity.HasOne(d => d.Notification)
                     .WithMany(p => p.UserHasNotifications)
                     .HasForeignKey(d => d.NotificationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_UserHasNotification_Notification");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserHasNotifications)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_UserHasNotification_Customer");
             });
 
@@ -546,13 +546,13 @@ namespace ApplicationDbContext.Models
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.WishLists)
                     .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_WishList_Product");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.WishLists)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_WishList_User");
             });
 

@@ -4,6 +4,7 @@ using ApplicationDbContext.Models;
 using System.Linq;
 using Ecommerce.Models;
 using AutoMapper;
+using System.Linq.Expressions;
 
 namespace Ecommerce.Controllers
 {
@@ -49,6 +50,20 @@ namespace Ecommerce.Controllers
         public void Delete(SpecificationViewModel obj)
         {
             var newObj = _mapper.Map<Specification>(obj);
+            //var element = _uow.CategorySpecificationValueRepo.Find(x=>(x.SpecificationId==newObj.Id),new[] {"Specification"});
+            //if (element != null)
+            //    return;
+            //var element2 = _uow.ProductSpecificationValueRepo.Find(x => (x.SpecificationId == newObj.Id), new[] { "Specification" });
+            //if (element2 != null)
+            //    return;
+            var lambdas = new List<Expression<Func<Specification, object>>>();
+            lambdas.Add(x => x.CategorySpecificationValues);
+            lambdas.Add(x =>  x.ProductSpecificationValues);
+            var element = _uow.SpecificationRepo.Find(x=>(x.Id==newObj.Id), lambdas );
+            if ((element.CategorySpecificationValues.Count()==0) || (element.ProductSpecificationValues.Count()==0))
+            {
+                return;
+            }
             _uow.SpecificationRepo.Delete(newObj.Id);
             _uow.SaveChanges();
             return;

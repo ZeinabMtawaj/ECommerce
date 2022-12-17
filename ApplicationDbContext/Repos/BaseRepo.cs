@@ -46,17 +46,20 @@ namespace ApplicationDbContext.Repos
             _dbSet.Update(item);
         }
 
-        public T Find(Expression<Func<T, bool>> match, string[] includes = null) 
+        public T Find(Expression<Func<T, bool>> match, List<Expression<Func<T, object>>> lambdas=null ) 
         {
             IQueryable<T> query = _dbSet;
-            if (includes != null)
-            {
-                foreach (var include in includes)
-                {
-                    query = query.Include(include);
-                }
-            }
-            return query.SingleOrDefault(match);  
+            //if (includes != null)
+            //{
+            //    foreach (var include in includes)
+            //    {
+            //        query = query.Include(include);
+            //    }
+            //}
+            foreach(var lambda in lambdas)
+                query = query.Include(lambda);
+
+            return query.FirstOrDefault(match);  
         }
 
         public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take,int? skip, string[] includes = null, Expression<Func<T, Object>> orderBy = null, String orderByDirection = null)

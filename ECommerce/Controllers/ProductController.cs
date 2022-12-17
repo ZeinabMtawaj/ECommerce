@@ -53,7 +53,7 @@ namespace Ecommerce.Controllers
         public void Delete(ProductViewModel obj)
         {
             var newObj = _mapper.Map<Product>(obj);
-            var element = _uow.ProductRepo.Find(x => (x.Id == newObj.Id), includes);
+            //var element = _uow.ProductRepo.Find(x => (x.Id == newObj.Id), includes);
             //if (element!=null)
             //{
             //    foreach (var include in includes) { 
