@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ecommerce.Models
 {
-    public class OrderViewModel
+    public class OrderViewModel: BaseEntity
     {
         public OrderViewModel()
         {
@@ -13,8 +13,8 @@ namespace Ecommerce.Models
         public int Id { get; set; }
         public string? State { get; set; }
         public decimal? Total { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        //public DateTime? CreatedAt { get; set; }
+        //public DateTime? UpdatedAt { get; set; }
         public int? CustomerId { get; set; }
 
         public virtual UserViewModel? Customer { get; set; }

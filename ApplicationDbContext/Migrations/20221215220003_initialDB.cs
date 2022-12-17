@@ -5,10 +5,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ApplicationDbContext.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initialDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "dbo");
+
             migrationBuilder.CreateTable(
                 name: "Category",
                 columns: table => new
@@ -18,8 +21,8 @@ namespace ApplicationDbContext.Migrations
                     Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
                     Image = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: true)
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,8 +39,8 @@ namespace ApplicationDbContext.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     discount_percent = table.Column<decimal>(type: "decimal(18,0)", nullable: true),
                     active = table.Column<int>(type: "int", nullable: true),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,13 +55,29 @@ namespace ApplicationDbContext.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
                     Content = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: true),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Title = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true)
+                    Title = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Notification", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Role",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Role", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,7 +86,9 @@ namespace ApplicationDbContext.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true)
+                    Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,18 +97,30 @@ namespace ApplicationDbContext.Migrations
 
             migrationBuilder.CreateTable(
                 name: "User",
+                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    LastName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Email = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
-                    Password = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -101,10 +134,10 @@ namespace ApplicationDbContext.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DiscountId = table.Column<int>(type: "int", nullable: false),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Updated_at = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: false),
                     name = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
-                    quantity = table.Column<int>(type: "int", nullable: false)
+                    quantity = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,6 +150,28 @@ namespace ApplicationDbContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_Role_RoleId",
+                        column: x => x.RoleId,
+                        principalSchema: "dbo",
+                        principalTable: "Role",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CategorySpecificationValue",
                 columns: table => new
                 {
@@ -124,7 +179,9 @@ namespace ApplicationDbContext.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Value = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
-                    SpecificationId = table.Column<int>(type: "int", nullable: true)
+                    SpecificationId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -148,9 +205,9 @@ namespace ApplicationDbContext.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Location = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -158,8 +215,99 @@ namespace ApplicationDbContext.Migrations
                     table.ForeignKey(
                         name: "FK_Address_User",
                         column: x => x.UserId,
+                        principalSchema: "dbo",
                         principalTable: "User",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_User_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "dbo",
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_User_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "dbo",
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_Role_RoleId",
+                        column: x => x.RoleId,
+                        principalSchema: "dbo",
+                        principalTable: "Role",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_User_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "dbo",
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_User_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "dbo",
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,9 +318,9 @@ namespace ApplicationDbContext.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     State = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
                     Total = table.Column<decimal>(type: "decimal(15,5)", nullable: true),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    CustomerId = table.Column<int>(type: "int", nullable: true)
+                    CustomerId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -180,6 +328,7 @@ namespace ApplicationDbContext.Migrations
                     table.ForeignKey(
                         name: "FK_Order_Customer",
                         column: x => x.CustomerId,
+                        principalSchema: "dbo",
                         principalTable: "User",
                         principalColumn: "Id");
                 });
@@ -191,7 +340,9 @@ namespace ApplicationDbContext.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    NotificationId = table.Column<int>(type: "int", nullable: false)
+                    NotificationId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -199,6 +350,7 @@ namespace ApplicationDbContext.Migrations
                     table.ForeignKey(
                         name: "FK_UserHasNotification_Customer",
                         column: x => x.UserId,
+                        principalSchema: "dbo",
                         principalTable: "User",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -219,11 +371,11 @@ namespace ApplicationDbContext.Migrations
                     Image = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: true),
                     SKU = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    ProductGroupId = table.Column<int>(type: "int", nullable: true)
+                    ProductGroupId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -249,9 +401,9 @@ namespace ApplicationDbContext.Migrations
                     State = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
                     Time = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
                     AddressId = table.Column<int>(type: "int", nullable: false),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    OrderId = table.Column<int>(type: "int", nullable: true)
+                    OrderId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -276,8 +428,8 @@ namespace ApplicationDbContext.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Path = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -298,9 +450,9 @@ namespace ApplicationDbContext.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: true),
                     OrderId = table.Column<int>(type: "int", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: true),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(15,5)", nullable: true)
+                    Price = table.Column<decimal>(type: "decimal(15,5)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -325,7 +477,9 @@ namespace ApplicationDbContext.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Value = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     ProductId = table.Column<int>(type: "int", nullable: true),
-                    SpecificationId = table.Column<int>(type: "int", nullable: true)
+                    SpecificationId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -351,8 +505,8 @@ namespace ApplicationDbContext.Migrations
                     Rating = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -360,6 +514,7 @@ namespace ApplicationDbContext.Migrations
                     table.ForeignKey(
                         name: "FK_Rating_Customer",
                         column: x => x.UserId,
+                        principalSchema: "dbo",
                         principalTable: "User",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -376,8 +531,8 @@ namespace ApplicationDbContext.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -398,8 +553,8 @@ namespace ApplicationDbContext.Migrations
                     quantity = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Updated_at = table.Column<DateTime>(type: "datetime", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -412,6 +567,7 @@ namespace ApplicationDbContext.Migrations
                     table.ForeignKey(
                         name: "FK_WishList_User",
                         column: x => x.UserId,
+                        principalSchema: "dbo",
                         principalTable: "User",
                         principalColumn: "Id");
                 });
@@ -420,6 +576,26 @@ namespace ApplicationDbContext.Migrations
                 name: "IX_Address_UserId",
                 table: "Address",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategorySpecificationValue_CategoryId",
@@ -496,6 +672,14 @@ namespace ApplicationDbContext.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                schema: "dbo",
+                table: "Role",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Shipping",
                 table: "Shipping",
                 column: "OrderId",
@@ -515,10 +699,18 @@ namespace ApplicationDbContext.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customer",
+                name: "EmailIndex",
+                schema: "dbo",
                 table: "User",
-                column: "Email",
-                unique: true);
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                schema: "dbo",
+                table: "User",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserHasNotification",
@@ -545,6 +737,21 @@ namespace ApplicationDbContext.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
             migrationBuilder.DropTable(
                 name: "CategorySpecificationValue");
 
@@ -573,6 +780,10 @@ namespace ApplicationDbContext.Migrations
                 name: "WishList");
 
             migrationBuilder.DropTable(
+                name: "Role",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
                 name: "Specification");
 
             migrationBuilder.DropTable(
@@ -588,7 +799,8 @@ namespace ApplicationDbContext.Migrations
                 name: "Product");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "User",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
                 name: "Category");

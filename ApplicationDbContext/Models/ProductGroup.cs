@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ApplicationDbContext.Models
 {
-    public partial class ProductGroup
+    public partial class ProductGroup : BaseEntity
     {
         public ProductGroup()
         {
@@ -12,8 +12,8 @@ namespace ApplicationDbContext.Models
 
         public int Id { get; set; }
         public int DiscountId { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public string UpdatedAt { get; set; } = null!;
+        //public DateTime CreatedAt { get; set; }
+        //public string UpdatedAt { get; set; } = null!;
         public string Name { get; set; } = null!;
         public int Quantity { get; set; }
 

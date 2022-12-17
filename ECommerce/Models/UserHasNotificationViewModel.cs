@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ecommerce.Models
 {
-    public class UserHasNotificationViewModel
+    public class UserHasNotificationViewModel: BaseEntity
     {
         public int Id { get; set; }
         public int UserId { get; set; }

@@ -9,120 +9,78 @@ namespace Ecommerce.Controllers
 {
     public class ProductController : BaseController
     {
+        private string[] includes = { "CategoryViewModel", "ProductGroupViewModel", "TrendViewModel" };
+
         public ProductController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
 
         }
-        public ProductViewModel convertToVM(Product item)
+
+        public IEnumerable<ProductViewModel> GetAll()
         {
-            var product = new ProductViewModel();
-            product.Name = item.Name;
-            product.Description = item.Description;
-            product.Price = item.Price;
-            product.Sku = item.Sku;
-            product.Quantity = item.Quantity;
-            product.Image = item.Image;
-            product.CreatedAt = item.CreatedAt;
-            product.UpdatedAt = item.UpdatedAt;
-
-
-            return product;
-
+            var items = _uow.ProductRepo.GetAll();
+            var viewItems = items.Select(item => _mapper.Map<ProductViewModel>(item));
+            return viewItems;
         }
 
-        public Product convertFromVM(ProductViewModel item)
+
+        public String[] GetColNames()
         {
-            var product = new Product();
-            product.Name = item.Name;
-            product.Description = item.Description;
-            product.Price = item.Price;
-            product.Sku = item.Sku;
-            product.Quantity = item.Quantity;
-            product.Image = item.Image;
-            //product.CreatedAt = item.CreatedAt;
-            //product.UpdatedAt = item.UpdatedAt;
-
-
-            return product;
-
+            var names = typeof(Product).GetProperties()
+                        .Select(property => property.Name)
+                        .ToArray();
+            //List<string> res = new List<string>();
+            //res =["Name", "Price", "Image", "Quantity", "Sku", "Description", "CreatedDate", "UpdatedDate"];
+            return names;
         }
 
-        public List<ProductViewModel> get()
+        public void Create(ProductViewModel obj)
         {
-            var products = _uow.ProductRepo.GetAll();
-            var productsVM = new List<ProductViewModel>();
-            foreach (var item in products)
+            var newObj = _mapper.Map<Product>(obj);
+            _uow.ProductRepo.Add(newObj);
+            _uow.SaveChanges();
+            return;
+        }
+
+        public void Edit(ProductViewModel obj)
+        {
+            var newObj = _mapper.Map<Product>(obj);
+            _uow.ProductRepo.Update(newObj);
+            _uow.SaveChanges();
+            return;
+        }
+
+        public void Delete(ProductViewModel obj)
+        {
+            var newObj = _mapper.Map<Product>(obj);
+            //var element = _uow.ProductRepo.Find(x => (x.Id == newObj.Id), includes);
+            //if (element!=null)
+            //{
+            //    foreach (var include in includes) { 
+            //        if (element==)
+            //    }
+            //    return;
+            //}
+            _uow.ProductRepo.Delete(newObj.Id);
+            _uow.SaveChanges();
+            return;
+        }
+
+        public ProductViewModel? Find(int? id)
+        {
+            if (id == null || id.Value == 0)
             {
-                var product = convertToVM(item);
-
-
-                productsVM.Add(product);
-
-
+                return null;
             }
-            return productsVM;
+            var obj = _uow.ProductRepo.Find(id.Value);
+            if (obj == null)
+                return null;
+            var res = _mapper.Map<ProductViewModel>(obj);
+            return res;
         }
 
         public IActionResult Index()
         {
-            var products = _uow.ProductRepo.GetAll();
-           // ViewBag.Msg = "Hello from Index";
-            // ViewData["Message"] = 
-
-            //TempData["Message"] = "Hello from Students Index (TempData)";
-            return View(products);
-        }
-
-        [HttpGet]
-        public IActionResult Create()
-        {
-
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Create (ProductViewModel pvm)
-        {
-            if (ModelState.IsValid)
-            {
-               _uow.ProductRepo.Add( convertFromVM(pvm) );
-                _uow.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(pvm);
-
-        }
-
-
-        public IActionResult Edit(int id)
-        {
-            var obj = _uow.ProductRepo.Find(id);
-            return View(obj);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(ProductViewModel pvm)
-        {
-            if (ModelState.IsValid)
-            {
-                _uow.ProductRepo.Update(convertFromVM(pvm));
-                _uow.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(pvm);
-
-        }
-
-        [HttpPost]
-        public IActionResult Delete(int id)
-        {
-            _uow.ProductRepo.Delete(id);
-            return RedirectToAction("Index");
-
-        }
-
-        public IActionResult Detail() {
             return View();
         }
     }

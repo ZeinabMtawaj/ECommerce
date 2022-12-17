@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ApplicationDbContext.Models
 {
-    public partial class UserHasNotification
+    public partial class UserHasNotification: BaseEntity
     {
         public int Id { get; set; }
         public int UserId { get; set; }
