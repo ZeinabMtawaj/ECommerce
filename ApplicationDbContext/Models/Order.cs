@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ApplicationDbContext.Models
 {
-    public partial class Order
+    public partial class Order: BaseEntity
     {
         public Order()
         {
@@ -13,8 +13,8 @@ namespace ApplicationDbContext.Models
         public int Id { get; set; }
         public string? State { get; set; }
         public decimal? Total { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        //public DateTime? CreatedAt { get; set; }
+        //public DateTime? UpdatedAt { get; set; }
         public int? CustomerId { get; set; }
 
         public virtual User? Customer { get; set; }

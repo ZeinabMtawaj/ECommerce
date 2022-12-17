@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ecommerce.Models
 {
-    public class CategoryViewModel
+    public class CategoryViewModel: BaseEntity
     {
         public CategoryViewModel()
         {
@@ -21,11 +21,11 @@ namespace Ecommerce.Models
         public string? Image { get; set; }
         [StringLength(200, MinimumLength = 3, ErrorMessage = "Maximum 200 characters")]
         public string? Description { get; set; }
-        [Display(Name = "Created At")]
-        public DateTime? CreatedAt { get; set; }
+        //[Display(Name = "Created At")]
+        //public DateTime? CreatedAt { get; set; }
 
-        [Display(Name = "Updated At")]
-        public DateTime? UpdatedAt { get; set; }
+        //[Display(Name = "Updated At")]
+        //public DateTime? UpdatedAt { get; set; }
 
 
         [Display(Name = "Specifications")]

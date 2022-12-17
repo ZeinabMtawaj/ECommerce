@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ecommerce.Models
 {
-    public class AddressViewModel
+    public class AddressViewModel: BaseEntity
     {
         public int Id { get; set; }
         public string Location { get; set; } = null!;
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        //public DateTime CreatedAt { get; set; }
+        //public DateTime UpdatedAt { get; set; }
         public int UserId { get; set; }
 
         public virtual UserViewModel User { get; set; } = null!;

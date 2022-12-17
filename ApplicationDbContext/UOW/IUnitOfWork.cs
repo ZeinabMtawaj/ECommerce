@@ -13,6 +13,12 @@ namespace ApplicationDbContext.UOW
 
         public ISpecificationRepo SpecificationRepo { get; set; }
 
+        public ICategorySpecificationValueRepo CategorySpecificationValueRepo { get; set; }
+
+        public IProductSpecificationValueRepo ProductSpecificationValueRepo { get; set; }
+
+
+
         public void SaveChanges ();
 
         public void RollBack();

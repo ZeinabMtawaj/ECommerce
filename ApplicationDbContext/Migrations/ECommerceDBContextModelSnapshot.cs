@@ -30,9 +30,9 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<string>("Location")
                         .IsRequired()
@@ -40,9 +40,9 @@ namespace ApplicationDbContext.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(200)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Updated_at");
+                        .HasColumnName("UpdatedDate");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -62,9 +62,9 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -79,9 +79,9 @@ namespace ApplicationDbContext.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Updated_at");
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
@@ -99,8 +99,14 @@ namespace ApplicationDbContext.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("SpecificationId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Value")
                         .HasMaxLength(100)
@@ -128,9 +134,9 @@ namespace ApplicationDbContext.Migrations
                         .HasColumnType("int")
                         .HasColumnName("active");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -144,9 +150,9 @@ namespace ApplicationDbContext.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Updated_at");
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
@@ -166,9 +172,9 @@ namespace ApplicationDbContext.Migrations
                         .HasColumnType("nchar(10)")
                         .IsFixedLength();
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<string>("Title")
                         .HasMaxLength(50)
@@ -180,9 +186,9 @@ namespace ApplicationDbContext.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Updated_at");
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
@@ -197,9 +203,9 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
@@ -212,9 +218,9 @@ namespace ApplicationDbContext.Migrations
                     b.Property<decimal?>("Total")
                         .HasColumnType("decimal(15,5)");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Updated_at");
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
@@ -231,9 +237,9 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<string>("Path")
                         .IsRequired()
@@ -244,9 +250,9 @@ namespace ApplicationDbContext.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Updated_at");
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
@@ -266,9 +272,9 @@ namespace ApplicationDbContext.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -298,9 +304,9 @@ namespace ApplicationDbContext.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("SKU");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Updated_at");
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
@@ -323,9 +329,9 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<int>("DiscountId")
                         .HasColumnType("int");
@@ -341,12 +347,9 @@ namespace ApplicationDbContext.Migrations
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.Property<string>("UpdatedAt")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nchar(10)")
-                        .HasColumnName("Updated_at")
-                        .IsFixedLength();
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
@@ -363,9 +366,9 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
@@ -379,9 +382,9 @@ namespace ApplicationDbContext.Migrations
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Updated_at");
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
@@ -402,11 +405,19 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("CreatedDate");
+
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int?>("SpecificationId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("UpdatedDate");
 
                     b.Property<string>("Value")
                         .HasMaxLength(100)
@@ -430,9 +441,9 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -441,9 +452,9 @@ namespace ApplicationDbContext.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Rating");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Updated_at");
+                        .HasColumnName("UpdatedDate");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -468,9 +479,9 @@ namespace ApplicationDbContext.Migrations
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
@@ -485,9 +496,9 @@ namespace ApplicationDbContext.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Updated_at");
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
@@ -509,16 +520,18 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("CreatedDate");
 
                     b.Property<string>("Name")
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
@@ -533,16 +546,16 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Updated_at");
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
@@ -567,7 +580,7 @@ namespace ApplicationDbContext.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -616,7 +629,7 @@ namespace ApplicationDbContext.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserName")
@@ -644,8 +657,16 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("CreatedDate");
+
                     b.Property<int>("NotificationId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("UpdatedDate");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -698,9 +719,9 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_at");
+                        .HasColumnName("CreatedDate");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -709,9 +730,9 @@ namespace ApplicationDbContext.Migrations
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
-                        .HasColumnName("Updated_at");
+                        .HasColumnName("UpdatedDate");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

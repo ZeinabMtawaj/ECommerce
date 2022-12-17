@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ApplicationDbContext.Models
 {
-    public partial class Discount
+    public partial class Discount : BaseEntity
     {
         public Discount()
         {
@@ -15,8 +15,8 @@ namespace ApplicationDbContext.Models
         public string? Description { get; set; }
         public decimal? DiscountPercent { get; set; }
         public int? Active { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        //public DateTime CreatedAt { get; set; }
+        //public DateTime UpdatedAt { get; set; }
 
         public virtual ICollection<ProductGroup> ProductGroups { get; set; }
     }
