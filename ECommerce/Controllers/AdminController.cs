@@ -4,8 +4,7 @@ using ApplicationDbContext.Models;
 using System.Linq;
 using Ecommerce.Models;
 using AutoMapper;
-using ECommerce.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace Ecommerce.Controllers
 
@@ -17,197 +16,18 @@ namespace Ecommerce.Controllers
         {
         }
 
-
-        public IActionResult CategoryManagement()
+        public IActionResult SpecificationIndex()
         {
-            var categoryContorller = new CategoryController(_uow, _mapper);
-            var items = categoryContorller.GetAll();
-            ViewBag.cols = categoryContorller.GetColNames();
-            ViewBag.createController = "Admin";
-            ViewBag.createAction = "CreateCategory";
-            ViewBag.editController = "Admin";
-            ViewBag.editAction = "EditCategory";
-            ViewBag.deleteController = "Admin";
-            ViewBag.deleteAction = "DeleteCategory";
-            return View(items);
+            return RedirectToAction("Index", "Specification");
         }
 
-
-        [HttpGet]
-        public IActionResult CreateCategory()
+        public IActionResult CategoryIndex()
         {
-            var specificationController = new SpecificationController(_uow, _mapper);
-            var specs = specificationController.GetAll();
-            CategoryVM categoryVM = new CategoryVM()
-            {
-                Category = new CategoryViewModel(),
-                Specifications = specs.Select(i => new SelectListItem
-                {
-                    Text = i.Name,
-                    Value = i.Id.ToString()
-                })
-            };
-            return View(categoryVM);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CreateCategory(CategoryViewModel obj)
-        {
-            if (ModelState.IsValid)
-            {
-                var categoryContorller = new CategoryController(_uow, _mapper);
-                categoryContorller.Create(obj);
-                return RedirectToAction("CategoryManagement");
-            }
-            return View(obj);
-        }
-
-        [HttpGet]
-        public IActionResult EditCategory(int? id)
-        {
-            var categoryContorller = new CategoryController(_uow, _mapper);
-            var obj = categoryContorller.Find(id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            return View(obj);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditCategory(CategoryViewModel obj)
-        {
-            if (ModelState.IsValid)
-            {
-                var categoryContorller = new CategoryController(_uow, _mapper);
-                categoryContorller.Edit(obj);
-                return RedirectToAction("CategoryManagement");
-            }
-            return View(obj);
-        }
-
-
-        [HttpGet]
-        public IActionResult DeleteCategory(int? id)
-        {
-            var categoryContorller = new CategoryController(_uow, _mapper);
-            var obj = categoryContorller.Find(id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            return View(obj);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteCategory(CategoryViewModel obj)
-        {
-            if (ModelState.IsValid)
-            {
-                var categoryContorller = new CategoryController(_uow, _mapper);
-                categoryContorller.Delete(obj);
-                return RedirectToAction("CategoryManagement");
-            }
-            return View(obj);
+            return RedirectToAction("Index", "Category");
         }
 
 
 
 
-
-
-
-
-
-
-
-
-
-        public IActionResult SpecificationManagement()
-        {
-            var specificationContorller = new SpecificationController(_uow, _mapper);
-            var items = specificationContorller.GetAll();
-            ViewBag.cols = specificationContorller.GetColNames();
-            ViewBag.createController = "Admin";
-            ViewBag.createAction = "CreateSpecification";
-            ViewBag.editController = "Admin";
-            ViewBag.editAction = "EditSpecification";
-            ViewBag.deleteController = "Admin";
-            ViewBag.deleteAction = "DeleteSpecification";
-            return View(items);
-        }
-
-
-
-        [HttpGet]
-        public IActionResult CreateSpecification()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CreateSpecification(SpecificationViewModel obj)
-        {
-            if (ModelState.IsValid)
-            {
-                var specificationContorller = new SpecificationController(_uow, _mapper);
-                specificationContorller.Create(obj);
-                return RedirectToAction("SpecificationManagement");
-            }
-            return View(obj);
-        }
-
-        [HttpGet]
-        public IActionResult EditSpecification(int? id)
-        {
-            var specificationContorller = new SpecificationController(_uow, _mapper);
-            var obj = specificationContorller.Find(id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            return View(obj);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditSpecification(SpecificationViewModel obj)
-        {
-            if (ModelState.IsValid)
-            {
-                var specificationContorller = new SpecificationController(_uow, _mapper);
-                specificationContorller.Edit(obj);
-                return RedirectToAction("SpecificationManagement");
-            }
-            return View(obj);
-        }
-
-
-        [HttpGet]
-        public IActionResult DeleteSpecification(int? id)
-        {
-            var specificationContorller = new SpecificationController(_uow, _mapper);
-            var obj = specificationContorller.Find(id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            return View(obj);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteSpecification(SpecificationViewModel obj)
-        {
-            if (ModelState.IsValid)
-            {
-                var specificationContorller = new SpecificationController(_uow, _mapper);
-                specificationContorller.Delete(obj);
-                return RedirectToAction("SpecificationManagement");
-            }
-            return View(obj);
-        }
     }
 }

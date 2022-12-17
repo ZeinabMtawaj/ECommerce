@@ -1,14 +1,13 @@
 ﻿
 @{
-    ViewData["Title"] = "CategoryManagement";
+    ViewData["Title"] = "SpecificationManagement";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-@model IEnumerable<CategoryViewModel> 
-
+@model IEnumerable<SpecificationViewModel> 
 
 
 
+	
 
 <!-- Button -->
 <div>
@@ -38,24 +37,11 @@
 		<tbody>
 		@if(Model != null && Model.Count() > 0)
 		{
-					
 			@foreach(var item in Model)
 			{
 				<tr>
 					<td>
-						<img src="@item.Image">
-					</td>
-					<td>
 						@item.Name
-					</td>
-					<td class="overflow-auto">
-						@item.Description
-					</td>
-					<td>
-						<a class="arrow-icon">
-							<span class="left-bar"></span>
-							<span class="right-bar"></span>
-						</a>
 					</td>
 					<td>
 						@if(item.CreatedAt != null){
@@ -82,7 +68,11 @@
 									<i class="fa fa-edit"></i>
 								</button>
 							</a>
-									
+
+
+
+
+
 							<span data-toggle="modal" data-target=@("#deleteModal" + @item.Id.ToString())>
 								<button data-toggle="tooltip" data-placement="top" title="Remove" class="btn btn-link btn-simple-danger mt-1"> 
 									<i class="fa fa-times"></i>       
@@ -115,6 +105,9 @@
 									</div>
 								</div>
 							</div>  
+
+
+
 						</div>
 					</td>
 				</tr>
@@ -128,3 +121,4 @@
 		"pageLength": 5,
 	});
 </script>
+
