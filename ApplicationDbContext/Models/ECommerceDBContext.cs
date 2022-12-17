@@ -60,13 +60,13 @@ namespace ApplicationDbContext.Models
             return base.SaveChanges();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-2DNG6PA\\SQLEXPRESS;Database=ECommerceDB;User Id=sa;Password=12345678;Trusted_Connection=True;");
-            }
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder.UseSqlServer("Server=DESKTOP-2DNG6PA\\SQLEXPRESS;Database=ECommerceDB;User Id=sa;Password=12345678;Trusted_Connection=True;");
+        //    }
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
