@@ -44,8 +44,8 @@
 						@item.Name
 					</td>
 					<td>
-						@if(item.CreatedAt != null){
-							@item.CreatedAt.Value.ToString("g");
+						@if(item.CreatedDate != null){
+							@item.CreatedDate.ToString("g");
 						}
 						else
 						{
@@ -53,8 +53,8 @@
 						}
 					</td>
 					<td>
-						@if(item.UpdatedAt != null){
-							@item.UpdatedAt.Value.ToString("g");
+						@if(item.UpdatedDate != null){
+							@item.UpdatedDate.ToString("g");
 						}
 						else
 						{

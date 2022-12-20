@@ -78,26 +78,7 @@ namespace Ecommerce.Controllers
             return View(obj);
         }
 
-        //public void Delete(SpecificationViewModel obj)
-        //{
-        //    var newObj = _mapper.Map<Specification>(obj);
-        //    //var element = _uow.CategorySpecificationValueRepo.Find(x=>(x.SpecificationId==newObj.Id),new[] {"Specification"});
-        //    //if (element != null)
-        //    //    return;
-        //    //var element2 = _uow.ProductSpecificationValueRepo.Find(x => (x.SpecificationId == newObj.Id), new[] { "Specification" });
-        //    //if (element2 != null)
-        //    //    return;
-        //    var lambdas = new List<Expression<Func<Specification, object>>>();
-        //    lambdas.Add(x => x.CategorySpecificationValues);
-        //    lambdas.Add(x =>  x.ProductSpecificationValues);
-        //    var element = _uow.SpecificationRepo.Find(x=>(x.Id==newObj.Id), lambdas );
-        //    if ((element.CategorySpecificationValues.Count()==0) || (element.ProductSpecificationValues.Count()==0))
-        //    {
-        //        return;
-        //    }
-        //    _uow.SpecificationRepo.Delete(newObj.Id);
-        //    _uow.SaveChanges();
-        //    return;
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -106,19 +87,29 @@ namespace Ecommerce.Controllers
             Specification? obj = null;
             if (Id != null)
             {
-                obj = _uow.SpecificationRepo.Find(Id.Value);
+                var lambdas = new List<Expression<Func<Specification, object>>>();
+                lambdas.Add(x => x.CategorySpecificationValues);
+                lambdas.Add(x => x.ProductSpecificationValues);
+                obj = _uow.SpecificationRepo.Find(x => (x.Id == Id), lambdas);
             }
             if (obj == null)
-            {
-                // TempData["alert-type"] = "danger";
-                // TempData["alert"] = "Something Went Wront..";
+            { 
+                TempData["error"] = "Something Went Wront..";
             }
             else
             {
-                // TempData["alert-type"] = "success";
-                // TempData["alert"] = "Deleted Successfully";
-                _uow.SpecificationRepo.Delete(Id.Value);
-                _uow.SaveChanges();
+                if ((obj.CategorySpecificationValues.Count() != 0) || (obj.ProductSpecificationValues.Count() != 0))
+                {
+                    TempData["error"] = "Something Went Wront..";
+                }
+                else
+                {
+                    var lambdas = new List<Expression<Func<Specification, object>>>();
+                    _uow.SpecificationRepo.Delete(Id.Value);
+                    _uow.SaveChanges();
+                    TempData["success"] = "Deleted Successfully";
+                }
+
             }
             return RedirectToAction("Index");
         }
