@@ -21,12 +21,6 @@ namespace Ecommerce.Models
         public string? Image { get; set; }
         [StringLength(200, MinimumLength = 3, ErrorMessage = "Maximum 200 characters")]
         public string? Description { get; set; }
-        //[Display(Name = "Created At")]
-        //public DateTime? CreatedAt { get; set; }
-
-        //[Display(Name = "Updated At")]
-        //public DateTime? UpdatedAt { get; set; }
-
 
         [Display(Name = "Specifications")]
         public virtual ICollection<CategorySpecificationValueViewModel>? CategorySpecificationValues { get; set; }

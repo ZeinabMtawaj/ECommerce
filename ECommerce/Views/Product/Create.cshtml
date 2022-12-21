@@ -1,65 +1,98 @@
-﻿@model ProductViewModel
+﻿
 @{
-    ViewData["Title"] = "Create Product";
-        Layout = "~/Views/Shared/_AdminLayout.cshtml";
-
+    ViewData["Tit!importantmportante"] = "CreateProduct";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-    <div class="pagetitle ">
-      <h1>Form Layouts</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Forms</li>
-          <li class="breadcrumb-item active">Layouts</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
 
-    <div class="col-lg-6">
 
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Product Form</h5>
+@model ProductVM
 
-              <!-- Vertical Form -->
-              <form class="row g-3">
-                <div class="col-12">
-                  <label for="Name" class="form-label" asp-for="Name"></label>
-                  <input type="text" class="form-control" id="inputNanme4">
-                </div>
-                <div class="col-12">
-                  <label for="Price" class="form-label" asp-for="Price"></label>
-@*                  <input type="email" class="form-control" id="inputEmail4">
-*@               
-                <input type="Number" class="form-control" id="inputEmail4">    
-                </div>
-                <div class="col-12">
-                  <label for="Image" class="form-label" asp-for="Image"></label>
-                  <input type="file" class="form-control" id="inputPassword4">
-                </div>
-                <div class="col-12">
-                  <label for="Quantity" class="form-label" asp-for="Quantity"></label>
-                  <input type="Number" class="form-control" id="inputAddress" >
-                </div>
-                <div class="col-12">
-                  <label for="Quantity" class="form-label" asp-for="Sku"></label>
-                  <input type="Number" class="form-control" id="inputAddress" >
-                </div>
-                <div class="col-12">
-                  <label for="Quantity" class="form-label" asp-for="Description"></label>
-                  <input type="text" class="form-control" id="inputAddress" >
-                </div>
 
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button type="reset" class="btn btn-secondary">Reset</button>
-                </div>
-              </form><!-- Vertical Form -->
-
+<div class="card-body">
+        <h3 class="card-title mt-2  font-bold text-lg">Create New Product</h3>
+    <form class="mt-4" method="post" asp-action="Create">
+        <div class="row mb-3 mt-4 ml-4">
+            <label asp-for="Product.Name" class="col-sm-2 form-label font-weight-bold"></label>
+            <div class="col-sm-10">
+                <input type="text" asp-for="Product.Name" class="form-control" placeholder="Enter Name">
+                <span asp-validation-for="Product.Name" class="text-danger"></span>
             </div>
-          </div>
+        </div>
+         <div class="row mb-3 mt-4 ml-4">
+            <label asp-for="Product.Price" class="col-sm-2 form-label font-weight-bold"></label>
+            <div class="col-sm-10">
+                <input type="text" asp-for="Product.Price" class="form-control" placeholder="Enter Name">
+                <span asp-validation-for="Product.Price" class="text-danger"></span>
+            </div>
+        </div>
+         <div class="row mb-3 mt-4 ml-4">
+            <label asp-for="Product.Sku" class="col-sm-2 form-label font-weight-bold"></label>
+            <div class="col-sm-10">
+                <input type="text" asp-for="Product.Sku" class="form-control" placeholder="Enter Name">
+                <span asp-validation-for="Product.Sku" class="text-danger"></span>
+            </div>
+        </div>
+               
+        <div class="row mb-3 mt-4 ml-4">
+            <label asp-for="Product.Image" class="col-sm-2 col-form-label font-weight-bold"></label>
+            <div class="col-sm-10">
+                <input type="text" asp-for="Product.Image" class="form-control" placeholder="URL">
+                <span asp-validation-for="Product.Image" class="text-danger"></span>
+            </div>
+        </div>
+            <div class="row mb-3 mt-4 ml-4">
+            <label asp-for="Product.Description" class="col-sm-2 col-form-label font-weight-bold"></label>
+            <div class="col-sm-10">
+                <textarea asp-for="Product.Description" class="form-control" placeholder="Enter Description"></textarea>
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
+            </div>
+        </div>
+
+            
+            <button type="button" class="btn btn-outline-danger ml-5">Cancel</button>
+            <input type="submit" class="btn btn-primary ml-5" value="Create">
+    </form>
+</div>
 
 
+@*<script>
 
+    let cards = document.querySelectorAll('.box')
+    
+    function liveSearch() {
+        let search_query = document.getElementById("searchbox").value;
+    
+        //Use innerText if all contents are visible
+        //Use textContent for including hidden elements
+        for (var i = 0; i < cards.length; i++) {
+            if(cards[i].textContent.toLowerCase()
+                    .includes(search_query.toLowerCase())) {
+                cards[i].classList.remove("d-none");
+            } else {
+                cards[i].classList.add("d-none");
+            }
+        }
+    }
 
+    //A little delay
+    let typingTimer;               
+    let typeInterval = 200;  
+    let searchInput = document.getElementById('searchbox');
+    searchInput.addEventListener('keyup', () => {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(liveSearch, typeInterval);
+    });
+
+    $(".inp-coll").bind('keyup', (event) => {
+        let id = $(event.target).attr('id');
+        let nm = id.split('-')[1];
+        let conId = "#con-" + nm;
+        if($(event.target).val())
+            $(conId).addClass('border-l-8');
+        else
+            $(conId).removeClass('border-l-8');
+    });
+
+    
+</script>*@
