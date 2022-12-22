@@ -7,7 +7,7 @@ namespace Ecommerce.Models
     {
         public int Id { get; set; }
         [Required]
-        public string? Value { get; set; }
+        public string Value { get; set; }
 
         public virtual CategoryViewModel? Category { get; set; }
         public virtual SpecificationViewModel? Specification { get; set; }

@@ -6,6 +6,7 @@ using Ecommerce.Models;
 using ECommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
+using System.Collections.Generic;
 
 namespace Ecommerce.Controllers
 {
@@ -36,17 +37,9 @@ namespace Ecommerce.Controllers
         public IActionResult Create()
         {
             // ILayoutDecider ld = .. based on role
-            var specificationController = new SpecificationController(_uow, _mapper);
-            var specs = specificationController.GetAllToView();
             CategoryVM categoryVM = new CategoryVM()
             {
-                Category = new CategoryViewModel(),
-                Specifications = specs.Select(i => new SelectListItem
-                {
-                    Text = i.Name,
-                    Value = i.Id.ToString()
-                }),
-                SpecificationValues = new List<string>()
+                Category = new CategoryViewModel()
             };
             return View(categoryVM);
         }
@@ -56,18 +49,20 @@ namespace Ecommerce.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(CategoryVM obj)
         {
-
-            return View("~/Views/Category/testing.cshtml", obj);
-
-
-
+            
+            //return View("~/Views/Category/testing.cshtml", obj);
             if (ModelState.IsValid)
             {
                 var newObj = _mapper.Map<Category>(obj);
                 _uow.CategoryRepo.Add(newObj);
                 _uow.SaveChanges();
+                obj.Category.Id = newObj.Id;
+                var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper);
+                categorySpecificationValueController.Create(obj);
                 return RedirectToAction("Index");
             }
+           
+            //return View("~/Views/Category/testing.cshtml", obj);
             return View(obj);
         }
 
@@ -158,5 +153,10 @@ namespace Ecommerce.Controllers
             var res = _mapper.Map<CategoryViewModel>(obj);
             return res;
         }
+
+
+        
+
+
     }
 }

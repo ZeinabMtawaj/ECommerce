@@ -5,6 +5,9 @@ using System.Linq;
 using Ecommerce.Models;
 using AutoMapper;
 using System.Linq.Expressions;
+using ECommerce.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace Ecommerce.Controllers
 {
@@ -157,5 +160,28 @@ namespace Ecommerce.Controllers
             return res;
         }
 
+
+
+        [HttpPost]
+        public IActionResult GetSpecs(string specValsString)
+        {
+            string [] specVals = JsonConvert.DeserializeObject<string[]>(specValsString);
+            var specVM = new SpecificationVM();
+            var specs = this.GetAllToView();
+            int cnt = 0;
+
+            foreach (var spec in specs)
+            {
+                specVM.SpecificationIds.Add(spec.Id);
+                specVM.SpecificationNames.Add(spec.Name);
+                string specVal = "";
+                if (cnt < specVals.Length)
+                    specVal = specVals[cnt];
+                specVM.SpecificationValues.Add(specVal);
+                cnt++;
+            }
+           
+            return PartialView("~/Views/Shared/_SpecsLoad.cshtml", specVM);
+        }
     }
 }

@@ -39,7 +39,7 @@
             <label asp-for="Category.CategorySpecificationValues" class="col-sm-2 col-form-label font-weight-bold"></label>
             <div class="col-sm-10">
                 <div type="text" asp-for="Category.Image" class="d-flex flex-column justifiy-content-center w-50 " placeholder="URL">
-                    <span class="btn btn-info w-50 ml-auto" data-toggle="modal" data-target="#specsModel">
+                    <span id="callSpecs-0" class="specPartialCaller btn btn-info w-50 ml-auto" data-toggle="modal" data-target="#specsModel">
                         Manage
                     </span>
 
@@ -57,22 +57,9 @@
                                         <input id="searchbox" class="search__input " type="text" placeholder="Search">
                                               
                                 </div>
-                                <div class="card mt-2 rounded">
-                                    @foreach(var spec in Model.Specifications)
-                                    {
-                                        <div class="box">
-                                            <div id="con-@spec.Value" class="card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]" data-toggle="collapse" data-target="#coll-@spec.Value" aria-expanded="false" aria-controls="coll-@spec.Value">
-			                                    @spec.Text
-		                                    </div>
-
-		                                    <div id="coll-@spec.Value" class="collapse" aria-labelledby="head-@spec.Value" data-parent="#accordion">
-			                                    <div class="card-body">
-				                                    <input name="SpecificationValues" class="form-control inp-coll" id="inp-@spec.Value" type="text" placeholder="Enter Value"/>
-			                                    </div>
-		                                    </div>
-                                        </div>
-                                    }
-	                            </div>
+                                <div id="specPartial-0" class="card mt-2 rounded">
+                                   
+                                 </div>
 
 			                </div>
 			                <div class="modal-footer">
@@ -96,43 +83,82 @@
 </div>
 
 
-<script>
 
-    let cards = document.querySelectorAll('.box')
+
+
+@section Scripts{
+    <script>
+        function liveSearch() {
+            let search_query = document.getElementById("searchbox").value;
     
-    function liveSearch() {
-        let search_query = document.getElementById("searchbox").value;
-    
-        //Use innerText if all contents are visible
-        //Use textContent for including hidden elements
-        for (var i = 0; i < cards.length; i++) {
-            if(cards[i].textContent.toLowerCase()
-                    .includes(search_query.toLowerCase())) {
-                cards[i].classList.remove("d-none");
-            } else {
-                cards[i].classList.add("d-none");
+            //Use innerText if all contents are visible
+            //Use textContent for including hidden elements
+            for (var i = 0; i < cards.length; i++) {
+                if(cards[i].textContent.toLowerCase()
+                        .includes(search_query.toLowerCase())) {
+                    cards[i].classList.remove("d-none");
+                } else {
+                    cards[i].classList.add("d-none");
+                }
             }
         }
-    }
+        let typingTimer;               
+        let typeInterval = 200;  
+        let searchInput = document.getElementById('searchbox');
+        searchInput.addEventListener('keyup', () => {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(liveSearch, typeInterval);
+        });
 
-    //A little delay
-    let typingTimer;               
-    let typeInterval = 200;  
-    let searchInput = document.getElementById('searchbox');
-    searchInput.addEventListener('keyup', () => {
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(liveSearch, typeInterval);
-    });
+        function specsConfigure(){
+            let cards = document.querySelectorAll('.box');
+            $(".inp-coll").bind('keyup', (event) => {
+                let id = "#" + $(event.target).attr('id');
+                let conId = id.replace('inp', 'con');
+                if($(event.target).val())
+                    $(conId).addClass('border-l-8');
+                else
+                    $(conId).removeClass('border-l-8');
+            });
 
-    $(".inp-coll").bind('keyup', (event) => {
-        let id = $(event.target).attr('id');
-        let nm = id.split('-')[1];
-        let conId = "#con-" + nm;
-        if($(event.target).val())
-            $(conId).addClass('border-l-8');
-        else
-            $(conId).removeClass('border-l-8');
-    });
+            $(".inp-coll").each(function(){
+                let id = "#" + $(this).attr('id');
+                let conId = id.replace('inp', 'con');
+                if($(id).val())
+                    $(conId).addClass('border-l-8');
+                else
+                    $(conId).removeClass('border-l-8');
+            })
+        }
+        
 
     
-</script>
+    </script>
+    <script>
+
+        $(".specPartialCaller").click(function(){
+                let id = $(this).attr('id');
+                let nm = id.split('-')[1];
+                let specPartialId = "#specPartial-" + nm;
+                let specPartial = $(specPartialId)
+                if(specPartial.html().trim().length != 0)
+                    return;
+                let vals = '@JsonConvert.SerializeObject(Model.SpecificationValues)';
+                vals = vals.replaceAll("&quot;", '"');
+                vals = vals.replaceAll("null", '""');
+                $.ajax({  
+                    type: "POST",  
+                    url: '/Specification/GetSpecs',  
+                    data: {"specValsString" : vals},
+                    success: function(data){
+                     $(specPartialId).html(data);
+                     specsConfigure();
+                    },
+                    error: function(xhr, status, error) {
+                        alert(status);
+                    }
+                });
+        });
+
+    </script>
+}
