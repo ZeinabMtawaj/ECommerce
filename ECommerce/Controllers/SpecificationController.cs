@@ -134,7 +134,11 @@ namespace Ecommerce.Controllers
             var viewItems = items.Select(item => _mapper.Map<SpecificationViewModel>(item));
             return viewItems;
         }
-
+        public IEnumerable<Specification> GetAll()
+        {
+            var items = _uow.SpecificationRepo.GetAll();
+            return items;
+        }
 
         public List<string> GetColNames()
         {

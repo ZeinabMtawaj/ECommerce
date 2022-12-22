@@ -16,9 +16,9 @@ namespace ApplicationDbContext.IRepos
 
         T Find(int id);
 
-        T Find(Expression<Func<T, bool>> match, List<Expression<Func<T, object>>> lambdas=null);
+        T Find(Expression<Func<T, bool>> match, List<Expression<Func<T, object>>> lambdas = null);
 
-        IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take, int? skip, string[] includes = null, Expression<Func<T,Object>> orderBy=null, String orderByDirection = null);
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take = null, int? skip = null, List<Expression<Func<T, object>>>? lambdas = null, Expression<Func<T, Object>>? orderBy = null, String? orderByDirection = null);
 
 
     }

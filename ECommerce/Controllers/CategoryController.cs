@@ -75,19 +75,29 @@ namespace Ecommerce.Controllers
             {
                 return NotFound();
             }
-            return View(obj);
+            var catSpecValController = new CategorySpecificationValueController(_uow, _mapper);
+            var specVals = catSpecValController.GetAllSpecVals(obj.Id);
+            CategoryVM categoryVM = new CategoryVM()
+            {
+                Category = obj,
+                SpecificationValues = specVals
+            };
+            return View(categoryVM);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(CategoryViewModel obj)
+        public IActionResult Edit(CategoryVM obj)
         {
             if (ModelState.IsValid)
             {
                 var newObj = _mapper.Map<Category>(obj);
+                newObj.Id = obj.Category.Id;
                 _uow.CategoryRepo.Update(newObj);
                 _uow.SaveChanges();
+                //var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper);
+                //categorySpecificationValueController.Edit(obj);
                 return RedirectToAction("Index");
             }
             return View(obj);
