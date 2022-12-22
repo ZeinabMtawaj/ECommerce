@@ -96,8 +96,8 @@ namespace Ecommerce.Controllers
                 newObj.Id = obj.Category.Id;
                 _uow.CategoryRepo.Update(newObj);
                 _uow.SaveChanges();
-                //var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper);
-                //categorySpecificationValueController.Edit(obj);
+                var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper);
+                categorySpecificationValueController.Edit(obj);
                 return RedirectToAction("Index");
             }
             return View(obj);

@@ -46,32 +46,45 @@ namespace Ecommerce.Controllers
             {
                 valOfSpec.Add(catSpecVal.SpecificationId, ind++);
             }
-            for(int i = 0; i < categoryVM.SpecificationIds.Count(); i++)
+            for (int i = 0; i < categoryVM.SpecificationIds.Count(); i++)
             {
                 string specIdValue = categoryVM.SpecificationIds.ElementAt(i);
                 int specId = int.Parse(specIdValue);
                 string specVal = categoryVM.SpecificationValues.ElementAt(i);
-                if (valOfSpec.ContainsKey(specId))
+
+
+                if (specVal == null || specVal.Length == 0)
                 {
-                    int index = valOfSpec[specId];
-                    var catSpecVal = catSpecVals.ElementAt(index);
-                    if (specVal != catSpecVal.Value)
+                    if (valOfSpec.ContainsKey(specId))
                     {
-                        catSpecVal.Value = specVal;
-                        _uow.CategorySpecificationValueRepo.Update(catSpecVal);
+                        int index = valOfSpec[specId];
+                        _uow.CategorySpecificationValueRepo.Delete(catSpecVals.ElementAt(index).Id);
                     }
                 }
-                else if(specVal != null && specVal.Length == 0)
+                else
                 {
-                    var categorySpecificationValue = new CategorySpecificationValue()
+                    if (valOfSpec.ContainsKey(specId))
                     {
-                        Value = specVal,
-                        SpecificationId = specId,
-                        CategoryId = categoryVM.Category.Id
-                    };
-                    _uow.CategorySpecificationValueRepo.Add(categorySpecificationValue);
-                }
+                        int index = valOfSpec[specId];
+                        var catSpecVal = catSpecVals.ElementAt(index);
+                        if (specVal != catSpecVal.Value)
+                        {
+                            catSpecVal.Value = specVal;
+                            _uow.CategorySpecificationValueRepo.Update(catSpecVal);
+                        }
+                    }
+                    else
+                    {
+                        var categorySpecificationValue = new CategorySpecificationValue()
+                        {
+                            Value = specVal,
+                            SpecificationId = specId,
+                            CategoryId = categoryVM.Category.Id
+                        };
+                        _uow.CategorySpecificationValueRepo.Add(categorySpecificationValue);
+                    }
 
+                }
             }
             _uow.SaveChanges();
             return;
