@@ -19,23 +19,21 @@ namespace Ecommerce.Models
         [Required]
         public string? Name { get; set; }
         [Required]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Price must be number")]
+        //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Price must be number")]
         public decimal? Price { get; set; }
         [Required]
-        [RegularExpression(@"^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$", ErrorMessage = "Should be URL")]
-
+        [Url]
         public string? Image { get; set; }
         [Required]
         [Remote(action: "IsSKUExist", controller:"ProductController", ErrorMessage = "Sku must be unique")]
         public string? Sku { get; set; }
 
-    
+        [Display(Name="Category")]
         public int? CategoryId { get; set; }
         [Required]
         [StringLength(200, MinimumLength = 3, ErrorMessage = "Maximum 200 characters")]
         public string? Description { get; set; }
         public int? ProductGroupId { get; set; }
-        [Required]
 
         public virtual CategoryViewModel? Category { get; set; }
         public virtual ProductGroupViewModel? ProductGroup { get; set; }

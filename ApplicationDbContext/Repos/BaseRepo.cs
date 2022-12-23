@@ -56,22 +56,25 @@ namespace ApplicationDbContext.Repos
             //        query = query.Include(include);
             //    }
             //}
-            foreach(var lambda in lambdas)
-                query = query.Include(lambda);
+            if (lambdas != null)
+            {
+                foreach (var lambda in lambdas)
+                    query = query.Include(lambda);
+            }
 
             return query.FirstOrDefault(match);  
         }
 
-        public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take,int? skip, string[] includes = null, Expression<Func<T, Object>> orderBy = null, String orderByDirection = null)
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take , int? skip, List<Expression<Func<T, object>>> lambdas = null, Expression<Func<T, Object>> orderBy = null, String orderByDirection = null)
         {
             IQueryable<T> query = _dbSet.Where(match);
             if (skip.HasValue)
                 query = query.Skip(skip.Value);
             if (take.HasValue)
                 query = query.Take(take.Value);
-            if (includes != null)
+            if (lambdas != null)
             {
-                foreach (var include in includes)
+                foreach (var include in lambdas)
                 {
                     query = query.Include(include);
                 }

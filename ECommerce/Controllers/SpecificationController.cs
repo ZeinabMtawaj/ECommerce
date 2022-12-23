@@ -16,6 +16,20 @@ namespace Ecommerce.Controllers
 
         }
 
+
+        [HttpGet]
+        public JsonResult getOtherSpecifications(int categoryId)
+        {
+            var lambdas = new List<Expression<Func<Specification, object>>>();
+            lambdas.Add(x => x.CategorySpecificationValues);
+            var specifications = _uow.SpecificationRepo.FindAll(x => !(x.CategorySpecificationValues.Any(item => item.CategoryId == categoryId)), null, null, lambdas);
+            specifications.ToList().ForEach(specification => specification.CategorySpecificationValues = null);
+            return Json(specifications);
+
+        }
+
+
+
         public IActionResult Index()
         {
             var items = this.GetAllToView();

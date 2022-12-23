@@ -21,7 +21,9 @@ namespace Ecommerce.Controllers
 
         public IActionResult Index()
         {
-            var items = this.GetAllToView();
+            var lambdas = new List<Expression<Func<Product, object>>>();
+            lambdas.Add(x => x.Category);
+            var items = _uow.ProductRepo.FindAll(x => x.Id > 1, null, null,lambdas);
             ViewBag.cols = this.GetColNames();
             ViewBag.createController = "Product";
             ViewBag.createAction = "Create";
@@ -29,7 +31,8 @@ namespace Ecommerce.Controllers
             ViewBag.editAction = "Edit";
             ViewBag.deleteController = "Product";
             ViewBag.deleteAction = "Delete";
-            return View(items);
+            var viewItems = items.Select(item => _mapper.Map<ProductViewModel>(item));
+            return View(viewItems);
         }
 
 
@@ -37,21 +40,14 @@ namespace Ecommerce.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            // ILayoutDecider ld = .. based on role
-            var categoryController = new CategoryController(_uow, _mapper);
-            var categories = categoryController.GetAllToView();
-            ProductVM productVM = new ProductVM()
-            {
-                Product = new ProductViewModel()
-               
-            };
-            return View(productVM);
+            ProductViewModel pvm = new ProductViewModel();  
+            return View(pvm);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ProductVM obj)
+        public IActionResult Create(ProductViewModel obj)
         {
 
             if (ModelState.IsValid)
@@ -149,7 +145,7 @@ namespace Ecommerce.Controllers
             res.Add("Price");
             res.Add("Image");
             res.Add("Category");
-            res.Add("Trend");
+            //res.Add("Trend");
             res.Add("Photos");
             res.Add("Specification");
             res.Add("Created At");

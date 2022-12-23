@@ -45,37 +45,41 @@
 			{
 				<tr>
 					<td>
-						<img src="@item.Image">
-					</td>
-					<td>
 						@item.Name
 					</td>
 					<td class="overflow-auto">
 						@item.Description
 					</td>
 					<td>
-						<a class="arrow-icon">
-							<span class="left-bar"></span>
-							<span class="right-bar"></span>
-						</a>
+						@item.Price
 					</td>
 					<td>
-@*						@if(item.CreatedDate != null){
-*@							@item.CreatedDate.ToString("g");
-						@*}
-						else
-						{
-							@Html.Raw("No Date")
-						}*@
+						<img src="@item.Image">
 					</td>
 					<td>
-@*						@if(item.UpdatedDate != null){
-*@							@item.UpdatedDate.ToString("g");
-					@*	}
-						else
+						@if(item.Category !=null)
 						{
-							@Html.Raw("No Date")
-						}*@
+							@item.Category.Name
+						}
+					</td>
+					<td>
+						<button data-toggle="tooltip" data-placement="top" title="Photos" class="btn btn-link btn-simple-danger mt-1"> 
+									<i class="fa fa-camera"></i>       
+						</button>
+					</td>
+					<td>
+						<button data-toggle="tooltip" data-placement="top" title="Specification" class="btn btn-link btn-simple-danger mt-1"> 
+									<i class="fa fa-asterisk"></i>       
+						</button>
+					</td>
+					<td>
+
+						@item.CreatedDate.ToString("g");
+
+					</td>
+					<td>
+						@item.UpdatedDate.ToString("g");
+
 					</td>
 					<td>
 						<div class="form-button-action">

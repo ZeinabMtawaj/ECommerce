@@ -6,59 +6,246 @@
 
 
 
-@model ProductVM
+@model ProductViewModel
 
 
-<div class="card-body">
+
+<div class="card-body" >
         <h3 class="card-title mt-2  font-bold text-lg">Create New Product</h3>
     <form class="mt-4" method="post" asp-action="Create">
         <div class="row mb-3 mt-4 ml-4">
-            <label asp-for="Product.Name" class="col-sm-2 form-label font-weight-bold"></label>
+            <label asp-for="Name" class="col-sm-2 form-label font-weight-bold"></label>
             <div class="col-sm-10">
-                <input type="text" asp-for="Product.Name" class="form-control" placeholder="Enter Name">
-                <span asp-validation-for="Product.Name" class="text-danger"></span>
+                <input type="text" asp-for="Name" class="form-control" placeholder="Enter Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
          <div class="row mb-3 mt-4 ml-4">
-            <label asp-for="Product.Price" class="col-sm-2 form-label font-weight-bold"></label>
+            <label asp-for="Price" class="col-sm-2 form-label font-weight-bold"></label>
             <div class="col-sm-10">
-                <input type="text" asp-for="Product.Price" class="form-control" placeholder="Enter Name">
-                <span asp-validation-for="Product.Price" class="text-danger"></span>
+                <input type="text" asp-for="Price" class="form-control" placeholder="Enter Price">
+                <span asp-validation-for="Price" class="text-danger"></span>
             </div>
         </div>
          <div class="row mb-3 mt-4 ml-4">
-            <label asp-for="Product.Sku" class="col-sm-2 form-label font-weight-bold"></label>
+            <label asp-for="Sku" class="col-sm-2 form-label font-weight-bold"></label>
             <div class="col-sm-10">
-                <input type="text" asp-for="Product.Sku" class="form-control" placeholder="Enter Name">
-                <span asp-validation-for="Product.Sku" class="text-danger"></span>
+                <input type="text" asp-for="Sku" class="form-control" placeholder="Enter Sku">
+                <span asp-validation-for="Sku" class="text-danger"></span>
             </div>
         </div>
                
         <div class="row mb-3 mt-4 ml-4">
-            <label asp-for="Product.Image" class="col-sm-2 col-form-label font-weight-bold"></label>
+            <label asp-for="Image" class="col-sm-2 col-form-label font-weight-bold"></label>
             <div class="col-sm-10">
-                <input type="text" asp-for="Product.Image" class="form-control" placeholder="URL">
-                <span asp-validation-for="Product.Image" class="text-danger"></span>
+                <input type="text" asp-for="Image" class="form-control" placeholder="URL">
+                <span asp-validation-for="Image" class="text-danger"></span>
             </div>
         </div>
             <div class="row mb-3 mt-4 ml-4">
-            <label asp-for="Product.Description" class="col-sm-2 col-form-label font-weight-bold"></label>
+            <label asp-for="Description" class="col-sm-2 col-form-label font-weight-bold"></label>
             <div class="col-sm-10">
-                <textarea asp-for="Product.Description" class="form-control" placeholder="Enter Description"></textarea>
-                <span asp-validation-for="Product.Description" class="text-danger"></span>
+                <textarea asp-for="Description" class="form-control" placeholder="Enter Description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
         </div>
 
-            
-            <button type="button" class="btn btn-outline-danger ml-5">Cancel</button>
-            <input type="submit" class="btn btn-primary ml-5" value="Create">
+
+
+         <div class="row mb-3 mt-4 ml-4">
+            <label asp-for="CategoryId" class="col-sm-2 col-form-label font-weight-bold"></label>
+            <div class=" col-sm-10" >
+                <div class="select-boxSelect">
+                    <div class="options-containerSelect ">
+                    </div>
+                    <div class="selectedSelect bg-[#1e293b] text-white" >
+                    Select category
+                    </div>
+                    <div class="search-boxSelect bg-[#74c3eb]">
+                    <input type="text" placeholder="Search.." />
+                    </div>
+                </div>
+             </div>
+        </div>
+
+
+
+
+        <div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="SpecModal">
+	                <div class="modal-dialog" role="document">
+		                <div class="modal-content">
+			                <div class="modal-header">
+				                <h5 class="modal-title font-weight-bold" id="exampleModalLabel"> Specifications</h5>
+				                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					                <span aria-hidden="true">&times;</span>
+				                </button>
+			                </div>
+			                <div class="modal-body overflow-auto">
+				                <div>
+                                        <input id="searchbox" class="search__input " type="text" placeholder="Search">
+                                              
+                                </div>
+                                <div class="card mt-2 rounded" id = "Specifications">
+                                  
+	                            </div>
+
+			                </div>
+			                <div class="modal-footer">
+				                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Done</button>
+			                </div>
+		                </div>
+	                </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+        <div class="row-sm-10 d-flex flex-row mt-12">
+        <button type="button" class="btn btn-outline-danger ml-5">Cancel</button>
+        <input type="submit" class="btn btn-primary ml-5" value="Create">
+        </div>
     </form>
 </div>
 
 
-@*<script>
 
-    let cards = document.querySelectorAll('.box')
+@section Scripts{
+	<script >
+    //    $(document).ready(function(){
+  
+    //    $('input[type=radio][name=category]').change(function() {
+    //        document.getElementsByClassName("modal")[0].attr("id", 'modal' + this.value);
+    //        });
+  
+    //});
+
+   
+
+
+		$.ajax({
+			type:"GET",
+			url: '@(Url.Action("getAll","Category"))',
+			dataType:"json",
+			success:function(result){
+                if (result != null){
+                    var i = 0;
+				    $.each(result,function(key,value){
+                        if (i==0)
+                            $('.options-containerSelect').append("<div class='option' id='option1'> <input type='radio' class='radio' name='CategoryId' value='"+value.id+"'/> <label for='film' >"+value.name+"</label></div>");  
+                        else
+                            $('.options-containerSelect').append("<div class='option'> <input type='radio' class='radio' name='CategoryId' value='"+value.id+"'/> <label for='film' >"+value.name+"</label></div>");  
+                        i= i+1;
+                    });
+               
+                }
+                    eventListener();
+
+			},
+			error: function(req, status, error){
+			console.log(status);
+			}
+
+});
+
+ 
+
+
+function eventListener(){
+
+    const selected = document.querySelector(".selectedSelect");
+    const optionsContainer = document.querySelector(".options-containerSelect");
+    const searchBox = document.querySelector(".search-boxSelect input");
+    const optionsList = document.querySelectorAll(".option");
+
+
+    selected.addEventListener("click", () => {
+        optionsContainer.classList.toggle("active");
+
+        searchBox.value = "";
+        filterList("");
+
+        //if (optionsContainer.classList.contains("active")) {
+        //    searchBox.focus();
+        //}
+    });
+
+
+
+    optionsList.forEach(o => {
+        o.addEventListener("click", () => {
+            selected.innerHTML = o.querySelector("label").innerHTML;
+            optionsContainer.classList.remove("active");
+            var value= o.querySelector("input").getAttribute("value");
+
+            $.ajax({
+			    type:"GET",
+			    url: '@(Url.Action("getOtherSpecifications","Specification"))',
+			    dataType:"json",
+                data:{
+                    categoryId:value
+                },
+			    success:function(result){
+                     $('.box').remove();
+                    if (result != null){
+                        var i = 0;
+				        $.each(result,function(key,value){
+                          
+                              $('#Specifications').append(" <div class='box'><div id='con-"+ value.id+"' class='card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]' data-toggle='collapse' data-target='#coll-"+value.id+"'aria-expanded='false' aria-controls='coll-"+value.id+"'>"+ value.name+"</div><div id='coll-"+value.id+"' class='collapse' aria-labelledby='head-"+value.id +"' data-parent='#accordion'><div class='card-body'><input name='SpecificationValues' class='form-control inp-coll' id='inp-"+value.id+"' type='text' placeholder='Enter Value'/></div></div></div>");
+
+			                                   
+                        });
+               
+                    }
+                            eventForSpec();
+
+			    },
+			    error: function(req, status, error){
+			    console.log(error);
+			    }
+
+    });
+
+
+
+
+
+
+        });
+    });
+
+
+    searchBox.addEventListener("keyup", function (e) {
+        filterList(e.target.value);
+    });
+
+    const filterList = searchTerm => {
+        searchTerm = searchTerm.toLowerCase();
+        var i = 0;
+        optionsList.forEach(option => {
+            let label = option.firstElementChild.nextElementSibling.innerText.toLowerCase();
+            if (label.indexOf(searchTerm) != -1) {
+                option.style.display = "block";
+                if (i==0)
+                    option.setAttribute("id", "option1");
+                else
+                    option.removeAttribute("id", "null");
+                i = i + 1;
+            } else {
+                option.style.display = "none";
+                option.removeAttribute("id", "null");
+            }
+        });
+    };
+}
+
+function eventForSpec(){
+let cards = document.querySelectorAll('.box')
     
     function liveSearch() {
         let search_query = document.getElementById("searchbox").value;
@@ -94,5 +281,15 @@
             $(conId).removeClass('border-l-8');
     });
 
-    
-</script>*@
+
+
+
+    $('#SpecModal').modal("toggle");
+
+
+}
+
+
+
+    </script>
+}
