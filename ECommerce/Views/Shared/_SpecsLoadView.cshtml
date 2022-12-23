@@ -1,0 +1,25 @@
+﻿
+
+
+@model SpecificationVM
+
+
+
+
+@for(int i = 0;i < Model.SpecificationIds.Count(); i++)
+{
+    string Val = Model.SpecificationValues[i];
+	int Id = Model.SpecificationIds[i];
+	string Name = Model.SpecificationNames[i];
+    <div class="box">
+        <div id="con-@Id" class="card-header hover:cursor-pointer text-[#000000] border-[#48abf7]" data-toggle="collapse" data-target="#coll-@Id" aria-expanded="false" aria-controls="coll-@Id">
+			@Name
+		</div>
+		<div id="coll-@Id" class="collapse" aria-labelledby="head-@Id">
+			<div class="card-body">
+				<input asp-for="SpecificationValues" class="form-control inp-coll" id="inp-@Id" type="text" value="@Val" disabled/>
+				<input name= "SpecificationIds" value="@Id" class="d-none" hidden>
+			</div>
+		</div>
+    </div>
+}

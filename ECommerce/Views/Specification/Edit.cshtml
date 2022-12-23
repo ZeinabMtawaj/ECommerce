@@ -15,8 +15,9 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
-        <div class="row-sm-10" style="display:flex; flex-direction:row; justify-content:center;">
-                <button type="submit" class="btn btn-primary bg-[#106eea]">Edit!</button>
+        <div class="row-sm-10 d-flex flex-row mt-12">
+            <button type="button" class="btn btn-outline-danger ml-5" onclick="location.href='@Url.Action("Index","Specification")';">Cancel</button>
+            <input type="submit" class="btn btn-primary ml-5" value="Edit">
         </div>
     </form>
 </div>

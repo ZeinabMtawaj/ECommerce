@@ -166,7 +166,7 @@ namespace Ecommerce.Controllers
 
 
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult GetSpecs(string specValsString)
         {
             string [] specVals = JsonConvert.DeserializeObject<string[]>(specValsString);

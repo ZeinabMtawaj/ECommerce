@@ -11,7 +11,7 @@
 
 
 <!-- Button -->
-<div>
+<div class="w-32 d-flex justify-content-center ml-auto">
 	<a class = "d-flex mt-3" asp-controller="@ViewBag.createController" asp-action="@ViewBag.createAction">
 		<span class="btn btn-primary btn-round ml-auto mb-3" data-toggle="modal" data-target="#addRowModal">
 			<i class="fa fa-plus"></i>
@@ -54,10 +54,9 @@
 						@item.Description
 					</td>
 					<td>
-						<a class="arrow-icon">
-							<span class="left-bar"></span>
-							<span class="right-bar"></span>
-						</a>
+						<span class="specPartialCaller btn border-0" data-toggle="modal" data-target="#specsMainModel" item-id="@item.Id"> 
+							<i class='fas fa-angle-down text-primary text-3xl'></i>
+						</span>
 					</td>
 					<td>
 						@if(item.CreatedDate != null){
@@ -85,7 +84,7 @@
 								</button>
 							</a>
 									
-							<span data-toggle="modal" data-target=@("#deleteModal" + @item.Id.ToString())>
+							<span data-toggle="modal" data-target=@("#deleteModal" + @item.Id.ToString()) item-target = "@item.Id">
 								<button data-toggle="tooltip" data-placement="top" title="Remove" class="btn btn-link btn-simple-danger mt-1"> 
 									<i class="fa fa-times"></i>       
 								</button>
@@ -124,9 +123,104 @@
 		}
 		</tbody>
 	</table>
+	<div class="modal fade" id="specsMainModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	    <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+			    <div class="modal-header">
+				    <h5 class="modal-title font-weight-bold" id="exampleModalLabel"> Specifications</h5>
+				    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+				    </button>
+			    </div>
+			    <div class="modal-body overflow-auto">
+				    <div>
+                            <input id="searchbox" class="search__input " type="text" placeholder="Search">
+                                              
+                    </div>
+                    <div id="specPartial-0" class="card mt-2 rounded">
+                                   
+                        </div>
+
+			    </div>
+			    <div class="modal-footer">
+				    <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+			    </div>
+		    </div>
+	    </div>
+    </div>
 </div>
-<script>
-	$('#add-row').DataTable({
-		"pageLength": 5,
-	});
-</script>
+
+@section Scripts{
+	<script>
+		$('#add-row').DataTable({
+			"pageLength": 5,
+		});
+
+
+	</script>
+
+	<script>
+		let cards;
+        function liveSearch() {
+            let search_query = document.getElementById("searchbox").value;
+            //Use innerText if all contents are visible
+            //Use textContent for including hidden elements
+            for (var i = 0; i < cards.length; i++) {
+                if(cards[i].textContent.toLowerCase()
+                        .includes(search_query.toLowerCase())) {
+                    cards[i].classList.remove("d-none");
+                } else {
+                    cards[i].classList.add("d-none");
+                }
+            }
+        }
+        let typingTimer;               
+        let typeInterval = 200;  
+        let searchInput = document.getElementById('searchbox');
+        searchInput.addEventListener('keyup', () => {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(liveSearch, typeInterval);
+        });
+    </script>
+    <script>
+		function specsConfigure(){
+			cards = document.querySelectorAll('.box');
+            $(".inp-coll").bind('keyup', (event) => {
+                let id = "#" + $(event.target).attr('id');
+                let conId = id.replace('inp', 'con');
+                if($(event.target).val())
+                    $(conId).addClass('border-l-8');
+                else
+                    $(conId).removeClass('border-l-8');
+            });
+
+            $(".inp-coll").each(function(){
+                let id = "#" + $(this).attr('id');
+                let conId = id.replace('inp', 'con');
+                if($(id).val())
+                    $(conId).addClass('border-l-8');
+                else
+                    $(conId).removeClass('border-l-8');
+            })
+        }
+
+        $(".specPartialCaller").click(function(){
+                let specPartialId = "#specPartial-0";
+                let specPartial = $(specPartialId);
+				let catId = $(this).attr("item-id");
+                $.ajax({  
+                    type: "GET",  
+                    url: '/Category/GetSpecs',  
+                    data: {"catId" : catId},
+                    success: function(data){
+                     $(specPartialId).html(data);
+                     specsConfigure();
+                    },
+                    error: function(xhr, status, error) {
+                        alert(status);
+                    }
+                });
+        });
+
+    </script>
+}

@@ -165,7 +165,30 @@ namespace Ecommerce.Controllers
         }
 
 
-        
+        [HttpGet]
+        public IActionResult GetSpecs(string catId)
+        {
+            int categoryId = int.Parse(catId);
+            var catSpecValController = new CategorySpecificationValueController(_uow, _mapper);
+            var specVals = catSpecValController.GetAllSpecVals(categoryId);
+            var specVM = new SpecificationVM();
+            var specificationController = new SpecificationController(_uow, _mapper);
+            var specs = specificationController.GetAll();
+            int cnt = 0;
+            foreach (var spec in specs)
+            {
+                specVM.SpecificationIds.Add(spec.Id);
+                specVM.SpecificationNames.Add(spec.Name);
+                string specVal = "";
+                if (cnt < specVals.Count())
+                    specVal = specVals[cnt];
+                specVM.SpecificationValues.Add(specVal);
+                cnt++;
+            }
+            return PartialView("~/Views/Shared/_SpecsLoadView.cshtml", specVM);
+        }
+
+
 
 
     }
