@@ -49,11 +49,30 @@ namespace Ecommerce.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(ProductViewModel obj)
         {
-
+            
             if (ModelState.IsValid)
-            {
+            {   var specs = obj.SpecsId;
+                var specValues = obj.SpecsValue;
                 var newObj = _mapper.Map<Product>(obj);
                 _uow.ProductRepo.Add(newObj);
+                _uow.SaveChanges();
+                //var prod = _uow.ProductRepo.Find(x => x.Sku == newObj.Sku);
+                var z = newObj.Id;
+                foreach (var spec in specs)
+                {
+                    var i = 0;
+                    ProductSpecificationValue productSpecificationValue = new ProductSpecificationValue()
+                    {
+                        ProductId = z,
+                        SpecificationId = int.Parse(spec),
+                        Value = specValues[i]
+
+
+
+                    };
+                    i++;
+                    _uow.ProductSpecificationValueRepo.Add(productSpecificationValue);
+                }
                 _uow.SaveChanges();
                 return RedirectToAction("Index");
             }

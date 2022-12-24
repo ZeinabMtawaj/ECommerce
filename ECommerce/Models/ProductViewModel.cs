@@ -44,5 +44,9 @@ namespace Ecommerce.Models
         public virtual ICollection<ProductSpecificationValueViewModel> ProductSpecificationValues { get; set; }
         public virtual ICollection<RatingViewModel> Ratings { get; set; }
         public virtual ICollection<WishListViewModel> WishLists { get; set; }
+
+        public virtual List<String>? SpecsId { get; set; }
+        public virtual List<String>? SpecsValue { get; set; }
+
     }
 }

@@ -52,11 +52,15 @@
 
 
 
+       
          <div class="row mb-3 mt-4 ml-4">
             <label asp-for="CategoryId" class="col-sm-2 col-form-label font-weight-bold"></label>
             <div class=" col-sm-10" >
                 <div class="select-boxSelect">
                     <div class="options-containerSelect ">
+                         @*<input type='radio' class='radio' name="CategoryId" value=1 /> <label for='film'> jhjh</label>
+                        <input type='radio' class='radio' name="CategoryId" value=2 /> <label for='film'> z</label>*@
+
                     </div>
                     <div class="selectedSelect bg-[#1e293b] text-white" >
                     Select category
@@ -101,7 +105,11 @@
 
 
 
-
+@*
+<input name="SpecsValue[]" class='form-control inp-coll'  type='text' placeholder='Enter Value'/>
+<input name="SpecsValue[]" class='form-control inp-coll'  type='text' placeholder='Enter Value'/>*@
+@*<input name='SpecsId[]' type='checkbox' id='9' display='none' value ='1' />
+<input name="SpecsValue[]" class='form-control inp-coll'  type='text' placeholder='Enter Value'/>*@
 
 
 
@@ -137,14 +145,24 @@
                     var i = 0;
 				    $.each(result,function(key,value){
                         if (i==0)
-                            $('.options-containerSelect').append("<div class='option' id='option1'> <input type='radio' class='radio' name='CategoryId' value='"+value.id+"'/> <label for='film' >"+value.name+"</label></div>");  
+                            $('.options-containerSelect').append("<div class='option' id='option1'> <input type='radio' class='radio' name='CategoryId' value='"+value.id+"' id='rad-"+value.id+"' /> <label for='film' >"+value.name+"</label></div>");  
                         else
-                            $('.options-containerSelect').append("<div class='option'> <input type='radio' class='radio' name='CategoryId' value='"+value.id+"'/> <label for='film' >"+value.name+"</label></div>");  
+                            $('.options-containerSelect').append("<div class='option'> <input type='radio' class='radio' name='CategoryId'  value='"+value.id+"'   id='rad-"+value.id+"' /> <label for='film'>"+value.name+"</label></div>");  
                         i= i+1;
                     });
                
                 }
                     eventListener();
+                    var jsonModel = '@Html.Raw(Json.Serialize(Model))';
+                    var obj = JSON.parse(jsonModel);
+                     if(obj.categoryId != null)
+                            {
+                               
+                                var e = obj.categoryId;
+                               document.getElementById('rad-'+e).click();
+                            }
+                    
+                        
 
 			},
 			error: function(req, status, error){
@@ -182,6 +200,7 @@ function eventListener(){
             selected.innerHTML = o.querySelector("label").innerHTML;
             optionsContainer.classList.remove("active");
             var value= o.querySelector("input").getAttribute("value");
+            o.querySelector("input").checked= true;
 
             $.ajax({
 			    type:"GET",
@@ -196,13 +215,17 @@ function eventListener(){
                         var i = 0;
 				        $.each(result,function(key,value){
                           
-                              $('#Specifications').append(" <div class='box'><div id='con-"+ value.id+"' class='card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]' data-toggle='collapse' data-target='#coll-"+value.id+"'aria-expanded='false' aria-controls='coll-"+value.id+"'>"+ value.name+"</div><div id='coll-"+value.id+"' class='collapse' aria-labelledby='head-"+value.id +"' data-parent='#accordion'><div class='card-body'><input name='SpecificationValues' class='form-control inp-coll' id='inp-"+value.id+"' type='text' placeholder='Enter Value'/></div></div></div>");
+                              $('#Specifications').append(" <div class='box'><div id='con-"+ value.id+"' class='card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]' data-toggle='collapse' data-target='#coll-"+value.id+"'aria-expanded='false' aria-controls='coll-"+value.id+"'>"+ value.name+"</div><div id='coll-"+value.id+"' class='collapse' aria-labelledby='head-"+value.id +"' data-parent='#accordion'><div class='card-body'><input name='SpecsId[]' type='checkbox' id='Id-"+value.id+"' style='display:none;' value= '' /> <input name='SpecsValue[]' class='form-control inp-coll' id='inp-"+value.id+"' type='text' placeholder='Enter Value'/></div></div></div>");
 
 			                                   
                         });
                
                     }
                             eventForSpec();
+                            
+                                
+                            
+                            
 
 			    },
 			    error: function(req, status, error){
@@ -242,6 +265,9 @@ function eventListener(){
             }
         });
     };
+
+                       
+
 }
 
 function eventForSpec(){
@@ -275,10 +301,29 @@ let cards = document.querySelectorAll('.box')
         let id = $(event.target).attr('id');
         let nm = id.split('-')[1];
         let conId = "#con-" + nm;
+        var SpecId = document.getElementById('Id-'+nm);
         if($(event.target).val())
-            $(conId).addClass('border-l-8');
+        {
+            $(conId).addClass('border-l-8'); 
+            
+            SpecId.setAttribute("value", nm);
+            //SpecId.disabled= false;
+            SpecId.checked= true;
+            //SpecId.disabled= true;
+
+            console.log(1);
+
+        }
         else
+        {
             $(conId).removeClass('border-l-8');
+            //SpecId.disabled= false;
+            SpecId.checked= false;
+            //SpecId.disabled= true;;
+                        console.log(2);
+
+        }
+        
     });
 
 
