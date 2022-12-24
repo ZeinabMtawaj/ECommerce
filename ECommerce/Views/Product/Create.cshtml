@@ -152,7 +152,7 @@
                     });
                
                 }
-                    eventListener();
+                    eventForCat();
                     var jsonModel = '@Html.Raw(Json.Serialize(Model))';
                     var obj = JSON.parse(jsonModel);
                      if(obj.categoryId != null)
@@ -174,7 +174,7 @@
  
 
 
-function eventListener(){
+function eventForCat(){
 
     const selected = document.querySelector(".selectedSelect");
     const optionsContainer = document.querySelector(".options-containerSelect");
@@ -222,6 +222,20 @@ function eventListener(){
                
                     }
                             eventForSpec();
+                            var json_model = '@Html.Raw(Json.Serialize(Model))';
+                            var ob = JSON.parse(json_model);     
+                            if(ob.specsValue != null)
+                            {
+                                var specsId = ob.specsId;
+                                var specs = ob.specsValue;
+                                for(i=0; i<specs.length;i++  ){
+                                    document.getElementById("inp-"+specsId[i]).value= specs[i];
+                                    document.getElementById("con-"+specsId[i]).classList.add("border-l-8"); 
+
+                                }
+                              
+                               
+                            }
                             
                                 
                             
@@ -311,7 +325,6 @@ let cards = document.querySelectorAll('.box')
             SpecId.checked= true;
             //SpecId.disabled= true;
 
-            console.log(1);
 
         }
         else
@@ -320,7 +333,6 @@ let cards = document.querySelectorAll('.box')
             //SpecId.disabled= false;
             SpecId.checked= false;
             //SpecId.disabled= true;;
-                        console.log(2);
 
         }
         

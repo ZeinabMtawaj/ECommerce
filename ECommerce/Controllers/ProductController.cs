@@ -56,24 +56,26 @@ namespace Ecommerce.Controllers
                 var newObj = _mapper.Map<Product>(obj);
                 _uow.ProductRepo.Add(newObj);
                 _uow.SaveChanges();
-                //var prod = _uow.ProductRepo.Find(x => x.Sku == newObj.Sku);
                 var z = newObj.Id;
-                foreach (var spec in specs)
+                if (specs != null)
                 {
-                    var i = 0;
-                    ProductSpecificationValue productSpecificationValue = new ProductSpecificationValue()
+                    foreach (var spec in specs)
                     {
-                        ProductId = z,
-                        SpecificationId = int.Parse(spec),
-                        Value = specValues[i]
+                        var i = 0;
+                        ProductSpecificationValue productSpecificationValue = new ProductSpecificationValue()
+                        {
+                            ProductId = z,
+                            SpecificationId = int.Parse(spec),
+                            Value = specValues[i]
 
 
 
-                    };
-                    i++;
-                    _uow.ProductSpecificationValueRepo.Add(productSpecificationValue);
+                        };
+                        i++;
+                        _uow.ProductSpecificationValueRepo.Add(productSpecificationValue);
+                    }
+                    _uow.SaveChanges();
                 }
-                _uow.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -83,10 +85,28 @@ namespace Ecommerce.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            var obj = this.FindToView(id);
+
+            var obj = FindToView(id);
+
             if (obj == null)
             {
                 return NotFound();
+            }
+            var lambdas = new List<Expression<Func<Product, object>>>();
+            lambdas.Add(x => x.ProductSpecificationValues);
+            var product_specs = _uow.ProductRepo.Find(x => x.Id == id.Value, lambdas);
+            var specs = product_specs.ProductSpecificationValues;
+            var specIds= new List<String>();
+            var specValues = new List<String>();
+            if (specs != null)
+            {
+                foreach (var spec in specs)
+                {
+                    specIds.Add((spec.SpecificationId).ToString());
+                    specValues.Add(spec.Value);
+                }
+                obj.SpecsId = specIds;
+                obj.SpecsValue = specValues;
             }
             return View(obj);
         }
@@ -98,9 +118,46 @@ namespace Ecommerce.Controllers
         {
             if (ModelState.IsValid)
             {
+                var specs = obj.SpecsId;
+                var specValues = obj.SpecsValue;
                 var newObj = _mapper.Map<Product>(obj);
                 _uow.ProductRepo.Update(newObj);
-                _uow.SaveChanges();
+                //_uow.SaveChanges();
+                var z = newObj.Id;
+                var lambdas = new List<Expression<Func<Product, object>>>();
+                lambdas.Add(x => x.ProductSpecificationValues);
+                var product_specs= _uow.ProductRepo.Find(x=>(x.Id==z),lambdas);
+                var productSpecificationValues = product_specs.ProductSpecificationValues;
+                if (specs != null)
+                {
+                    foreach (var spec in specs)
+                    {
+                        var i = 0;
+                        var e = int.Parse(spec);
+                        var b = specValues[i];
+                        ProductSpecificationValue productSpecificationValue = new ProductSpecificationValue()
+                        {
+                            ProductId = z,
+                            SpecificationId = e,
+                            Value = b
+
+
+
+                        };
+
+                        if (productSpecificationValues.Any(x => ((x.SpecificationId == e) && (x.ProductId == z))))
+                        {
+                            _uow.ProductSpecificationValueRepo.Update(productSpecificationValue);
+
+                        }
+
+                        else
+                            _uow.ProductSpecificationValueRepo.Add(productSpecificationValue);
+
+                        i++;
+                    }
+                    _uow.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
             return View(obj);
