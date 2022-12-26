@@ -26,7 +26,10 @@ namespace Ecommerce.Controllers
             return RedirectToAction("Index", "Category");
         }
 
-
+        public IActionResult ProductIndex()
+        {
+            return RedirectToAction("Index", "Product");
+        }
 
 
     }
