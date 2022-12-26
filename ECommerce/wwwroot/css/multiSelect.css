@@ -11,7 +11,7 @@
 }
 
 .select-boxSelect {
-    position: relative;
+    position: absolute;
     display: flex;
     width: 250px;
     flex-direction: column;
@@ -76,10 +76,12 @@
     position: absolute;
     /* outline: none; */
     display: none;
-    outline: 3px solid black;
-    outline-offset: -10px;
-    z-index: 100;
-    border: none;
+/*    outline: 3px solid black;
+*/    outline-offset: -10px;
+    /*    z-index: 100;
+*/ border: none;
+    margin-top: 1px;
+    margin-left: 3px;
 }
 /* .search-box input:focus {
     outline: none;
@@ -116,5 +118,6 @@
 .select-boxSelect .options-containerSelect.active ~ .search-boxSelect input {
     display: block;
     pointer-events: auto;
-    max-width: 240px;
+    max-width: 90%;
+    /*290*/
 }

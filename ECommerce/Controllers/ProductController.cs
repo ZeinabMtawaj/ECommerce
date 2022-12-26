@@ -128,6 +128,15 @@ namespace Ecommerce.Controllers
                 lambdas.Add(x => x.ProductSpecificationValues);
                 var product_specs= _uow.ProductRepo.Find(x=>(x.Id==z),lambdas);
                 var productSpecificationValues = product_specs.ProductSpecificationValues;
+                //if (productSpecificationValues != null)
+                //{
+                    var psv = productSpecificationValues.ToList();
+                    var ids_list = new List<int>();
+                    foreach (var specification in psv)
+                    {
+                        ids_list.Add(specification.Id);
+                    }
+                //}
                 if (specs != null)
                 {
                     foreach (var spec in specs)
@@ -144,17 +153,25 @@ namespace Ecommerce.Controllers
 
 
                         };
-
-                        if (productSpecificationValues.Any(x => ((x.SpecificationId == e) && (x.ProductId == z))))
+                        int index = psv.FindIndex(x => ((x.SpecificationId == e) && (x.ProductId == z)));
+                        if (index != -1)
                         {
                             _uow.ProductSpecificationValueRepo.Update(productSpecificationValue);
+                            ids_list.RemoveAt(index);
+
 
                         }
 
                         else
+                        {
                             _uow.ProductSpecificationValueRepo.Add(productSpecificationValue);
+                        }
 
                         i++;
+                    }
+                    foreach (var id in ids_list) { 
+                        _uow.ProductSpecificationValueRepo.Delete(id);
+                    
                     }
                     _uow.SaveChanges();
                 }

@@ -13,13 +13,19 @@
 <div class="card-body" >
         <h3 class="card-title mt-2  font-bold text-lg">Create New Product</h3>
     <form class="mt-4" method="post" asp-action="Edit">
-        <div class="row mb-3 mt-4 ml-4">
+       <div class="row mb-3 mt-4 ml-4 ">
             <label asp-for="Name" class="col-sm-2 form-label font-weight-bold"></label>
-            <div class="col-sm-10">
+            <div class="col-sm-4">
                 <input type="text" asp-for="Name" class="form-control" placeholder="Enter Name">
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+            <label asp-for="Sku" class="col-sm-2 form-label font-weight-bold"></label>
+            <div class="col-sm-4">
+                <input type="text" asp-for="Sku" class="form-control" placeholder="Enter SKU">
+                <span asp-validation-for="Sku" class="text-danger"></span>
+            </div>
         </div>
+
          <div class="row mb-3 mt-4 ml-4">
             <label asp-for="Price" class="col-sm-2 form-label font-weight-bold"></label>
             <div class="col-sm-10">
@@ -27,22 +33,33 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
         </div>
-         <div class="row mb-3 mt-4 ml-4">
-            <label asp-for="Sku" class="col-sm-2 form-label font-weight-bold"></label>
-            <div class="col-sm-10">
-                <input type="text" asp-for="Sku" class="form-control" placeholder="Enter Sku">
-                <span asp-validation-for="Sku" class="text-danger"></span>
-            </div>
-        </div>
+         
                
         <div class="row mb-3 mt-4 ml-4">
             <label asp-for="Image" class="col-sm-2 col-form-label font-weight-bold"></label>
-            <div class="col-sm-10">
-                <input type="text" asp-for="Image" class="form-control" placeholder="URL">
+            <div class="col-sm-9">
+                <input type="text" asp-for="Image" class="form-control" placeholder="URL">               
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
+
+                <span data-toggle="tooltip" data-placement="top" title="Add additional photos" class="btn btn-link btn-simple-danger col-1" id="photo_span" > 
+								<i class="fa fa-plus"></i>       
+			</span>
+               @* <div class="collapse" id="collapseExample">
+	                <div class="card card-body">
+                        <input type="text" name="Photo[]" class="form-control" placeholder="URL">
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                        <input type="text" name="Photo[]" class="form-control" placeholder="URL">
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                        <input type="text" name="Photo[]" class="form-control" placeholder="URL">
+                        <span asp-validation-for="Image" class="text-danger"></span>
+	                </div>
+                </div>*@
+
+
+
         </div>
-            <div class="row mb-3 mt-4 ml-4">
+            <div class="row mb-3 mt-4 ml-4" id="Description">
             <label asp-for="Description" class="col-sm-2 col-form-label font-weight-bold"></label>
             <div class="col-sm-10">
                 <textarea asp-for="Description" class="form-control" placeholder="Enter Description"></textarea>
@@ -50,9 +67,6 @@
             </div>
         </div>
 
-
-
-       
          <div class="row mb-3 mt-4 ml-4">
             <label asp-for="CategoryId" class="col-sm-2 col-form-label font-weight-bold"></label>
             <div class=" col-sm-10" >
@@ -79,12 +93,19 @@
 	                <div class="modal-dialog" role="document">
 		                <div class="modal-content">
 			                <div class="modal-header">
-				                <h5 class="modal-title font-weight-bold" id="exampleModalLabel"> Specifications</h5>
+				                <ul class="nav nav-pills nav-primary card-header-pills">
+		                            <li class="nav-item">
+		                            <a class="nav-link"  id="spec_id">Specification</a>
+		                            </li>
+		                            <li class="nav-item">
+		                            <a class="nav-link"  id="photo_id">Photos</a>
+		                            </li>
+	                            </ul>
 				                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 					                <span aria-hidden="true">&times;</span>
 				                </button>
 			                </div>
-			                <div class="modal-body overflow-auto">
+			                <div class="modal-body overflow-auto" id="search_input">
 				                <div>
                                         <input id="searchbox" class="search__input " type="text" placeholder="Search">
                                               
@@ -133,6 +154,87 @@
   
     //});
 
+            document.getElementById("photo_span").addEventListener("click", () => {
+            $('#spec_id').removeClass('active');
+            $('#photo_id').addClass('active');
+            $('#SpecModal').modal("toggle");
+
+
+    });
+
+   var content1="";
+   var content2 ="";
+     document.getElementById("spec_id").addEventListener("click", () => {
+         
+            $('#photo_id').removeClass('active');
+            $('#spec_id').addClass('active');
+            $('#searchbox').remove();
+            $("<div><input id='searchbox' class='search__input' type='text' placeholder='Search'></div>").insertBefore('#Specifications');
+           
+            
+            var spec_content = document.getElementById('spec_tab'); 
+            var other = document.getElementById('photo_tab');
+            if (other != undefined)
+            {
+                content1 = other.innerHTML; 
+
+            }
+                
+            $(".box").remove();
+            if ((spec_content == undefined) && (content2 == ""))
+            {
+                
+                $("#Specifications").append("<div class='box' id='spec_tab'><div class='card-header'>you have to select a category first</div></div>");
+                
+            }
+            else
+            {
+                if (spec_content != undefined)
+                    $("#Specifications").append("<div class='box' id='spec_tab'>"+spec_content.innerHTML+"</div>");
+                else
+                    $("#Specifications").append("<div class='box' id='spec_tab'>"+content2+"</div>");
+
+
+            }
+
+
+    });
+
+    document.getElementById("photo_id").addEventListener("click", () => {
+         
+            $('#spec_id').removeClass('active');
+            $('#photo_id').addClass('active');
+            $('#searchbox').remove();
+
+            
+            var photo_content = document.getElementById('photo_tab'); 
+            var other = document.getElementById('spec_tab');
+            if (other != undefined)
+            {
+                content2 = other.innerHTML; 
+
+            }
+            $(".box").remove();
+
+
+            if ((photo_content == undefined) && (content1 == ""))
+            {
+                $("#Specifications").append("<div class='box' id='photo_tab'><div class='card-header'>add photo</div></div>");
+                
+            }
+            else
+            {
+                if (photo_content != undefined)
+                    $("#Specifications").append("<div class='box' id='photo_tab'>"+photo_content.innerHTML+"</div>");
+                else
+                    $("#Specifications").append("<div class='box' id='photo_tab'>"+content1+"</div>");
+            }
+
+            //$('#SpecModal').modal("toggle");
+
+
+
+    });
    
 
 
@@ -145,9 +247,9 @@
                     var i = 0;
 				    $.each(result,function(key,value){
                         if (i==0)
-                            $('.options-containerSelect').append("<div class='option' id='option1'> <input type='radio' class='radio' name='CategoryId' value='"+value.id+"' id='rad-"+value.id+"' /> <label for='film' >"+value.name+"</label></div>");  
+                            $('.options-containerSelect').append("<div class='option list-group-item' id='option1'> <input type='radio' class='radio' name='CategoryId' value='"+value.id+"' id='rad-"+value.id+"' /> <label for='film' >"+value.name+"</label></div>");  
                         else
-                            $('.options-containerSelect').append("<div class='option'> <input type='radio' class='radio' name='CategoryId'  value='"+value.id+"'   id='rad-"+value.id+"' /> <label for='film'>"+value.name+"</label></div>");  
+                            $('.options-containerSelect').append("<div class='option list-group-item'> <input type='radio' class='radio' name='CategoryId'  value='"+value.id+"'   id='rad-"+value.id+"' /> <label for='film'>"+value.name+"</label></div>");  
                         i= i+1;
                     });
                
@@ -210,6 +312,8 @@ function eventForCat(){
                     categoryId:value
                 },
 			    success:function(result){
+                     $('#searchbox').remove();
+                     $("<div><input id='searchbox' class='search__input' type='text' placeholder='Search'></div>").insertBefore('#Specifications');
                      $('.box').remove();
                     if (result != null){
                         var i = 0;
@@ -230,7 +334,11 @@ function eventForCat(){
                                 var specs = ob.specsValue;
                                 for(i=0; i<specs.length;i++  ){
                                     document.getElementById("inp-"+specsId[i]).value= specs[i];
-                                    document.getElementById("con-"+specsId[i]).classList.add("border-l-8"); 
+                                    document.getElementById("con-"+specsId[i]).classList.add("border-l-8");
+                                    document.getElementById('Id-'+specsId[i]).checked= true;
+                                    document.getElementById('Id-'+specsId[i]).setAttribute("value", specsId[i]);
+
+
 
                                 }
                               

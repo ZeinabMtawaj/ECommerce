@@ -25,7 +25,9 @@ namespace Ecommerce.Models
         [Url]
         public string? Image { get; set; }
         [Required]
-        [Remote(action: "IsSKUExist", controller:"ProductController", ErrorMessage = "Sku must be unique")]
+        [Remote(action: "IsSKUExist", controller:"ProductController", ErrorMessage = "SKU must be unique")]
+        [Display(Name = "SKU")]
+
         public string? Sku { get; set; }
 
         [Display(Name="Category")]
@@ -47,6 +49,8 @@ namespace Ecommerce.Models
 
         public virtual List<String>? SpecsId { get; set; }
         public virtual List<String>? SpecsValue { get; set; }
+
+        public virtual List<String>? Photo { get; set; }
 
     }
 }
