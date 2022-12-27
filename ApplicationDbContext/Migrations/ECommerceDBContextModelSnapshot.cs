@@ -517,6 +517,9 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
                         .HasColumnName("CreatedDate");
@@ -525,6 +528,9 @@ namespace ApplicationDbContext.Migrations
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")

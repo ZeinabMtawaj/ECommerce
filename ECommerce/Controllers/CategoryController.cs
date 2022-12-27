@@ -7,6 +7,7 @@ using ECommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Ecommerce.Controllers
 {
@@ -31,7 +32,14 @@ namespace Ecommerce.Controllers
             return View(items);
         }
 
+        [HttpGet]
+        public JsonResult GetAll()
+        {
+            var items = _uow.CategoryRepo.GetAll();
+            return Json(items);
+        }
 
+       
 
         [HttpGet]
         public IActionResult Create()

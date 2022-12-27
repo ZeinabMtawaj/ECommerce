@@ -8,7 +8,7 @@ namespace ECommerce.Profiles
     {
         public ProductProfile()
         {
-            CreateMap<Product, ProductViewModel>();
+            CreateMap<Product, ProductViewModel>().ReverseMap();
         }
     }
 }

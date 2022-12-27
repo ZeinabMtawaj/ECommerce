@@ -25,6 +25,10 @@ namespace ApplicationDbContext.Repos
             _dbSet.Add(item);
         }
 
+        public void Delete(T item)
+        {
+            _dbSet.Remove(item);
+        }
         public void Delete(int id)
         {
             var entity = _dbSet.Find(id);
