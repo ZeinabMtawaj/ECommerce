@@ -87,8 +87,6 @@ namespace ApplicationDbContext.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
@@ -180,9 +178,9 @@ namespace ApplicationDbContext.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: true),
-                    SpecificationId = table.Column<int>(type: "int", nullable: true),
+                    Value = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    SpecificationId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -193,12 +191,14 @@ namespace ApplicationDbContext.Migrations
                         name: "FK_CategorySpecificationValue_Category",
                         column: x => x.CategoryId,
                         principalTable: "Category",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CategorySpecificationValue_Specification",
                         column: x => x.SpecificationId,
                         principalTable: "Specification",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

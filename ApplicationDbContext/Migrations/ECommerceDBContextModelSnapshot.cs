@@ -96,19 +96,20 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("SpecificationId")
+                    b.Property<int>("SpecificationId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Value")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
@@ -517,9 +518,6 @@ namespace ApplicationDbContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime")
                         .HasColumnName("CreatedDate");
@@ -528,9 +526,6 @@ namespace ApplicationDbContext.Migrations
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime")
@@ -870,11 +865,15 @@ namespace ApplicationDbContext.Migrations
                     b.HasOne("ApplicationDbContext.Models.Category", "Category")
                         .WithMany("CategorySpecificationValues")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_CategorySpecificationValue_Category");
 
                     b.HasOne("ApplicationDbContext.Models.Specification", "Specification")
                         .WithMany("CategorySpecificationValues")
                         .HasForeignKey("SpecificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_CategorySpecificationValue_Specification");
 
                     b.Navigation("Category");
