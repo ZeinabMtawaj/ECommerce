@@ -21,7 +21,7 @@ namespace Ecommerce.Models
         [Required]
         //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Price must be number")]
         public decimal? Price { get; set; }
-        [Required]
+        //[Required]
         [Url]
         public string? Image { get; set; }
         [Required]
@@ -50,7 +50,7 @@ namespace Ecommerce.Models
         public virtual List<String>? SpecsId { get; set; }
         public virtual List<String>? SpecsValue { get; set; }
 
-        public virtual List<String>? Photo { get; set; }
+        public virtual List<String>? AdditionalPhoto { get; set; }
 
     }
 }

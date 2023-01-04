@@ -72,10 +72,10 @@
        
          <div class="row mb-3 mt-4 ml-4">
             <label asp-for="CategoryId" class="col-sm-2 col-form-label font-weight-bold"></label>
-            <div class=" col-sm-10 " >
+            <div class=" col-sm-4 " >
                                 
 
-                <div class="select-boxSelect w-50" >
+                <div class="select-boxSelect w-80" >
                     <div class="options-containerSelect border border-secondary">
                          @*<input type='radio' class='radio' name="CategoryId" value=1 /> <label for='film'> jhjh</label>
                         <input type='radio' class='radio' name="CategoryId" value=2 /> <label for='film'> z</label>*@
@@ -89,16 +89,24 @@
                     </div>
                 </div>
              </div>
+             
+             <div class=" col-sm-4  ml-40" >
+                 @*<span class="btn btn-link btn-simple-danger col-1"><i class="fa fa-line-chart"></i></span>
+                 <label asp-for="Trend" class="col-form-label font-weight-bold"></label>*@
+
+
+            </div>
+
         </div>
 
 
 
 
         <div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="SpecModal">
-	                <div class="modal-dialog" role="document">
+	                <div class="modal-dialog modal-dialog-scrollable" role="document" >
 		                <div class="modal-content">
 			                <div class="modal-header">
-				               @* <h5 class="modal-title font-weight-bold" id="exampleModalLabel"> Specifications</h5>*@
+				               @* <h5 class="modal-title font-weight-bold" id="exampleModalLabel"> Specifications</h5>
                                <ul class="nav nav-pills nav-primary card-header-pills">
 		                            <li class="nav-item">
 		                            <a class="nav-link"  id="spec_id">Specification</a>
@@ -147,7 +155,7 @@
     </form>
 </div>
 
-
+ 
 
 @section Scripts{
 	<script >
@@ -227,7 +235,35 @@
 
             if ((photo_content == undefined) && (content1 == ""))
             {
-                $("#Specifications").append("<div  id='photo_tab'><div class='card-header'>add photo</div></div>");
+                //<span class='col-1'><i class='fa fa-close'></i></span>
+                ///////////////////////////////////////////////////////////
+               $("#Specifications").append("<div  id='photo_tab'><span data-toggle='tooltip' data-placement='top' title='Add additional photos' class='btn btn-link btn-simple-danger' id ='add_other_photo' class='hover:cursor-pointer'><i class='fa fa-plus' style='display: inline-block;border-radius: 60px; box-shadow: 0 0 2px #888; padding: 0.5em 0.6em;'></i></span> <div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL'> </span></div></div></div>");
+               $( "#add_other_photo" ).on( "click",function() {
+
+                   $("#photo_tab").append("<div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL'> </div></div>");
+        
+                });
+                var json_model = '@Html.Raw(Json.Serialize(Model))';
+                var ob = JSON.parse(json_model);
+                if(ob.additionalPhoto != null)
+                {
+                    var photos = ob.additionalPhoto;
+                    var initial =0;
+                    for(i=0; i<photos.length; i++){
+                        
+                        if(photos[i] != null){
+                            if (initial != 0){
+                                document.getElementById('add_other_photo').click();                            
+                            }
+                            document.getElementsByClassName('photo_input')[initial].setAttribute("value",photos[i]);
+                            initial = initial + 1;
+                        }
+
+
+                    }
+                              
+                               
+                }
                 
             }
             else
@@ -236,6 +272,11 @@
                     $("#Specifications").append("<div id='photo_tab'>"+photo_content.innerHTML+"</div>");
                 else
                     $("#Specifications").append("<div id='photo_tab'>"+content1+"</div>");
+                 $( "#add_other_photo" ).on( "click",function() {
+
+                   $("#photo_tab").append("<div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL'> </div></div>");
+        
+                });
             }
 
             //$('#SpecModal').modal("toggle");
@@ -320,8 +361,15 @@ function eventForCat(){
 			    success:function(result){
                      $('#searchbox').remove();
                      $("<div><input id='searchbox' class='search__input' type='text' placeholder='Search'></div>").insertBefore('#Specifications');
-                     $('.box').remove();
-                     $('#spec_tab').remove();
+                     //$('.box').remove();
+                     var other = document.getElementById('photo_tab');
+                    if (other != undefined)
+                    {
+                        content1 = other.innerHTML; 
+
+                    } 
+                      $('#spec_tab').remove();
+                      $('#photo_tab').remove();
 
                     if (result != null){
                         var i = 0;
@@ -338,13 +386,11 @@ function eventForCat(){
                             eventForSpec();
                             var json_model = '@Html.Raw(Json.Serialize(Model))';
                             var ob = JSON.parse(json_model); 
-                            console.log(ob);
-                            if(ob.specsValue != null)
+                            if(ob.specsId != null)
                             {
                                 var specsId = ob.specsId;
                                 var specs = ob.specsValue;
                                 for(i=0; i<specsId.length;i++  ){
-                                    document.getElementById("con-"+specsId[i]).click();
                                     document.getElementById("inp-"+specsId[i]).value= specs[specsId[i]-1];
                                     //document.getElementById("inp-"+specsId[i]).setAttribute("value",  specs[i]);
                                     document.getElementById("con-"+specsId[i]).classList.add("border-l-8"); 
