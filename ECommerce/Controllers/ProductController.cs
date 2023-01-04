@@ -53,6 +53,7 @@ namespace Ecommerce.Controllers
             if (ModelState.IsValid)
             {   var specs = obj.SpecsId;
                 var specValues = obj.SpecsValue;
+                var additional_photos = obj.AdditionalPhoto;
                 var newObj = _mapper.Map<Product>(obj);
                 _uow.ProductRepo.Add(newObj);
                 _uow.SaveChanges();
