@@ -162,6 +162,7 @@
             $('#spec_id').removeClass('active');
             $('#photo_id').addClass('active');
             $('#SpecModal').modal("toggle");
+            document.getElementById("photo_id").click();
 
 
     });
@@ -184,19 +185,21 @@
 
             }
                 
-            $(".box").remove();
+            //$(".box").remove();
+            $("#spec_tab").remove();
+            $("#photo_tab").remove();
             if ((spec_content == undefined) && (content2 == ""))
             {
                 
-                $("#Specifications").append("<div class='box' id='spec_tab'><div class='card-header'>you have to select a category first</div></div>");
+                $("#Specifications").append("<div id='spec_tab'><div class='card-header'>you have to select a category first</div></div>");
                 
             }
             else
             {
                 if (spec_content != undefined)
-                    $("#Specifications").append("<div class='box' id='spec_tab'>"+spec_content.innerHTML+"</div>");
+                    $("#Specifications").append("<div id='spec_tab'>"+spec_content.innerHTML+"</div>");
                 else
-                    $("#Specifications").append("<div class='box' id='spec_tab'>"+content2+"</div>");
+                    $("#Specifications").append("<div  id='spec_tab'>"+content2+"</div>");
 
 
             }
@@ -218,20 +221,21 @@
                 content2 = other.innerHTML; 
 
             }
-            $(".box").remove();
-
+            //$(".box").remove();
+            $("#spec_tab").remove();
+            $("#photo_tab").remove();
 
             if ((photo_content == undefined) && (content1 == ""))
             {
-                $("#Specifications").append("<div class='box' id='photo_tab'><div class='card-header'>add photo</div></div>");
+                $("#Specifications").append("<div  id='photo_tab'><div class='card-header'>add photo</div></div>");
                 
             }
             else
             {
                 if (photo_content != undefined)
-                    $("#Specifications").append("<div class='box' id='photo_tab'>"+photo_content.innerHTML+"</div>");
+                    $("#Specifications").append("<div id='photo_tab'>"+photo_content.innerHTML+"</div>");
                 else
-                    $("#Specifications").append("<div class='box' id='photo_tab'>"+content1+"</div>");
+                    $("#Specifications").append("<div id='photo_tab'>"+content1+"</div>");
             }
 
             //$('#SpecModal').modal("toggle");
@@ -317,12 +321,14 @@ function eventForCat(){
                      $('#searchbox').remove();
                      $("<div><input id='searchbox' class='search__input' type='text' placeholder='Search'></div>").insertBefore('#Specifications');
                      $('.box').remove();
+                     $('#spec_tab').remove();
 
                     if (result != null){
                         var i = 0;
+                         $('#Specifications').append("<div id='spec_tab'></div>");
 				        $.each(result,function(key,value){
                             
-                              $('#Specifications').append(" <div class='box' id='spec_tab' ><div id='con-"+ value.id+"' class='card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]' data-toggle='collapse' data-target='#coll-"+value.id+"'aria-expanded='false' aria-controls='coll-"+value.id+"'>"+ value.name+"</div><div id='coll-"+value.id+"' class='collapse' aria-labelledby='head-"+value.id +"' data-parent='#accordion'><div class='card-body'><input name='SpecsId[]' type='checkbox' id='Id-"+value.id+"' style='display:none;' value= '' /> <input name='SpecsValue[]' class='form-control inp-coll' id='inp-"+value.id+"' type='text' placeholder='Enter Value'/></div></div></div>");
+                              $('#spec_tab').append(" <div class='box'  ><div id='con-"+ value.id+"' class='card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]' data-toggle='collapse' data-target='#coll-"+value.id+"'aria-expanded='false' aria-controls='coll-"+value.id+"'>"+ value.name+"</div><div id='coll-"+value.id+"' class='collapse' aria-labelledby='head-"+value.id +"' data-parent='#accordion'><div class='card-body'><input name='SpecsId[]' type='checkbox' id='Id-"+value.id+"' style='display:none;' value= '' /> <input name='SpecsValue[]' class='form-control inp-coll' id='inp-"+value.id+"' type='text' placeholder='Enter Value'/></div></div></div>");
 
 			                                   
                         });
@@ -332,13 +338,17 @@ function eventForCat(){
                             eventForSpec();
                             var json_model = '@Html.Raw(Json.Serialize(Model))';
                             var ob = JSON.parse(json_model); 
+                            console.log(ob);
                             if(ob.specsValue != null)
                             {
                                 var specsId = ob.specsId;
                                 var specs = ob.specsValue;
-                                for(i=0; i<specs.length;i++  ){
-                                    document.getElementById("inp-"+specsId[i]).value= specs[i];
+                                for(i=0; i<specsId.length;i++  ){
+                                    document.getElementById("con-"+specsId[i]).click();
+                                    document.getElementById("inp-"+specsId[i]).value= specs[specsId[i]-1];
+                                    //document.getElementById("inp-"+specsId[i]).setAttribute("value",  specs[i]);
                                     document.getElementById("con-"+specsId[i]).classList.add("border-l-8"); 
+                                    //document.getElementById("con-"+specsId[i]).click();
                                     document.getElementById('Id-'+specsId[i]).checked= true;
                                     document.getElementById('Id-'+specsId[i]).setAttribute("value", specsId[i]);
 
