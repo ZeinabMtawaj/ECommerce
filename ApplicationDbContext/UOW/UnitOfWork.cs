@@ -19,6 +19,9 @@ namespace ApplicationDbContext.UOW
 
         public IProductSpecificationValueRepo ProductSpecificationValueRepo { get; set; }
 
+        public IPhotoRepo PhotoRepo { get; set; }
+
+
 
 
         protected readonly ECommerceDBContext _db;
@@ -31,11 +34,13 @@ namespace ApplicationDbContext.UOW
             SpecificationRepo = new SpecificationRepo(db);
             CategorySpecificationValueRepo = new CategorySpecificationValueRepo(db);
             ProductSpecificationValueRepo = new ProductSpecificationValueRepo(db);
+            PhotoRepo = new PhotoRepo(db);  
 
 
-        }
 
-        public void RollBack()
+    }
+
+    public void RollBack()
         {
             _db.Dispose();
         }

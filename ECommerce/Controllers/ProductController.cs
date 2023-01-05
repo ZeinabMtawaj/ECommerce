@@ -23,7 +23,7 @@ namespace Ecommerce.Controllers
         {
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.Category);
-            var items = _uow.ProductRepo.FindAll(x => x.Id > 1, null, null,lambdas);
+            var items = _uow.ProductRepo.FindAll(x => x.Id >= 1, null, null,lambdas);
             ViewBag.cols = this.GetColNames();
             ViewBag.createController = "Product";
             ViewBag.createAction = "Create";
@@ -52,17 +52,18 @@ namespace Ecommerce.Controllers
             
             if (ModelState.IsValid)
             {   var specs = obj.SpecsId;
-                var specValues = obj.SpecsValue;
-                var additional_photos = obj.AdditionalPhoto;
+                var specValues = obj.SpecsValue.Where(s => s != null).ToArray();
+                var additional_photos = obj.AdditionalPhoto.Where(p => p != null).ToArray();
                 var newObj = _mapper.Map<Product>(obj);
                 _uow.ProductRepo.Add(newObj);
                 _uow.SaveChanges();
                 var z = newObj.Id;
                 if (specs != null)
                 {
+                    var i = 0;
                     foreach (var spec in specs)
                     {
-                        var i = 0;
+                        
                         ProductSpecificationValue productSpecificationValue = new ProductSpecificationValue()
                         {
                             ProductId = z,
@@ -77,6 +78,25 @@ namespace Ecommerce.Controllers
                     }
                     _uow.SaveChanges();
                 }
+                if (additional_photos != null)
+                {
+                    var i = 0;
+                    foreach (var add_photo in additional_photos)
+                    {
+                        Photo photo = new Photo()
+                        {
+                            ProductId = z,
+                            Path = add_photo
+                        };
+                        i++;
+                        _uow.PhotoRepo.Add(photo);
+
+
+                    }
+                    _uow.SaveChanges();
+                    
+                }
+                TempData["success"] = "Created Successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -95,10 +115,14 @@ namespace Ecommerce.Controllers
             }
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.ProductSpecificationValues);
+            lambdas.Add(x => x.Photos); 
             var product_specs = _uow.ProductRepo.Find(x => x.Id == id.Value, lambdas);
+            var photos = product_specs.Photos;
             var specs = product_specs.ProductSpecificationValues;
             var specIds= new List<String>();
             var specValues = new List<String>();
+            var additional = new List<String>();
+
             if (specs != null)
             {
                 foreach (var spec in specs)
@@ -108,6 +132,14 @@ namespace Ecommerce.Controllers
                 }
                 obj.SpecsId = specIds;
                 obj.SpecsValue = specValues;
+            }
+            if (photos != null)
+            {
+                foreach (var photo in photos)
+                {
+                    additional.Add(photo.Path);
+                }
+                obj.AdditionalPhoto = additional;
             }
             return View(obj);
         }
@@ -120,14 +152,18 @@ namespace Ecommerce.Controllers
             if (ModelState.IsValid)
             {
                 var specs = obj.SpecsId;
-                var specValues = obj.SpecsValue;
+                var specValues = obj.SpecsValue.Where(s => s != null).ToArray();
+                var additional_photos = obj.AdditionalPhoto.Where(p => p != null).ToArray();
                 var newObj = _mapper.Map<Product>(obj);
                 _uow.ProductRepo.Update(newObj);
                 //_uow.SaveChanges();
                 var z = newObj.Id;
                 var lambdas = new List<Expression<Func<Product, object>>>();
                 lambdas.Add(x => x.ProductSpecificationValues);
-                var product_specs= _uow.ProductRepo.Find(x=>(x.Id==z),lambdas);
+                lambdas.Add(x => x.Photos);
+
+                var product_specs = _uow.ProductRepo.Find(x=>(x.Id==z),lambdas);
+                var photos = product_specs.Photos;
                 var productSpecificationValues = product_specs.ProductSpecificationValues;
                 //if (productSpecificationValues != null)
                 //{
@@ -137,12 +173,20 @@ namespace Ecommerce.Controllers
                     {
                         ids_list.Add(specification.Id);
                     }
+
+                    var ph = photos.ToList();
+                    var ids_list2 = new List<int>();
+                    foreach (var p in ph)
+                    {
+                        ids_list2.Add(p.Id);
+                    }
+
                 //}
                 if (specs != null)
                 {
+                    var i = 0;
                     foreach (var spec in specs)
                     {
-                        var i = 0;
                         var e = int.Parse(spec);
                         var b = specValues[i];
                         ProductSpecificationValue productSpecificationValue = new ProductSpecificationValue()
@@ -158,7 +202,7 @@ namespace Ecommerce.Controllers
                         if (index != -1)
                         {
                             _uow.ProductSpecificationValueRepo.Update(productSpecificationValue);
-                            ids_list.RemoveAt(index);
+                            ids_list[index]=0;
 
 
                         }
@@ -171,11 +215,52 @@ namespace Ecommerce.Controllers
                         i++;
                     }
                     foreach (var id in ids_list) { 
-                        _uow.ProductSpecificationValueRepo.Delete(id);
+                        if (id != 0) 
+                            _uow.ProductSpecificationValueRepo.Delete(id);
                     
                     }
                     _uow.SaveChanges();
                 }
+                if (additional_photos != null)
+                {
+                    var i = 0;
+                    foreach (var p in additional_photos)
+                    {
+                        //var b = specValues[i];
+                        Photo photo = new Photo()
+                        {
+                            ProductId = z,
+                            Path = p
+
+
+
+                        };
+                        var index = ph.FindIndex(x => ((x.Path == p) && (x.ProductId == z)));
+                        if (index != -1)
+                        {
+                            _uow.PhotoRepo.Update(photo);
+                            ids_list2[index]=0;
+                            
+
+
+                        }
+
+                        else
+                        {
+                            _uow.PhotoRepo.Add(photo);
+                        }
+
+                        i++;
+                    }
+                    foreach (var id in ids_list2)
+                    {
+                        if (id != 0) 
+                            _uow.PhotoRepo.Delete(id);
+
+                    }
+                    _uow.SaveChanges();
+                }
+                TempData["success"] = "Updated Successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -240,7 +325,7 @@ namespace Ecommerce.Controllers
             res.Add("Image");
             res.Add("Category");
             //res.Add("Trend");
-            res.Add("Photos");
+            //res.Add("Photos");
             res.Add("Specification");
             res.Add("Created At");
             res.Add("Updated At");

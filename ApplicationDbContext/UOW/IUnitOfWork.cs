@@ -17,6 +17,9 @@ namespace ApplicationDbContext.UOW
 
         public IProductSpecificationValueRepo ProductSpecificationValueRepo { get; set; }
 
+        public IPhotoRepo PhotoRepo { get; set; }
+
+
 
 
         public void SaveChanges ();

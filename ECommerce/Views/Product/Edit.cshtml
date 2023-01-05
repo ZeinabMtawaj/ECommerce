@@ -90,7 +90,7 @@
 
 
         <div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="SpecModal">
-	                <div class="modal-dialog" role="document">
+	                <div class="modal-dialog modal-dialog-scrollable" role="document">
 		                <div class="modal-content">
 			                <div class="modal-header">
 				                <ul class="nav nav-pills nav-primary card-header-pills">
@@ -176,9 +176,11 @@
             
             var spec_content = document.getElementById('spec_tab'); 
             var other = document.getElementById('photo_tab');
+            var z=0;
             if (other != undefined)
             {
                 content1 = other.innerHTML; 
+                z=1;
 
             }
                 
@@ -200,6 +202,11 @@
 
 
             }
+            if (z==1){
+                 $("#Specifications").append("<div  id='photo_tab' style='display:none;'>"+content1+"</div>");
+
+            }
+            eventForSpec();
 
 
     });
@@ -213,9 +220,11 @@
             
             var photo_content = document.getElementById('photo_tab'); 
             var other = document.getElementById('spec_tab');
+            var z=0;
             if (other != undefined)
             {
-                content2 = other.innerHTML; 
+                content2 = other.innerHTML;
+                z=1;
 
             }
              $("#spec_tab").remove();
@@ -227,6 +236,7 @@
                 $("#Specifications").append("<div  id='photo_tab'><span data-toggle='tooltip' data-placement='top' title='Add additional photos' class='btn btn-link btn-simple-danger' id ='add_other_photo' class='hover:cursor-pointer'><i class='fa fa-plus' style='display: inline-block;border-radius: 60px; box-shadow: 0 0 2px #888; padding: 0.5em 0.6em;'></i></span> <div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL'> </span></div></div></div>");
                $( "#add_other_photo" ).click(function() {
                    $("#photo_tab").append("<div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL'> </div></div>");
+                   eventForPhoto();
         
                 });
                 var json_model = '@Html.Raw(Json.Serialize(Model))';
@@ -262,15 +272,38 @@
                 $( "#add_other_photo" ).on( "click",function() {
 
                    $("#photo_tab").append("<div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL'> </div></div>");
-        
+                   eventForPhoto();
+
                 });
             }
+            if (z==1){
+                $("#Specifications").append("<div id='spec_tab' style='display:none;'>"+content2+"</div>");
+            }
+
+             eventForPhoto();
 
             //$('#SpecModal').modal("toggle");
 
 
 
     });
+
+    function eventForPhoto(){
+        $(".photo_input").bind('keyup', (event) => {
+        
+        if($(event.target).val())
+        {
+            console.log($(event.target).val());
+            
+            
+            $(event.target).attr("value", $(event.target).val());
+            
+
+        }
+        });
+    
+    
+    }
    
 
 
@@ -352,9 +385,12 @@ function eventForCat(){
                      $("<div><input id='searchbox' class='search__input' type='text' placeholder='Search'></div>").insertBefore('#Specifications');
                      //$('.box').remove();
                      var other = document.getElementById('photo_tab');
+
+                     var z=0;
                     if (other != undefined)
                     {
                         content1 = other.innerHTML; 
+                        z=1;
 
                     } 
                       $('#spec_tab').remove();
@@ -372,19 +408,34 @@ function eventForCat(){
                         });
                
                     }
+                             if (z==1){
+                            $("#Specifications").append("<div  id='photo_tab' style='display:none;'>"+content1+"</div>");
+
+                                }
                             eventForSpec();
+                            $('#photo_id').removeClass('active');
+                            $('#spec_id').addClass('active');
+                            $('#SpecModal').modal("toggle");
                             var json_model = '@Html.Raw(Json.Serialize(Model))';
-                            var ob = JSON.parse(json_model);     
+                            var ob = JSON.parse(json_model);
+                            if (ob.additionalPhoto != null){
+                                document.getElementById('photo_id').click();
+                            }
+                            document.getElementById('spec_id').click();
                             if(ob.specsId != null)
                             {
                                 var specsId = ob.specsId;
                                 var specs = ob.specsValue;
+                                const arrayWithoutNull = specs.filter(function (inp) {
+                                        return inp != null;
+                                    });
+                                specs = arrayWithoutNull;
                                 for(i=0; i<specsId.length;i++  ){
-                                    document.getElementById("inp-"+specsId[i]).value= specs[specsId[i]-1];
+                                    document.getElementById("inp-"+specsId[i]).value= specs[i];
                                     //document.getElementById("inp-"+specsId[i]).setAttribute("value",  specs[i]);
                                     document.getElementById("con-"+specsId[i]).classList.add("border-l-8"); 
                                     //document.getElementById("con-"+specsId[i]).click();
-                                    document.getElementById('Id-'+specsId[i]).checked= true;
+                                    document.getElementById('Id-'+specsId[i]).setAttribute("checked", true);
                                     document.getElementById('Id-'+specsId[i]).setAttribute("value", specsId[i]);
 
 
@@ -474,14 +525,17 @@ let cards = document.querySelectorAll('.box')
         let nm = id.split('-')[1];
         let conId = "#con-" + nm;
         var SpecId = document.getElementById('Id-'+nm);
+        var specsvalue = document.getElementById('inp-'+nm);
         if($(event.target).val())
         {
             $(conId).addClass('border-l-8'); 
             
             SpecId.setAttribute("value", nm);
             //SpecId.disabled= false;
-            SpecId.checked= true;
+            SpecId.setAttribute("checked",true);
             //SpecId.disabled= true;
+            var t = $(event.target).val();
+            specsvalue.setAttribute("value",t);
 
 
         }
@@ -489,7 +543,8 @@ let cards = document.querySelectorAll('.box')
         {
             $(conId).removeClass('border-l-8');
             //SpecId.disabled= false;
-            SpecId.checked= false;
+            //SpecId.setAttribute("checked",false);
+            SpecId.removeAttribute("checked");
             //SpecId.disabled= true;;
 
         }
@@ -499,7 +554,7 @@ let cards = document.querySelectorAll('.box')
 
 
 
-    $('#SpecModal').modal("toggle");
+    //$('#SpecModal').modal("toggle");
 
 
 }

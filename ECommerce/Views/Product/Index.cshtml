@@ -63,15 +63,18 @@
 						}
 					</td>
 					<td>
-						<button data-toggle="tooltip" data-placement="top" title="Photos" class="btn btn-link btn-simple-danger mt-1"> 
+@*						<button data-toggle="tooltip" data-placement="top" title="Photos" class="btn btn-link btn-simple-danger mt-1"> 
 									<i class="fa fa-camera"></i>       
-						</button>
+						</button>*@
+						<span class="specPartialCaller btn border-0" data-toggle="modal" data-target="#specsMainModel" item-id="@item.Id"> 
+							<i class='fas fa-angle-down text-primary text-3xl'></i>
+						</span>
 					</td>
-					<td>
+					@*<td>
 						<button data-toggle="tooltip" data-placement="top" title="Specification" class="btn btn-link btn-simple-danger mt-1"> 
 									<i class="fa fa-asterisk"></i>       
 						</button>
-					</td>
+					</td>*@
 					<td>
 
 						@item.CreatedDate.ToString("g");
@@ -133,4 +136,6 @@
 	$('#add-row').DataTable({
 		"pageLength": 5,
 	});
+	
+
 </script>

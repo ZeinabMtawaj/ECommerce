@@ -142,7 +142,7 @@
 
         <div class="row-sm-10 d-flex flex-row mt-12">
         <button type="button" class="btn btn-outline-danger ml-5" onclick="location.href='@Url.Action("Index","Product")';">Cancel</button>
-        <input type="submit" class="btn btn-primary ml-5" value="Create">
+        <input type="submit" class="btn btn-primary ml-5" value="Create" id="submit">
         </div>
     </form>
 </div>
@@ -158,6 +158,8 @@
     //        });
   
     //});
+        
+
         document.getElementById("photo_span").addEventListener("click", () => {
             $('#spec_id').removeClass('active');
             $('#photo_id').addClass('active');
@@ -179,9 +181,11 @@
             
             var spec_content = document.getElementById('spec_tab'); 
             var other = document.getElementById('photo_tab');
+            var z = 0;
             if (other != undefined)
             {
                 content1 = other.innerHTML; 
+                z=1;
 
             }
                 
@@ -191,7 +195,7 @@
             if ((spec_content == undefined) && (content2 == ""))
             {
                 
-                $("#Specifications").append("<div id='spec_tab'><div class='card-header'>you have to select a category first</div></div>");
+                $("#Specifications").append("<div id='spec_tab'><div class='card-header'>you have to select category first</div></div>");
                 
             }
             else
@@ -203,6 +207,12 @@
 
 
             }
+            
+            if (z==1){
+                 $("#Specifications").append("<div  id='photo_tab' style='display:none;'>"+content1+"</div>");
+
+            }
+            eventForSpec();
 
 
     });
@@ -216,9 +226,11 @@
             
             var photo_content = document.getElementById('photo_tab'); 
             var other = document.getElementById('spec_tab');
+            var z=0;
             if (other != undefined)
             {
                 content2 = other.innerHTML; 
+                z=1;
 
             }
             //$(".box").remove();
@@ -229,10 +241,11 @@
             {
                 //<span class='col-1'><i class='fa fa-close'></i></span>
                 ///////////////////////////////////////////////////////////
-               $("#Specifications").append("<div  id='photo_tab'><span data-toggle='tooltip' data-placement='top' title='Add additional photos' class='btn btn-link btn-simple-danger' id ='add_other_photo' class='hover:cursor-pointer'><i class='fa fa-plus' style='display: inline-block;border-radius: 60px; box-shadow: 0 0 2px #888; padding: 0.5em 0.6em;'></i></span> <div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL'> </span></div></div></div>");
+               $("#Specifications").append("<div  id='photo_tab'><span data-toggle='tooltip' data-placement='top' title='Add additional photos' class='btn btn-link btn-simple-danger' id ='add_other_photo' class='hover:cursor-pointer' ><i class='fa fa-plus' style='display: inline-block;border-radius: 60px; box-shadow: 0 0 2px #888; padding: 0.5em 0.6em;'></i></span> <div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL' > </span></div></div></div>");
                $( "#add_other_photo" ).on( "click",function() {
 
-                   $("#photo_tab").append("<div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL'> </div></div>");
+                   $("#photo_tab").append("<div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL' > </div></div>");
+                   eventForPhoto();
         
                 });
                 var json_model = '@Html.Raw(Json.Serialize(Model))';
@@ -267,15 +280,61 @@
                  $( "#add_other_photo" ).on( "click",function() {
 
                    $("#photo_tab").append("<div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL'> </div></div>");
+                   eventForPhoto();
+
         
                 });
             }
-
-            //$('#SpecModal').modal("toggle");
+            if (z==1){
+                $("#Specifications").append("<div id='spec_tab' style='display:none;'>"+content2+"</div>");
+            }
+            eventForPhoto();
+            
+     
+        
+        
+    
 
 
 
     });
+
+    function eventForPhoto(){
+        $(".photo_input").bind('keyup', (event) => {
+        
+        if($(event.target).val())
+        {
+            console.log($(event.target).val());
+            
+            
+            $(event.target).attr("value", $(event.target).val());
+            
+
+        }
+        });
+    
+    
+    }
+    //document.getElementById("submit").addEventListener("click", () => {
+    //    console.log(1);
+    //        var spec_content = document.getElementById('spec_tab'); 
+    //        var photo_content = document.getElementById('photo_tab');
+    //        if (content1 != null) {
+    //            if (photo_content ==null){
+    //                $('#Specifications').append(content1);
+                
+    //            }
+
+
+    //        }
+    //        if (content2 !=null){
+    //            if (spec_content ==null){
+    //                $('#Specifications').append(content2);
+                
+    //            }
+
+    //        }
+    //    });
    
 
 		$.ajax({
@@ -355,9 +414,11 @@ function eventForCat(){
                      $("<div><input id='searchbox' class='search__input' type='text' placeholder='Search'></div>").insertBefore('#Specifications');
                      //$('.box').remove();
                      var other = document.getElementById('photo_tab');
+                     var z=0;
                     if (other != undefined)
                     {
                         content1 = other.innerHTML; 
+                        z =1;
 
                     } 
                       $('#spec_tab').remove();
@@ -375,19 +436,38 @@ function eventForCat(){
                         
                
                     }
+                            if (z==1){
+                            $("#Specifications").append("<div  id='photo_tab' style='display:none;'>"+content1+"</div>");
+
+                                }
                             eventForSpec();
+                             $('#photo_id').removeClass('active');
+                            $('#spec_id').addClass('active');
+                            $('#SpecModal').modal("toggle");
+
                             var json_model = '@Html.Raw(Json.Serialize(Model))';
                             var ob = JSON.parse(json_model); 
+                            if (ob.additionalPhoto != null){
+                                document.getElementById('photo_id').click();
+                            }
+                             document.getElementById('spec_id').click();
+                            console.log(ob);
                             if(ob.specsId != null)
                             {
                                 var specsId = ob.specsId;
                                 var specs = ob.specsValue;
+                                const arrayWithoutNull = specs.filter(function (inp) {
+                                        return inp != null;
+                                    });
+                                specs = arrayWithoutNull;
                                 for(i=0; i<specsId.length;i++  ){
-                                    document.getElementById("inp-"+specsId[i]).value= specs[specsId[i]-1];
-                                    //document.getElementById("inp-"+specsId[i]).setAttribute("value",  specs[i]);
+                                    
+                                    //document.getElementById("inp-"+specsId[i]).value= specs[i];
+                                    //console.log(specs.length);
+                                    document.getElementById("inp-"+specsId[i]).setAttribute("value",  specs[i]);
                                     document.getElementById("con-"+specsId[i]).classList.add("border-l-8"); 
                                     //document.getElementById("con-"+specsId[i]).click();
-                                    document.getElementById('Id-'+specsId[i]).checked= true;
+                                    document.getElementById('Id-'+specsId[i]).setAttribute("checked", true);
                                     document.getElementById('Id-'+specsId[i]).setAttribute("value", specsId[i]);
 
 
@@ -475,13 +555,20 @@ let cards = document.querySelectorAll('.box')
         let nm = id.split('-')[1];
         let conId = "#con-" + nm;
         var SpecId = document.getElementById('Id-'+nm);
+        var specsvalue = document.getElementById('inp-'+nm);
         if($(event.target).val())
         {
+           
             $(conId).addClass('border-l-8'); 
             
             SpecId.setAttribute("value", nm);
             //SpecId.disabled= false;
-            SpecId.checked= true;
+            //SpecId.checked= true;
+            SpecId.setAttribute("checked",true);
+
+             var t = $(event.target).val();
+            specsvalue.setAttribute("value",t);
+
             //SpecId.disabled= true;
 
 
@@ -490,16 +577,21 @@ let cards = document.querySelectorAll('.box')
         {
             $(conId).removeClass('border-l-8');
             //SpecId.disabled= false;
-            SpecId.checked= false;
+
+
+            //SpecId.checked= false;
+            //SpecId.setAttribute("checked",false);
+            SpecId.removeAttribute("checked");
+
             //SpecId.disabled= true;;
         }
         
     });
 
 
-    $('#photo_id').removeClass('active');
-    $('#spec_id').addClass('active');
-    $('#SpecModal').modal("toggle");
+    //$('#photo_id').removeClass('active');
+    //$('#spec_id').addClass('active');
+    //$('#SpecModal').modal("toggle");
 
 
 }
