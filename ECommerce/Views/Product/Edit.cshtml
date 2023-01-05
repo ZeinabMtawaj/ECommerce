@@ -11,9 +11,9 @@
 
 
 <div class="card-body" >
-        <h3 class="card-title mt-2  font-bold text-lg">Create New Product</h3>
+        <h3 class="card-title mt-2  font-bold text-lg">Edit Product</h3>
     <form class="mt-4" method="post" asp-action="Edit">
-       <div class="row mb-3 mt-4 ml-4 ">
+        <div class="row mb-3 mt-4 ml-4 ">
             <label asp-for="Name" class="col-sm-2 form-label font-weight-bold"></label>
             <div class="col-sm-4">
                 <input type="text" asp-for="Name" class="form-control" placeholder="Enter Name">
@@ -67,19 +67,24 @@
             </div>
         </div>
 
+
+
+       
          <div class="row mb-3 mt-4 ml-4">
             <label asp-for="CategoryId" class="col-sm-2 col-form-label font-weight-bold"></label>
-            <div class=" col-sm-10" >
-                <div class="select-boxSelect">
-                    <div class="options-containerSelect ">
+            <div class=" col-sm-10 " >
+                                
+
+                <div class="select-boxSelect w-50" >
+                    <div class="options-containerSelect border border-secondary">
                          @*<input type='radio' class='radio' name="CategoryId" value=1 /> <label for='film'> jhjh</label>
                         <input type='radio' class='radio' name="CategoryId" value=2 /> <label for='film'> z</label>*@
 
                     </div>
-                    <div class="selectedSelect bg-[#1e293b] text-white" >
+                    <div class="selectedSelect bg-[#1e293b] text-white " >
                     Select category
                     </div>
-                    <div class="search-boxSelect bg-[#74c3eb]">
+                    <div class="search-boxSelect bg-[#74c3eb] "  >
                     <input type="text" placeholder="Search.." />
                     </div>
                 </div>
@@ -90,10 +95,11 @@
 
 
         <div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="SpecModal">
-	                <div class="modal-dialog modal-dialog-scrollable" role="document">
+	                <div class="modal-dialog modal-dialog-scrollable" role="document" >
 		                <div class="modal-content">
 			                <div class="modal-header">
-				                <ul class="nav nav-pills nav-primary card-header-pills">
+				               @* <h5 class="modal-title font-weight-bold" id="exampleModalLabel"> Specifications</h5>*@
+                               <ul class="nav nav-pills nav-primary card-header-pills">
 		                            <li class="nav-item">
 		                            <a class="nav-link"  id="spec_id">Specification</a>
 		                            </li>
@@ -106,12 +112,11 @@
 				                </button>
 			                </div>
 			                <div class="modal-body overflow-auto" id="search_input">
-				                <div>
+				               @* <div>
                                         <input id="searchbox" class="search__input " type="text" placeholder="Search">
                                               
-                                </div>
+                                </div>*@
                                 <div class="card mt-2 rounded" id = "Specifications">
-                                  
 	                            </div>
 
 			                </div>
@@ -136,13 +141,13 @@
 
 
         <div class="row-sm-10 d-flex flex-row mt-12">
-        <button type="button" class="btn btn-outline-danger ml-5">Cancel</button>
-        <input type="submit" class="btn btn-primary ml-5" value="Edit">
+        <button type="button" class="btn btn-outline-danger ml-5" onclick="location.href='@Url.Action("Index","Product")';">Cancel</button>
+        <input type="submit" class="btn btn-primary ml-5" value="Edit" id="submit">
         </div>
     </form>
 </div>
 
-
+ 
 
 @section Scripts{
 	<script >
@@ -153,13 +158,13 @@
     //        });
   
     //});
+        
 
-            document.getElementById("photo_span").addEventListener("click", () => {
+        document.getElementById("photo_span").addEventListener("click", () => {
             $('#spec_id').removeClass('active');
             $('#photo_id').addClass('active');
             $('#SpecModal').modal("toggle");
             document.getElementById("photo_id").click();
-
 
 
     });
@@ -176,7 +181,7 @@
             
             var spec_content = document.getElementById('spec_tab'); 
             var other = document.getElementById('photo_tab');
-            var z=0;
+            var z = 0;
             if (other != undefined)
             {
                 content1 = other.innerHTML; 
@@ -184,24 +189,25 @@
 
             }
                 
-            //////////////////////$(".box").remove();
-             $("#spec_tab").remove();
+            //$(".box").remove();
+            $("#spec_tab").remove();
             $("#photo_tab").remove();
             if ((spec_content == undefined) && (content2 == ""))
             {
                 
-                $("#Specifications").append("<div  id='spec_tab'><div class='card-header'>you have to select a category first</div></div>");
+                $("#Specifications").append("<div id='spec_tab'><div class='card-header'>you have to select category first</div></div>");
                 
             }
             else
             {
                 if (spec_content != undefined)
-                    $("#Specifications").append("<div  id='spec_tab'>"+spec_content.innerHTML+"</div>");
+                    $("#Specifications").append("<div id='spec_tab'>"+spec_content.innerHTML+"</div>");
                 else
-                    $("#Specifications").append("<div id='spec_tab'>"+content2+"</div>");
+                    $("#Specifications").append("<div  id='spec_tab'>"+content2+"</div>");
 
 
             }
+            
             if (z==1){
                  $("#Specifications").append("<div  id='photo_tab' style='display:none;'>"+content1+"</div>");
 
@@ -223,25 +229,27 @@
             var z=0;
             if (other != undefined)
             {
-                content2 = other.innerHTML;
+                content2 = other.innerHTML; 
                 z=1;
 
             }
-             $("#spec_tab").remove();
+            //$(".box").remove();
+            $("#spec_tab").remove();
             $("#photo_tab").remove();
-
 
             if ((photo_content == undefined) && (content1 == ""))
             {
-                $("#Specifications").append("<div  id='photo_tab'><span data-toggle='tooltip' data-placement='top' title='Add additional photos' class='btn btn-link btn-simple-danger' id ='add_other_photo' class='hover:cursor-pointer'><i class='fa fa-plus' style='display: inline-block;border-radius: 60px; box-shadow: 0 0 2px #888; padding: 0.5em 0.6em;'></i></span> <div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL'> </span></div></div></div>");
-               $( "#add_other_photo" ).click(function() {
-                   $("#photo_tab").append("<div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL'> </div></div>");
+                //<span class='col-1'><i class='fa fa-close'></i></span>
+                ///////////////////////////////////////////////////////////
+               $("#Specifications").append("<div  id='photo_tab'><span data-toggle='tooltip' data-placement='top' title='Add additional photos' class='btn btn-link btn-simple-danger' id ='add_other_photo' class='hover:cursor-pointer' ><i class='fa fa-plus' style='display: inline-block;border-radius: 60px; box-shadow: 0 0 2px #888; padding: 0.5em 0.6em;'></i></span> <div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL' > </span></div></div></div>");
+               $( "#add_other_photo" ).on( "click",function() {
+
+                   $("#photo_tab").append("<div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL' > </div></div>");
                    eventForPhoto();
         
                 });
                 var json_model = '@Html.Raw(Json.Serialize(Model))';
                 var ob = JSON.parse(json_model);
-                console.log(ob);
                 if(ob.additionalPhoto != null)
                 {
                     var photos = ob.additionalPhoto;
@@ -266,23 +274,26 @@
             else
             {
                 if (photo_content != undefined)
-                    $("#Specifications").append("<div  id='photo_tab'>"+photo_content.innerHTML+"</div>");
+                    $("#Specifications").append("<div id='photo_tab'>"+photo_content.innerHTML+"</div>");
                 else
-                    $("#Specifications").append("<div  id='photo_tab'>"+content1+"</div>");
-                $( "#add_other_photo" ).on( "click",function() {
+                    $("#Specifications").append("<div id='photo_tab'>"+content1+"</div>");
+                 $( "#add_other_photo" ).on( "click",function() {
 
                    $("#photo_tab").append("<div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='AdditionalPhoto[]' class='form-control photo_input' placeholder='Enter URL'> </div></div>");
                    eventForPhoto();
 
+        
                 });
             }
             if (z==1){
                 $("#Specifications").append("<div id='spec_tab' style='display:none;'>"+content2+"</div>");
             }
-
-             eventForPhoto();
-
-            //$('#SpecModal').modal("toggle");
+            eventForPhoto();
+            
+     
+        
+        
+    
 
 
 
@@ -304,8 +315,27 @@
     
     
     }
-   
+    //document.getElementById("submit").addEventListener("click", () => {
+    //    console.log(1);
+    //        var spec_content = document.getElementById('spec_tab'); 
+    //        var photo_content = document.getElementById('photo_tab');
+    //        if (content1 != null) {
+    //            if (photo_content ==null){
+    //                $('#Specifications').append(content1);
+                
+    //            }
 
+
+    //        }
+    //        if (content2 !=null){
+    //            if (spec_content ==null){
+    //                $('#Specifications').append(content2);
+                
+    //            }
+
+    //        }
+    //    });
+   
 
 		$.ajax({
 			type:"GET",
@@ -316,9 +346,9 @@
                     var i = 0;
 				    $.each(result,function(key,value){
                         if (i==0)
-                            $('.options-containerSelect').append("<div class='option list-group-item' id='option1'> <input type='radio' class='radio' name='CategoryId' value='"+value.id+"' id='rad-"+value.id+"' /> <label for='film' >"+value.name+"</label></div>");  
+                            $('.options-containerSelect').append("<div class='option list-group-item' id='option1'> <input type='radio' class='radio' name='CategoryId' value='"+value.id+"' id='rad-"+value.id+"' /> <label for='film'  >"+value.name+"</label></div>");  
                         else
-                            $('.options-containerSelect').append("<div class='option list-group-item'> <input type='radio' class='radio' name='CategoryId'  value='"+value.id+"'   id='rad-"+value.id+"' /> <label for='film'>"+value.name+"</label></div>");  
+                            $('.options-containerSelect').append("<div class='option list-group-item'> <input type='radio' class='radio' name='CategoryId'  value='"+value.id+"'   id='rad-"+value.id+"' /> <label for='film' >"+value.name+"</label></div>");  
                         i= i+1;
                     });
                
@@ -355,7 +385,6 @@ function eventForCat(){
 
     selected.addEventListener("click", () => {
         optionsContainer.classList.toggle("active");
-
         searchBox.value = "";
         filterList("");
 
@@ -385,12 +414,11 @@ function eventForCat(){
                      $("<div><input id='searchbox' class='search__input' type='text' placeholder='Search'></div>").insertBefore('#Specifications');
                      //$('.box').remove();
                      var other = document.getElementById('photo_tab');
-
                      var z=0;
                     if (other != undefined)
                     {
                         content1 = other.innerHTML; 
-                        z=1;
+                        z =1;
 
                     } 
                       $('#spec_tab').remove();
@@ -398,30 +426,32 @@ function eventForCat(){
 
                     if (result != null){
                         var i = 0;
-                        $('#Specifications').append("<div id='spec_tab'></div>");
-
+                         $('#Specifications').append("<div id='spec_tab'></div>");
 				        $.each(result,function(key,value){
-                          
-                              $('#spec_tab').append(" <div class='box'><div id='con-"+ value.id+"' class='card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]' data-toggle='collapse' data-target='#coll-"+value.id+"'aria-expanded='false' aria-controls='coll-"+value.id+"'>"+ value.name+"</div><div id='coll-"+value.id+"' class='collapse' aria-labelledby='head-"+value.id +"' data-parent='#accordion'><div class='card-body'><input name='SpecsId[]' type='checkbox' id='Id-"+value.id+"' style='display:none;' value= '' /> <input name='SpecsValue[]' class='form-control inp-coll' id='inp-"+value.id+"' type='text' placeholder='Enter Value'/></div></div></div>");
+                            
+                              $('#spec_tab').append(" <div class='box'  ><div id='con-"+ value.id+"' class='card-header hover:cursor-pointer hover:border-l-8 text-[#000000] border-[#48abf7]' data-toggle='collapse' data-target='#coll-"+value.id+"'aria-expanded='false' aria-controls='coll-"+value.id+"'>"+ value.name+"</div><div id='coll-"+value.id+"' class='collapse' aria-labelledby='head-"+value.id +"' data-parent='#accordion'><div class='card-body'><input name='SpecsId[]' type='checkbox' id='Id-"+value.id+"' style='display:none;' value= '' /> <input name='SpecsValue[]' class='form-control inp-coll' id='inp-"+value.id+"' type='text' placeholder='Enter Value'/></div></div></div>");
 
 			                                   
                         });
+                        
                
                     }
-                             if (z==1){
+                            if (z==1){
                             $("#Specifications").append("<div  id='photo_tab' style='display:none;'>"+content1+"</div>");
 
                                 }
                             eventForSpec();
-                            $('#photo_id').removeClass('active');
+                             $('#photo_id').removeClass('active');
                             $('#spec_id').addClass('active');
                             $('#SpecModal').modal("toggle");
+
                             var json_model = '@Html.Raw(Json.Serialize(Model))';
-                            var ob = JSON.parse(json_model);
+                            var ob = JSON.parse(json_model); 
                             if (ob.additionalPhoto != null){
                                 document.getElementById('photo_id').click();
                             }
-                            document.getElementById('spec_id').click();
+                             document.getElementById('spec_id').click();
+                            console.log(ob);
                             if(ob.specsId != null)
                             {
                                 var specsId = ob.specsId;
@@ -431,8 +461,10 @@ function eventForCat(){
                                     });
                                 specs = arrayWithoutNull;
                                 for(i=0; i<specsId.length;i++  ){
-                                    document.getElementById("inp-"+specsId[i]).value= specs[i];
-                                    //document.getElementById("inp-"+specsId[i]).setAttribute("value",  specs[i]);
+                                    
+                                    //document.getElementById("inp-"+specsId[i]).value= specs[i];
+                                    //console.log(specs.length);
+                                    document.getElementById("inp-"+specsId[i]).setAttribute("value",  specs[i]);
                                     document.getElementById("con-"+specsId[i]).classList.add("border-l-8"); 
                                     //document.getElementById("con-"+specsId[i]).click();
                                     document.getElementById('Id-'+specsId[i]).setAttribute("checked", true);
@@ -443,8 +475,6 @@ function eventForCat(){
                               
                                
                             }
-                              
-                            
                             
                                 
                             
@@ -528,14 +558,18 @@ let cards = document.querySelectorAll('.box')
         var specsvalue = document.getElementById('inp-'+nm);
         if($(event.target).val())
         {
+           
             $(conId).addClass('border-l-8'); 
             
             SpecId.setAttribute("value", nm);
             //SpecId.disabled= false;
+            //SpecId.checked= true;
             SpecId.setAttribute("checked",true);
-            //SpecId.disabled= true;
-            var t = $(event.target).val();
+
+             var t = $(event.target).val();
             specsvalue.setAttribute("value",t);
+
+            //SpecId.disabled= true;
 
 
         }
@@ -543,17 +577,20 @@ let cards = document.querySelectorAll('.box')
         {
             $(conId).removeClass('border-l-8');
             //SpecId.disabled= false;
+
+
+            //SpecId.checked= false;
             //SpecId.setAttribute("checked",false);
             SpecId.removeAttribute("checked");
-            //SpecId.disabled= true;;
 
+            //SpecId.disabled= true;;
         }
         
     });
 
 
-
-
+    //$('#photo_id').removeClass('active');
+    //$('#spec_id').addClass('active');
     //$('#SpecModal').modal("toggle");
 
 

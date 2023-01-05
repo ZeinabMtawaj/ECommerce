@@ -22,6 +22,8 @@ namespace Ecommerce.Controllers
         public IActionResult Index()
         {
             var lambdas = new List<Expression<Func<Product, object>>>();
+            lambdas.Add(x => x.ProductSpecificationValues);
+            lambdas.Add(x => x.Photos);
             lambdas.Add(x => x.Category);
             var items = _uow.ProductRepo.FindAll(x => x.Id >= 1, null, null,lambdas);
             ViewBag.cols = this.GetColNames();
@@ -32,6 +34,35 @@ namespace Ecommerce.Controllers
             ViewBag.deleteController = "Product";
             ViewBag.deleteAction = "Delete";
             var viewItems = items.Select(item => _mapper.Map<ProductViewModel>(item));
+            var i = 0;
+            foreach(var item in items)
+            {
+                var photos = item.Photos;
+                var specs = item.ProductSpecificationValues;
+                var specIds = new List<String>();
+                var specValues = new List<String>();
+                var additional = new List<String>();
+
+                if (specs != null)
+                {
+                    foreach (var spec in specs)
+                    {
+                        specIds.Add((spec.SpecificationId).ToString());
+                        specValues.Add(spec.Value);
+                    }
+                    viewItems.ElementAt(i).SpecsId = specIds;
+                    viewItems.ElementAt(i).SpecsValue = specValues;
+                }
+                if (photos != null)
+                {
+                    foreach (var photo in photos)
+                    {
+                        additional.Add(photo.Path);
+                    }
+                    viewItems.ElementAt(i).AdditionalPhoto = additional;
+                }
+                i = i + 1;  
+            }
             return View(viewItems);
         }
 
@@ -198,10 +229,11 @@ namespace Ecommerce.Controllers
 
 
                         };
+                        var psv_old = _uow.ProductSpecificationValueRepo.Find(x=>(x.ProductId==z)&&(x.SpecificationId == e)&&(x.Value == b));
                         int index = psv.FindIndex(x => ((x.SpecificationId == e) && (x.ProductId == z)));
                         if (index != -1)
                         {
-                            _uow.ProductSpecificationValueRepo.Update(productSpecificationValue);
+                            _uow.ProductSpecificationValueRepo.Update(psv_old);
                             ids_list[index]=0;
 
 
@@ -238,7 +270,7 @@ namespace Ecommerce.Controllers
                         var index = ph.FindIndex(x => ((x.Path == p) && (x.ProductId == z)));
                         if (index != -1)
                         {
-                            _uow.PhotoRepo.Update(photo);
+                            //_uow.PhotoRepo.Update(photo);
                             ids_list2[index]=0;
                             
 
