@@ -239,11 +239,11 @@ namespace Ecommerce.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(ProductViewModel obj)
         {
-            //if (IsSKUExist(obj.Sku, obj.Id))
-            //{
-            //    ModelState.AddModelError("SKU", "The SKU field already exists.");
-            //    return View(obj);
-            //}
+            if (IsSKUExist(obj.Sku, obj.Id))
+            {
+                ModelState.AddModelError("SKU", "The SKU field already exists.");
+                return View(obj);
+            }
 
 
             if (ModelState.IsValid)
@@ -304,11 +304,15 @@ namespace Ecommerce.Controllers
 
 
                         };
-                        var psv_old = _uow.ProductSpecificationValueRepo.Find(x=>(x.ProductId==z)&&(x.SpecificationId == e)&&(x.Value == b));
+                        var psv_old = _uow.ProductSpecificationValueRepo.Find(x=>(x.ProductId==z)&&(x.SpecificationId == e));
+                        if (psv_old != null) { 
+                            productSpecificationValue.Id = psv_old.Id;
+                        }
+                        psv_old = null;
                         int index = psv.FindIndex(x => ((x.SpecificationId == e) && (x.ProductId == z)));
                         if (index != -1)
                         {
-                            _uow.ProductSpecificationValueRepo.Update(psv_old);
+                            _uow.ProductSpecificationValueRepo.Update(productSpecificationValue);
                             ids_list[index]=0;
 
 

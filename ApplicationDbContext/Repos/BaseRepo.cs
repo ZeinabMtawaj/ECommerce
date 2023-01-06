@@ -47,6 +47,8 @@ namespace ApplicationDbContext.Repos
 
         public void Update(T item)
         {
+            //_db.Attach(item);   
+            //_db.Entry(item).State = EntityState.Modified;
             _dbSet.Update(item);
         }
 
