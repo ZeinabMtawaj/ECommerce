@@ -13,6 +13,7 @@ namespace Ecommerce.Controllers
 {
     public class ProductController : BaseController
     {
+        //public static string sku = null;
         public ProductController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
 
@@ -21,6 +22,7 @@ namespace Ecommerce.Controllers
 
         public IActionResult Index()
         {
+           
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.ProductSpecificationValues);
             lambdas.Add(x => x.Photos);
@@ -37,9 +39,15 @@ namespace Ecommerce.Controllers
             var specsId = new List<string>();   
             var specsValue = new List<string>();
             var additions = new List<string>();
+            var AllSpecsId = new List<List<string>>();
+            var AllSpecsValue = new List<List<string>>();
+            var AllAdditions = new List<List<string>>();
             //var categoriesNames = new List<String>(); 
             foreach (var item in items)
             {
+                specsId = new List<string>();
+                specsValue = new List<string>();
+                additions = new List<string>();
                 foreach (var spec in item.ProductSpecificationValues)
                 {
                     specsId.Add(spec.SpecificationId.ToString());
@@ -49,7 +57,11 @@ namespace Ecommerce.Controllers
                 {
                     additions.Add(ph.Path);   
                 }
-                
+                AllSpecsId.Add(specsId);    
+                AllSpecsValue.Add(specsValue);  
+                AllAdditions.Add(additions);    
+
+
             }
             items.ToList().ForEach(item => { item.ProductSpecificationValues = null; item.Photos = null;  });
             items.ToList().ForEach(item => item.Category.Products = null);
@@ -59,12 +71,11 @@ namespace Ecommerce.Controllers
 
             for (var i= 0; i < viewItems.Count(); i++)
             {
-                
-                    viewItems[i].SpecsId = specsId;
-                    viewItems[i].SpecsValue= specsValue;
                
-                    viewItems[i].AdditionalPhoto = additions;
-                
+                    viewItems[i].SpecsId = AllSpecsId[i];
+                    viewItems[i].SpecsValue = AllSpecsValue[i];
+
+                    viewItems[i].AdditionalPhoto = AllAdditions[i];
 
             }
             
@@ -114,11 +125,24 @@ namespace Ecommerce.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(ProductViewModel obj)
         {
-            
+            if (IsSKUExist(obj.Sku))
+            {
+                ModelState.AddModelError("SKU", "The SKU field already exists.");
+                return View(obj);
+            }
+
             if (ModelState.IsValid)
-            {   var specs = obj.SpecsId;
-                var specValues = obj.SpecsValue.Where(s => s != null).ToArray();
-                var additional_photos = obj.AdditionalPhoto.Where(p => p != null).ToArray();
+            {
+                List<String> specs = null;
+                String[] specValues = null;
+                String[] additional_photos = null;
+
+                if (obj.SpecsId != null)
+                     specs = obj.SpecsId;
+                if (obj.SpecsValue != null)
+                     specValues = obj.SpecsValue.Where(s => s != null).ToArray();
+                if (obj.AdditionalPhoto != null)
+                     additional_photos = obj.AdditionalPhoto.Where(p => p != null).ToArray();
                 var newObj = _mapper.Map<Product>(obj);
                 _uow.ProductRepo.Add(newObj);
                 _uow.SaveChanges();
@@ -171,9 +195,10 @@ namespace Ecommerce.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
+            
 
             var obj = FindToView(id);
-
+            //sku = obj.Sku;
             if (obj == null)
             {
                 return NotFound();
@@ -214,11 +239,26 @@ namespace Ecommerce.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(ProductViewModel obj)
         {
+            //if (IsSKUExist(obj.Sku, obj.Id))
+            //{
+            //    ModelState.AddModelError("SKU", "The SKU field already exists.");
+            //    return View(obj);
+            //}
+
+
             if (ModelState.IsValid)
             {
-                var specs = obj.SpecsId;
-                var specValues = obj.SpecsValue.Where(s => s != null).ToArray();
-                var additional_photos = obj.AdditionalPhoto.Where(p => p != null).ToArray();
+                List<String> specs = null;
+                String[] specValues = null;
+                String[] additional_photos = null;
+
+                if (obj.SpecsId != null)
+                    specs = obj.SpecsId;
+                if (obj.SpecsValue != null)
+                    specValues = obj.SpecsValue.Where(s => s != null).ToArray();
+                if (obj.AdditionalPhoto != null)
+                    additional_photos = obj.AdditionalPhoto.Where(p => p != null).ToArray();
+
                 var newObj = _mapper.Map<Product>(obj);
                 _uow.ProductRepo.Update(newObj);
                 //_uow.SaveChanges();
@@ -228,6 +268,7 @@ namespace Ecommerce.Controllers
                 lambdas.Add(x => x.Photos);
 
                 var product_specs = _uow.ProductRepo.Find(x=>(x.Id==z),lambdas);
+                
                 var photos = product_specs.Photos;
                 var productSpecificationValues = product_specs.ProductSpecificationValues;
                 //if (productSpecificationValues != null)
@@ -412,12 +453,23 @@ namespace Ecommerce.Controllers
             return res;
         }
 
-        public JsonResult IsSKUExist(string sku)
+        public bool IsSKUExist(string sku, int? id = null)
         { var obj = _uow.ProductRepo.Find(x => x.Sku == sku);
-            if (obj == null) 
-                return Json(false);
+            if (id != null)
+            {
+                if (obj.Id == id.Value)
+                {
+                    return false;  
+                }
+            }
+            if (obj == null)
+            {
+                return false;
+            }
             else
-                return Json(true);   
+            {
+                return true;
+            }
 
 
 

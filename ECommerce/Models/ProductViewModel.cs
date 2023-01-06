@@ -25,7 +25,7 @@ namespace Ecommerce.Models
         [Url]
         public string? Image { get; set; }
         [Required]
-        [Remote(action: "IsSKUExist", controller:"ProductController", ErrorMessage = "SKU must be unique")]
+        //[Remote(action: "IsSKUExist", controller:"Product", ErrorMessage = "SKU must be unique")]
         [Display(Name = "SKU")]
 
         public string? Sku { get; set; }

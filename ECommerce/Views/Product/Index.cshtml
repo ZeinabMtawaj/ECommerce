@@ -60,6 +60,7 @@
 						</div>
 					</td>
 					<td>
+
 						@if(item.Category !=null)
 						{
 							@item.Category.Name
@@ -268,7 +269,6 @@
             $("#photo_tab").remove();
             if ((photo_content == null) && (content1 == ""))
             {
-                console.log(ob[number]);
                              
 
                 //<span class='col-1'><i class='fa fa-close'></i></span>
@@ -277,7 +277,6 @@
                if (number != -1){
                    if(ob[number].additionalPhoto != null)
                     {
-                        console.log(1);
                         var photos = ob[number].additionalPhoto;
                         for(i=0; i<photos.length; i++){
                         
@@ -379,7 +378,7 @@ function eventForCat(categoryID){
                          $('#Specifications').append("<div id='spec_tab'></div>");
 				        $.each(result,function(key,value){
                             
-                              $('#spec_tab').append(" <div class='box'  ><div id='con-"+ value.id+"' class='card-header hover:cursor-pointer  text-[#000000] border-[#48abf7]' data-toggle='collapse' data-target='#coll-"+value.id+"'aria-expanded='false' aria-controls='coll-"+value.id+"'>"+ value.name+"</div><div id='coll-"+value.id+"' class='collapse' aria-labelledby='head-"+value.id +"' data-parent='#accordion'><div class='card-body'><input name='SpecsId[]' type='checkbox' id='Id-"+value.id+"' style='display:none;' value= '' disabled/> <input name='SpecsValue[]' class='form-control inp-coll' id='inp-"+value.id+"' type='text' placeholder='Enter Value' disabled/></div></div></div>");
+                              $('#spec_tab').append(" <div class='box in'  id ='box-"+value.id+"' ><div id='con-"+ value.id+"' class='card-header hover:cursor-pointer  text-[#000000] border-[#48abf7]' data-toggle='collapse' data-target='#coll-"+value.id+"'aria-expanded='false' aria-controls='coll-"+value.id+"'>"+ value.name+"</div><div id='coll-"+value.id+"' class='collapse' aria-labelledby='head-"+value.id +"' data-parent='#accordion'><div class='card-body'><input name='SpecsId[]' type='checkbox' id='Id-"+value.id+"' style='display:none;' value= '' disabled/> <input name='SpecsValue[]' class='form-control inp-coll' id='inp-"+value.id+"' type='text' placeholder='Enter Value' disabled/></div></div></div>");
 
 			                                   
                         });
@@ -416,12 +415,16 @@ function eventForCat(categoryID){
                                         //document.getElementById("con-"+specsId[i]).click();
                                         document.getElementById('Id-'+specsId[i]).setAttribute("checked", true);
                                         document.getElementById('Id-'+specsId[i]).setAttribute("value", specsId[i]);
+                                       $('#box-'+specsId[i]).removeClass('in');
+
 
 
                                     }
                               
                                
                                 }
+                                $('.in').remove();
+                                
                             }
                             
                                 
