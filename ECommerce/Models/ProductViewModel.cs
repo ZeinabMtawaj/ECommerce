@@ -52,5 +52,8 @@ namespace Ecommerce.Models
 
         public virtual List<String>? AdditionalPhoto { get; set; }
 
+        //public virtual String? CategorName { get; set; }
+
+
     }
 }

@@ -25,6 +25,7 @@ namespace Ecommerce.Controllers
             lambdas.Add(x => x.ProductSpecificationValues);
             lambdas.Add(x => x.Photos);
             lambdas.Add(x => x.Category);
+            //IEnumerable <ProductViewModel> viewItems = null;
             var items = _uow.ProductRepo.FindAll(x => x.Id >= 1, null, null,lambdas);
             ViewBag.cols = this.GetColNames();
             ViewBag.createController = "Product";
@@ -33,36 +34,69 @@ namespace Ecommerce.Controllers
             ViewBag.editAction = "Edit";
             ViewBag.deleteController = "Product";
             ViewBag.deleteAction = "Delete";
-            var viewItems = items.Select(item => _mapper.Map<ProductViewModel>(item));
-            var i = 0;
-            foreach(var item in items)
+            var specsId = new List<string>();   
+            var specsValue = new List<string>();
+            var additions = new List<string>();
+            //var categoriesNames = new List<String>(); 
+            foreach (var item in items)
             {
-                var photos = item.Photos;
-                var specs = item.ProductSpecificationValues;
-                var specIds = new List<String>();
-                var specValues = new List<String>();
-                var additional = new List<String>();
-
-                if (specs != null)
+                foreach (var spec in item.ProductSpecificationValues)
                 {
-                    foreach (var spec in specs)
-                    {
-                        specIds.Add((spec.SpecificationId).ToString());
-                        specValues.Add(spec.Value);
-                    }
-                    viewItems.ElementAt(i).SpecsId = specIds;
-                    viewItems.ElementAt(i).SpecsValue = specValues;
+                    specsId.Add(spec.SpecificationId.ToString());
+                    specsValue.Add(spec.Value);
                 }
-                if (photos != null)
+                foreach(var ph in item.Photos)
                 {
-                    foreach (var photo in photos)
-                    {
-                        additional.Add(photo.Path);
-                    }
-                    viewItems.ElementAt(i).AdditionalPhoto = additional;
+                    additions.Add(ph.Path);   
                 }
-                i = i + 1;  
+                
             }
+            items.ToList().ForEach(item => { item.ProductSpecificationValues = null; item.Photos = null;  });
+            items.ToList().ForEach(item => item.Category.Products = null);
+
+           
+            var viewItems = items.Select(item => _mapper.Map<ProductViewModel>(item)).ToList();
+
+            for (var i= 0; i < viewItems.Count(); i++)
+            {
+                
+                    viewItems[i].SpecsId = specsId;
+                    viewItems[i].SpecsValue= specsValue;
+               
+                    viewItems[i].AdditionalPhoto = additions;
+                
+
+            }
+            
+            //var i = 0;
+            //foreach(var item in items)
+            //{
+            //    var photos = item.Photos;
+            //    var specs = item.ProductSpecificationValues;
+            //    var specIds = new List<String>();
+            //    var specValues = new List<String>();
+            //    var additional = new List<String>();
+
+            //    if (specs != null)
+            //    {
+            //        foreach (var spec in specs)
+            //        {
+            //            specIds.Add((spec.SpecificationId).ToString());
+            //            specValues.Add(spec.Value);
+            //        }
+            //        viewItems.ElementAt(i).SpecsId = specIds;
+            //        viewItems.ElementAt(i).SpecsValue = specValues;
+            //    }
+            //    if (photos != null)
+            //    {
+            //        foreach (var photo in photos)
+            //        {
+            //            additional.Add(photo.Path);
+            //        }
+            //        viewItems.ElementAt(i).AdditionalPhoto = additional;
+            //    }
+            //    i = i + 1;  
+            //}
             return View(viewItems);
         }
 
