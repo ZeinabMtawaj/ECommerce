@@ -19,6 +19,7 @@ namespace ApplicationDbContext.UOW
 
         public IPhotoRepo PhotoRepo { get; set; }
 
+        public ITrendRepo TrendRepo { get; set; }
 
 
 

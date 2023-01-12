@@ -13,7 +13,6 @@ namespace Ecommerce.Controllers
 {
     public class ProductController : BaseController
     {
-        //public static string sku = null;
         public ProductController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
 
@@ -27,6 +26,8 @@ namespace Ecommerce.Controllers
             lambdas.Add(x => x.ProductSpecificationValues);
             lambdas.Add(x => x.Photos);
             lambdas.Add(x => x.Category);
+            lambdas.Add(x => x.Trend);
+
             //IEnumerable <ProductViewModel> viewItems = null;
             var items = _uow.ProductRepo.FindAll(x => x.Id >= 1, null, null,lambdas);
             ViewBag.cols = this.GetColNames();
@@ -42,6 +43,7 @@ namespace Ecommerce.Controllers
             var AllSpecsId = new List<List<string>>();
             var AllSpecsValue = new List<List<string>>();
             var AllAdditions = new List<List<string>>();
+            var AllTrend = new List<string>();
             //var categoriesNames = new List<String>(); 
             foreach (var item in items)
             {
@@ -57,16 +59,25 @@ namespace Ecommerce.Controllers
                 {
                     additions.Add(ph.Path);   
                 }
+                if (item.Trend != null) {
+                    AllTrend.Add("trend");
+                }
+                else
+                {
+                    AllTrend.Add(null);
+                }
+
                 AllSpecsId.Add(specsId);    
                 AllSpecsValue.Add(specsValue);  
                 AllAdditions.Add(additions);    
 
-
             }
-            items.ToList().ForEach(item => { item.ProductSpecificationValues = null; item.Photos = null;  });
-            items.ToList().ForEach(item => item.Category.Products = null);
+            items.ToList().ForEach(item => { item.ProductSpecificationValues = null; item.Photos = null; item.Category.Products = null; item.Trend = null; });
+                //if (item.Trend != null) { item.Trend.Product = null;  } });
+            //items.ToList().ForEach(item => item.Category.Products = null);
 
-           
+
+
             var viewItems = items.Select(item => _mapper.Map<ProductViewModel>(item)).ToList();
 
             for (var i= 0; i < viewItems.Count(); i++)
@@ -76,6 +87,7 @@ namespace Ecommerce.Controllers
                     viewItems[i].SpecsValue = AllSpecsValue[i];
 
                     viewItems[i].AdditionalPhoto = AllAdditions[i];
+                viewItems[i].IsTrend = AllTrend[i];
 
             }
             
@@ -136,7 +148,7 @@ namespace Ecommerce.Controllers
                 List<String> specs = null;
                 String[] specValues = null;
                 String[] additional_photos = null;
-
+                String trend = obj.IsTrend;
                 if (obj.SpecsId != null)
                      specs = obj.SpecsId;
                 if (obj.SpecsValue != null)
@@ -185,6 +197,11 @@ namespace Ecommerce.Controllers
                     _uow.SaveChanges();
                     
                 }
+                if (trend != null)
+                {
+                    _uow.TrendRepo.Add(new Trend { ProductId =z});
+                }
+                _uow.SaveChanges();
                 TempData["success"] = "Created Successfully";
                 return RedirectToAction("Index");
             }
@@ -205,11 +222,14 @@ namespace Ecommerce.Controllers
             }
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.ProductSpecificationValues);
-            lambdas.Add(x => x.Photos); 
+            lambdas.Add(x => x.Photos);
+            lambdas.Add(x => x.Trend);
             var product_specs = _uow.ProductRepo.Find(x => x.Id == id.Value, lambdas);
             var photos = product_specs.Photos;
             var specs = product_specs.ProductSpecificationValues;
-            var specIds= new List<String>();
+            var trend = product_specs.Trend;
+
+            var specIds = new List<String>();
             var specValues = new List<String>();
             var additional = new List<String>();
 
@@ -231,6 +251,9 @@ namespace Ecommerce.Controllers
                 }
                 obj.AdditionalPhoto = additional;
             }
+            if (trend != null) { 
+                obj.IsTrend = "trend";  
+            }
             return View(obj);
         }
 
@@ -251,6 +274,7 @@ namespace Ecommerce.Controllers
                 List<String> specs = null;
                 String[] specValues = null;
                 String[] additional_photos = null;
+                String trend = obj.IsTrend;
 
                 if (obj.SpecsId != null)
                     specs = obj.SpecsId;
@@ -371,6 +395,17 @@ namespace Ecommerce.Controllers
                     }
                     _uow.SaveChanges();
                 }
+                var isTrend = _uow.TrendRepo.Find(x=> x.ProductId==z );
+                if ((isTrend == null)&& (trend != null))
+                {
+                    
+                    _uow.TrendRepo.Add(new Trend { ProductId = z });
+                }
+                else if ((isTrend != null) && (trend == null))
+                {
+                    _uow.TrendRepo.Delete(isTrend.Id);
+                }
+                _uow.SaveChanges();
                 TempData["success"] = "Updated Successfully";
                 return RedirectToAction("Index");
             }

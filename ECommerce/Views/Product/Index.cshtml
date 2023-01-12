@@ -70,9 +70,17 @@
 @*						<button data-toggle="tooltip" data-placement="top" title="Photos" class="btn btn-link btn-simple-danger mt-1"> 
 									<i class="fa fa-camera"></i>       
 						</button>*@
-						<span class="specPartialCaller btn border-0" data-toggle="modal" data-target="#specsMainModel" item-id="@item.Id" number = "@i"> 
-							<i class='fas fa-angle-down text-primary text-3xl'></i>
-						</span>
+                            @if (item.IsTrend != null)
+                            {
+                                <span class="specPartialCaller btn border-0" data-toggle="modal" data-target="#specsMainModel" item-id="@item.Id" number = "@i"> 
+                                    <i class='fas fa-angle-down text-danger text-3xl'></i>
+                                </span>
+                            }
+                            else{
+                                <span class="specPartialCaller btn border-0" data-toggle="modal" data-target="#specsMainModel" item-id="@item.Id" number = "@i"> 
+							        <i class='fas fa-angle-down text-primary text-3xl'></i>
+						        </span>
+                            }
 					</td>
 					@*<td>
 						<button data-toggle="tooltip" data-placement="top" title="Specification" class="btn btn-link btn-simple-danger mt-1"> 

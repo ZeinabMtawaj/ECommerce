@@ -21,6 +21,9 @@ namespace ApplicationDbContext.UOW
 
         public IPhotoRepo PhotoRepo { get; set; }
 
+        public ITrendRepo TrendRepo { get; set; }
+
+
 
 
 
@@ -34,13 +37,15 @@ namespace ApplicationDbContext.UOW
             SpecificationRepo = new SpecificationRepo(db);
             CategorySpecificationValueRepo = new CategorySpecificationValueRepo(db);
             ProductSpecificationValueRepo = new ProductSpecificationValueRepo(db);
-            PhotoRepo = new PhotoRepo(db);  
+            PhotoRepo = new PhotoRepo(db);
+            TrendRepo = new TrendRepo(db);
 
 
 
-    }
 
-    public void RollBack()
+        }
+
+        public void RollBack()
         {
             _db.Dispose();
         }

@@ -91,7 +91,7 @@
              </div>
              <span class="col mt-2" style="margin-left:-350px">
                  <span style="border-width:3px !important;" class="trend text-[#e5e7eb] hover:cursor-pointer btn-border border d-flex justify-content-center align-items-center rounded-circle w-9 h-9" data-toggle="tooltip" title="Trend!">
-                        <input type="checkbox" name="trend" hidden/>
+                        <input type="checkbox" name="IsTrend" value ="trend" id ="isTrend"  hidden/>
 	                    <i class="fa fa-star fs-5"></i>
                  </span>
              </span>
@@ -159,10 +159,31 @@
     //}, function(){
     //    $(this).toggleClass("btn-primary");
     //});
+    var trend =0;
     $('.trend').click(function(){
         $(this).toggleClass("btn-primary");
-        $(this).children(":first").click();
+        //$(this).children(":first").click();
+        trend ++;
+
+        if (trend %2 ==0){
+            document.getElementById('isTrend').checked=false;
+        }
+        else{
+             document.getElementById('isTrend').checked=true;
+        }
+    
     });
+
+    let json_model = '@Html.Raw(Json.Serialize(Model))';
+    let ob = JSON.parse(json_model);
+    //console.log(ob);
+
+      if(ob.isTrend != null)
+    {
+        //document.getElementById('isTrend').click();
+        trend =0;
+        document.getElementsByClassName('trend')[0].click();
+    }
 </script>
  
 
