@@ -7,6 +7,8 @@ using ECommerce.Models.ViewModels;
 using ApplicationDbContext.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Controllers
 {
@@ -26,6 +28,12 @@ namespace ECommerce.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            //_uow.GetContext().Roles.Add(new ApplicationDbContext.Models.UserRole()
+            //{
+            //    Name = "Admin",
+            //    NormalizedName = "ADMIN"
+            //});
+            //_uow.GetContext().SaveChanges();
             UserRegisterVM userVM = new UserRegisterVM();
             return View(userVM);
         }
@@ -37,11 +45,11 @@ namespace ECommerce.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User {CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now, FirstName = userVM.User.FirstName, LastName = userVM.User.LastName, PhoneNumber = userVM.User.PhoneNumber, Email = userVM.User.Email, UserName= userVM.User.FirstName + userVM.User.LastName};
+                var user = new User {CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now, FirstName = userVM.User.FirstName, LastName = userVM.User.LastName, PhoneNumber = userVM.User.PhoneNumber, Email = userVM.User.Email, UserName = userVM.User.Email };
                 var result = await _userManager.CreateAsync(user, userVM.User.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Costumer");
+                    await _userManager.AddToRoleAsync(user, "Customer");
 
                     var addressController = new AddressController(_uow, _mapper);
                     addressController.Create(user.Id, userVM.Addresses);
@@ -90,11 +98,14 @@ namespace ECommerce.Controllers
         }
         private void RegisterErrorsToView()
         {
+            
             if (ModelState == null)
                 return;
             if (ModelState.ContainsKey("DBError") && ModelState["DBError"].Errors.Count > 0)
             {
-               TempData["error"] = ModelState["DBError"].Errors[0].ErrorMessage;
+                var errMsg = ModelState["DBError"].Errors[0].ErrorMessage;
+                errMsg = errMsg.Replace("Username", "Email");
+                TempData["error"] = errMsg;
             }
             if (ModelState.ContainsKey("User.FirstName") && ModelState["User.FirstName"].Errors.Count > 0)
             {
@@ -138,11 +149,11 @@ namespace ECommerce.Controllers
                 TempData["error"] = ModelState["DBError"].Errors[0].ErrorMessage;
             }
            
-            if (ModelState.ContainsKey("User.Email") && ModelState["User.Email"].Errors.Count > 0)
+            if (ModelState.ContainsKey("Email") && ModelState["Email"].Errors.Count > 0)
             {
                 ViewBag.EmailErrMsg = ModelState["Email"].Errors[0].ErrorMessage;
             }
-            if (ModelState.ContainsKey("User.Password") && ModelState["User.Password"].Errors.Count > 0)
+            if (ModelState.ContainsKey("Password") && ModelState["Password"].Errors.Count > 0)
 
             {
                 ViewBag.PasswordErrMsg = ModelState["Password"].Errors[0].ErrorMessage;

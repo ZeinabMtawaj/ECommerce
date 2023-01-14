@@ -1,4 +1,5 @@
 ﻿using ApplicationDbContext.IRepos;
+using ApplicationDbContext.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +22,7 @@ namespace ApplicationDbContext.UOW
 
         public IAddressRepo AddressRepo { get; set; }
 
+        public ECommerceDBContext GetContext();
         public void SaveChanges ();
 
         public void RollBack();

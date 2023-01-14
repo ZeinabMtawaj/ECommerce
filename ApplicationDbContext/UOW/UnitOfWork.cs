@@ -38,6 +38,10 @@ namespace ApplicationDbContext.UOW
             AddressRepo = new AddressRepo(db);
     }
 
+    public ECommerceDBContext GetContext()
+    {
+        return _db;
+    }
     public void RollBack()
         {
             _db.Dispose();

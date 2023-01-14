@@ -17,6 +17,10 @@ builder.Services.AddDbContext<ECommerceDBContext>(options => options.UseSqlServe
 builder.Services.AddIdentity<User, UserRole>()
             .AddEntityFrameworkStores<ECommerceDBContext>()
             .AddDefaultTokenProviders();
+
+
+
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
