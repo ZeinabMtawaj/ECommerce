@@ -18,10 +18,9 @@ namespace ApplicationDbContext.Models
         //public int Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        //public DateTime CreatedDate { get; set; }
-        //public DateTime UpdatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
 
-        public string? Photo { get; set; }
 
 
         public virtual ICollection<Address> Addresses { get; set; }

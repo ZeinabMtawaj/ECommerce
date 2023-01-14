@@ -19,8 +19,7 @@ namespace ApplicationDbContext.UOW
 
         public IPhotoRepo PhotoRepo { get; set; }
 
-
-
+        public IAddressRepo AddressRepo { get; set; }
 
         public void SaveChanges ();
 
