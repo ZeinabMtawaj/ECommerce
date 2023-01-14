@@ -67,6 +67,7 @@ namespace Ecommerce.Controllers
                 obj.Category.Id = newObj.Id;
                 var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper);
                 categorySpecificationValueController.Create(obj);
+                TempData["success"] = "Category Created Successfully!";
                 return RedirectToAction("Index");
             }
            
@@ -106,6 +107,7 @@ namespace Ecommerce.Controllers
                 _uow.SaveChanges();
                 var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper);
                 categorySpecificationValueController.Edit(obj);
+                TempData["success"] = "Category Updated Successfully!";
                 return RedirectToAction("Index");
             }
             return View(obj);

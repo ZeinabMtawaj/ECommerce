@@ -88,7 +88,7 @@ namespace ECommerce.Controllers
                 var result = await _signInManager.PasswordSignInAsync(userVM.Email, userVM.Password, false /*remember me*/, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    TempData["success"] = "Logged In Successffuly";
+                    TempData["success"] = "Logged In Successfuly";
                     return RedirectToAction("Register", "User");
                 }
                 ModelState.AddModelError("DBError", "Invalid login attempt.");

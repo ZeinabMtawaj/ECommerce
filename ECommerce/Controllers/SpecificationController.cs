@@ -63,6 +63,7 @@ namespace Ecommerce.Controllers
                 var newObj = _mapper.Map<Specification>(obj);
                 _uow.SpecificationRepo.Add(newObj);
                 _uow.SaveChanges();
+                TempData["success"] = "Specifiction Created Successfully!";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -90,6 +91,7 @@ namespace Ecommerce.Controllers
                 var newObj = _mapper.Map<Specification>(obj);
                 _uow.SpecificationRepo.Update(newObj);
                 _uow.SaveChanges();
+                TempData["success"] = "Specifiction Updated Successfully!";
                 return RedirectToAction("Index");
             }
             return View(obj);
