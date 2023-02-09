@@ -2,19 +2,106 @@
 <!-- ======= Header ======= -->
 
 
-  <header id="header" class="fixed-top d-flex align-items-center">
+@*  <header id="header" class="container  d-flex align-items-center " >
+*@
+         @* <div class=" d-flex align-items-center justify-content-between border-bottom " >
+
+
+
+      <nav id="navbar" class="navbar">
+        <ul>
+
+
+          <li class="nav-item dropdown position-static">
+	              <a class="nav-link dropdown-toggle " href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Eur</a>
+	              <div class="dropdown-menu p-4 w-20" aria-labelledby="dropdown04">
+	              	<div class="row" >
+	              		<a class="dropdown-item  border-bottom" href="#">Eur</a>
+			            <a class="dropdown-item  border-bottom" href="#">Usd</a>
+
+	              	</div>
+	              </div>
+	            </li>
+
+
+
+
+        
+          <li class="nav-item dropdown position-static">
+	              <a class="nav-link dropdown-toggle " href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lang</a>
+	              <div class="dropdown-menu p-4 w-20" aria-labelledby="dropdown04">
+	              	<div class="row" >
+	              		<a class="dropdown-item  border-bottom" href="#">English</a>
+			            <a class="dropdown-item  border-bottom" href="#">French</a>
+                        <a class="dropdown-item  border-bottom" href="#">Arabic</a>
+
+
+	              	</div>
+	              </div>
+	            </li>
+
+
+
+
+                <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
+            <li><a href="#" data-toggle="modal"><i class="icon-user"></i>Login</a></li>
+                <li><a href="#" data-toggle="modal"><i class="icon-user"></i>Register</a></li>
+
+         
+       
+
+          
+        </ul>
+      </nav><!-- .navbar -->
+
+
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*@
+@*    <div id="header" class="fixed-top container d-flex align-items-center justify-content-between ">
+*@
+<header id="header" class="fixed-top d-flex align-items-center">
     <div class="container d-flex align-items-center justify-content-between">
 
       <div class="logo">
-        <h1><a href="index.html">Vesperr</a></h1>
+        <h1><a href="index.html">Ecommerce</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-
+@*          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+*@
 
           <li class="nav-item dropdown position-static">
 	              <a class="nav-link dropdown-toggle " href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</a>
@@ -117,7 +204,28 @@
 
 
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-          <li><a class="getstarted scrollto" href="#about">Start Shopping</a></li>
+@*          <li><a class="getstarted scrollto" href="#about"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li> *@
+
+
+
+ <li class="nav-item dropdown position-static ">
+	              <a class="nav-link dropdown-toggle rounded active" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sign In/Up</a>
+	              <div class="dropdown-menu p-3 w-20 ml-12" aria-labelledby="dropdown04">
+	              	<div class="row" >
+	              	    <div class="col-md-12">
+	              			<a class="dropdown-item  rounded border-bottom p-2" href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a>
+			                <a class="dropdown-item rounded border-bottom p-2" href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Sign Up</a>
+                        </div>
+	              </div>
+               </div>
+	            </li>
+
+
+
+
+
+
+
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -195,7 +303,6 @@
 
     </script>
   @*}*@
-
 
 
      </header><!-- End Header -->
