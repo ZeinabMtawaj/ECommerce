@@ -269,6 +269,12 @@
                 }
 
                 $('#categories').append("<div class='col-md-6 d-none d-md-block'><a class='h-100 w-100 rounded img' href='#' id='cat-img' style='background-image: url(img/more-services-1.jpg);'></a></div>");   
+
+                
+               $('#categories').hover(function(event){
+                 $('#cat-img') .css("background-image", "url(img/more-services-1.jpg)");
+                  });
+
                  eventForChangeImage();  
                     
                         
