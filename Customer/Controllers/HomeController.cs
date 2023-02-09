@@ -13,7 +13,9 @@ namespace Customer.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            TrendController trendCon = new TrendController(_uow, _mapper);
+            var trends = trendCon.GetAll();
+            return View(trends);
         }
     }
 }

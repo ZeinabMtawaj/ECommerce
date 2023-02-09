@@ -3,6 +3,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+    @model IEnumerable<Product> 
+
+
 
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="d-flex align-items-center">
@@ -430,7 +433,7 @@
       <div class="container">
 
         <div class="section-title" data-aos="fade-up">
-          <h2>Portfolio</h2>
+          <h2>Trends</h2>
           <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem</p>
         </div>
 
@@ -438,30 +441,44 @@
           <div class="col-lg-12 d-flex justify-content-center">
             <ul id="portfolio-flters">
               <li data-filter="*" class="filter-active">All</li>
-              <li data-filter=".filter-app">App</li>
-              <li data-filter=".filter-card">Card</li>
-              <li data-filter=".filter-web">Web</li>
+                        @foreach (var trend in Model)
+                        {
+                            <li data-filter=".filter-"+@trend.Sku>@trend.Sku</li>
+                            @*<li data-filter=".filter-card">Card</li>
+                                <li data-filter=".filter-web">Web</li>*@
+                    }    
             </ul>
           </div>
         </div>
 
-        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="400">
+        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="400" id="trends">
 
-          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-            <div class="portfolio-wrap">
-              <img src="~/img/portfolio/portfolio-1.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>App 1</h4>
-                <p>App</p>
-                <div class="portfolio-links">
-                  <a href="~/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+
+
+            @*filter-app*@
+
+            @*<div class='col-lg-4 col-md-6 portfolio-item'><div class='portfolio-wrap'><img src='~/img/portfolio/portfolio-1.jpg' class='img-fluid' alt=''> <div class='portfolio-info'> <h4>App 1</h4><p>App</p> <div class='portfolio-links'><a href='~/img/portfolio/portfolio-1.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a asp-action='Detail' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>*@
+
+
+
+        @foreach( var trend in Model){
+
+              <div class="col-lg-4 col-md-6 portfolio-item filter-"+@trend.Sku>
+                <div class="portfolio-wrap">
+                  <img src="~/img/portfolio/portfolio-1.jpg" class="img-fluid h-100" alt="">
+                  <div class="portfolio-info">
+                    <h4>@trend.Name</h4>
+                    <p>@trend.Price</p>
+                    <div class="portfolio-links">
+                      <a href="~/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>
+                      <a asp-action="Detail" title="More Details"><i class="bx bx-link"></i></a>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+          }
 
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+          @* <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
               <img src="~/img/portfolio/portfolio-2.jpg" class="img-fluid" alt="">
               <div class="portfolio-info">
@@ -571,7 +588,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div>*@
 
         </div>
 
@@ -874,6 +891,57 @@
 
       </div>
     </section><!-- End Contact Section -->
+
+
+
+
+
+
+
+
+
+
+@*
+
+    
+	<script type="text/javascript" >
+
+
+
+
+        
+		$.ajax({
+			type:"GET",
+			url: '@(Url.Action("getAll","Trend"))',
+			dataType:"json",
+			success:function(result){
+                if (result != null){
+				    $.each(result,function(key,value){
+                       console.log(value);
+                           //  $('#trends').append("<div class='col-lg-4 col-md-6 portfolio-item filter-'"+"value.category.name"+"><div class='portfolio-wrap'><img src='~/img/portfolio/portfolio-1.jpg' class='img-fluid' alt=''> <div class='portfolio-info'> <h4>"+value.name+"</h4><p>"+value.price+"</p> <div class='portfolio-links'><a href='~/img/portfolio/portfolio-1.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a asp-action='Detail' asp-route-id='"+value.id+"' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
+                          //  $('#trends').append("<div class='col-lg-4 col-md-6 portfolio-item'><div class='portfolio-wrap'><img src='~/img/portfolio/portfolio-1.jpg' class='img-fluid ' alt=''> <div class='portfolio-info'> <h4>App 1</h4><p>App</p> <div class='portfolio-links'><a href='~/img/portfolio/portfolio-1.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a asp-action='Detail' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
+                    });
+                    	
+               
+                }
+
+                
+                        
+
+			},
+			error: function(req, status, error){
+			console.log(status);
+			}
+            });
+
+
+
+           
+
+
+
+
+    </script>*@
 
   </main><!-- End #main -->
 
