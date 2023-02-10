@@ -42,14 +42,23 @@ namespace Customer.Controllers
                     break;
                 }
                 trend = cont.getCategory(item.ProductId);
-                if (trend.Category != null)
+
+
+               /* if (trend.Category != null)
                 {
                     name = trend.Category.Name;
                 }
-                trend.Category = null;
+                trend.Category = null;*/
+
+
             /*    var viewObj = _mapper.Map<ProductViewModel>(trend);
                 viewObj.IsTrend = name;*/
-                trend.Sku = name;   
+
+
+
+
+/*
+                trend.Sku = name;   */
 
                 trends.Add(trend);
 

@@ -443,7 +443,7 @@
               <li data-filter="*" class="filter-active">All</li>
                         @foreach (var trend in Model)
                         {
-                            <li data-filter=".filter-"+@trend.Sku>@trend.Sku</li>
+                            <li data-filter=".filter-"+@trend.Category.Name>@trend.Category.Name</li>
                             @*<li data-filter=".filter-card">Card</li>
                                 <li data-filter=".filter-web">Web</li>*@
                     }    
@@ -471,7 +471,7 @@
                     <p>@trend.Price</p>
                     <div class="portfolio-links">
                       <a href="~/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>
-                      <a asp-action="Detail" title="More Details"><i class="bx bx-link"></i></a>
+                      <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="More Details"><i class="bx bx-link"></i></a>
                     </div>
                   </div>
                 </div>

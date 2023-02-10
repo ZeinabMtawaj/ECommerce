@@ -2,17 +2,20 @@
     ViewData["Title"] = "Product Detail";
 }
 
+    @model Product
+
+
 <main id="main">
 
     <!-- ======= Breadcrumbs ======= -->
-    <section id="breadcrumbs" class="breadcrumbs">
+    <section id="breadcrumbs" class="breadcrumbs mr-0">
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>Portfolio Details</h2>
+          <h2>Product Details</h2>
           <ol>
-            <li><a href="index.html">Home</a></li>
-            <li>Portfolio Details</li>
+            <li><a href="index.html">Product</a></li>
+            <li>Product Details</li>
           </ol>
         </div>
 
@@ -25,43 +28,189 @@
 
         <div class="row gy-4">
 
-          <div class="col-lg-8">
+          <div class="col-lg-7">
             <div class="portfolio-details-slider swiper">
               <div class="swiper-wrapper align-items-center">
 
-                <div class="swiper-slide">
-                  <img src="assets/img/portfolio/portfolio-details-1.jpg" alt="">
-                </div>
 
                 <div class="swiper-slide">
+                  <img src=@Model.Image style="height:320px;" alt="">
+                </div>
+
+                @if(@Model.Photos != null){
+                  @foreach(var item in @Model.Photos){
+                        <div class="swiper-slide">
+                          <img src=item alt="">
+                        </div>
+                   }
+                }
+                @*<div class="swiper-slide">
                   <img src="assets/img/portfolio/portfolio-details-2.jpg" alt="">
                 </div>
 
                 <div class="swiper-slide">
                   <img src="assets/img/portfolio/portfolio-details-3.jpg" alt="">
-                </div>
+                </div>*@
 
               </div>
               <div class="swiper-pagination"></div>
             </div>
-          </div>
 
-          <div class="col-lg-4">
-            <div class="portfolio-info">
-              <h3>Project information</h3>
-              <ul>
-                <li><strong>Category</strong>: Web design</li>
-                <li><strong>Client</strong>: ASU Company</li>
-                <li><strong>Project date</strong>: 01 March, 2020</li>
-                <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>
-              </ul>
-            </div>
-            <div class="portfolio-description">
-              <h2>This is an example of portfolio detail</h2>
+            <div class="portfolio-info ">
+               <h3>Description</h3>
+
+               
+                
+
+
+
               <p>
-                Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
+                  @Model.Description
               </p>
             </div>
+
+
+          </div>
+
+          <div class="col-lg-5">
+            <div class="portfolio-info ">
+              <h3>@Model.Name</h3>
+              <ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*                <li><strong>Name</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @Model.Name</li>
+*@
+
+
+
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*               <li><strong>SKU</strong>: @Model.Sku</li>
+*@                @if (@Model.Category !=null)
+                {
+                    <li><strong>Category</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @Model.Category.Name</li>
+                }
+                <li><strong>Price</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @Model.Price</li>
+                
+@*                <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>                  
+*@             
+                @foreach(var spec in @Model.ProductSpecificationValues)
+                {
+                    <li><strong>@spec.Specification.Name</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @spec.Value</li>
+            
+                }
+            </ul>
+
+            <li class="row mb-3 mt-4 ml-4">
+                    <label  class="col-sm-3 form-label font-weight-bold"><strong>Quantity:</strong></label>
+                    <div class="col-sm-9">
+                        <input type="number" "class="form-control" >
+                    </div>
+                </li>
+
+            @*<i class='fa fa-shopping-cart'></i>*@
+@*
+             <div class="row mb-3 mt-4 ml-4">
+            <label  class="col-sm-3 form-label font-weight-bold"><strong>Quantity:</strong></label>
+            <div class="col-sm-9">
+                <input type="number" "class="form-control" >
+            </div>
+           </div>
+
+*@
+
+            <div class="row-sm-10 d-flex flex-row mt-12">
+            <button type="button" class="btn btn-outline-primary ml-5" onclick="location.href='@Url.Action("Detail","Product")';"><i class='fa fa-cart-plus'></i>
+            Add to Cart</button>
+            <div class="ml-2">  &nbsp;&nbsp;&nbsp;&nbsp; </div>
+            <button type="button" class="btn  btn-outline-danger ml-5 " onclick="location.href='@Url.Action("Detail","Product")';"><i class="fa fa-heart" aria-hidden="true"></i>
+            Add to WishList</button>
+             </div>
+
+             
+
+
+
+
+            </div>
+
+
+
+
+             <div class="star-widget ">
+
+                <input type="radio" name="rating" id="rate-5" class="btns" value="5">
+                <label for="rate-5" class="fa fa-star"></label>
+                <input type="radio" name="rating" id="rate-4" class="btns" value="4">
+                <label for="rate-4" class="fa fa-star"></label>
+                <input type="radio" name="rating" id="rate-3" class="btns" value="3">
+                <label for="rate-3" class="fa fa-star"></label>
+                <input type="radio" name="rating" id="rate-2" class="btns" value="2">
+                <label for="rate-2" class="fa fa-star"></label>
+                <input type="radio" name="rating" id="rate-1" class="btns" value="1">
+                <label for="rate-1" class="fa fa-star"></label>
+                  <header></header>
+                  
+                </div>
+
+
+             
+
+
+
+
+            @*<div class="portfolio-description">
+              <h2>Description</h2>
+              <p>
+                  @Model.Description
+              </p>
+            </div>*@
           </div>
 
         </div>

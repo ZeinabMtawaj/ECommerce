@@ -39,13 +39,13 @@ namespace Customer.Models
 
         public virtual CategoryViewModel? Category { get; set; }
         public virtual ProductGroupViewModel? ProductGroup { get; set; }
-        public virtual TrendViewModel? Trend { get; set; }
+        public virtual TrendViewModel? Trend { get; set; } //
         public virtual ICollection<PhotoViewModel> Photos { get; set; }
-        public virtual ICollection<ProductOrderViewModel> ProductOrders { get; set; }
+        public virtual ICollection<ProductOrderViewModel> ProductOrders { get; set; } //
         [Display(Name = "Specifications")]
         public virtual ICollection<ProductSpecificationValueViewModel> ProductSpecificationValues { get; set; }
-        public virtual ICollection<RatingViewModel> Ratings { get; set; }
-        public virtual ICollection<WishListViewModel> WishLists { get; set; }
+        public virtual ICollection<RatingViewModel> Ratings { get; set; } //
+        public virtual ICollection<WishListViewModel> WishLists { get; set; } //
 
         public virtual List<String>? SpecsId { get; set; }
         public virtual List<String>? SpecsValue { get; set; }
