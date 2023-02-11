@@ -472,6 +472,10 @@
                     <div class="portfolio-links">
                       <a href="~/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>
                       <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="More Details"><i class="bx bx-link"></i></a>
+                      <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="Add To WishList"><i class="bx bx-heart"></i></a>
+                      <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="Add To Cart"><i class="bx bx-cart"></i></a>
+
+
                     </div>
                   </div>
                 </div>

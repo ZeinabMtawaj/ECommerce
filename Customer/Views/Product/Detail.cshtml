@@ -141,13 +141,43 @@
                 <li><strong>Price</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @Model.Price</li>
                 
 @*                <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>                  
-*@             
-                @foreach(var spec in @Model.ProductSpecificationValues)
-                {
-                    <li><strong>@spec.Specification.Name</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @spec.Value</li>
-            
-                }
-            </ul>
+           *@              @if (@Model.ProductSpecificationValues != null)
+                            {
+                                @foreach (var spec in @Model.ProductSpecificationValues)
+                                {
+                                    @if ((@spec.Value).Contains("~"))
+                                    {
+                                        char[] @spearator = {'~'};
+
+@*                                        String[] @names = (@spec.Specification.Name).Split(@spearator);
+*@                                        String[] @values = (@spec.Value).Split(@spearator);
+                                        int @i = 0;
+
+                                         <div class="select-boxSelect w-50" >
+                                            <div class="options-containerSelect border border-secondary">
+                                                 
+                                                @foreach(String s in @values)
+		                                            {
+                                                        <input type='radio' class='radio' name=@spec.Specification.Name value=@s /> <label for=@spec.Specification.Name > @s</label>
+                                                    }
+
+                                            </div>
+                                            <div class="selectedSelect bg-[#1e293b] text-white " >
+                                            Select category
+                                            </div>
+                                            <div class="search-boxSelect bg-[#74c3eb] "  >
+                                            <input type="text" placeholder="Search.." />
+                                            </div>
+                                        </div>
+                                    }
+                                    else 
+                                    {
+                                        <li><strong>@spec.Specification.Name</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @spec.Value</li>
+                                    }
+
+                            }
+                             }
+                        </ul>
 
             <li class="row mb-3 mt-4 ml-4">
                     <label  class="col-sm-3 form-label font-weight-bold"><strong>Quantity:</strong></label>
@@ -218,6 +248,49 @@
 
       </div>
     </section><!-- End Portfolio Details Section -->
+    <script>
+         const selected = document.querySelector(".selectedSelect");
+         const optionsContainer = document.querySelector(".options-containerSelect");
+         const searchBox = document.querySelector(".search-boxSelect input");
+         const optionsList = document.querySelectorAll(".option");
+
+
+    selected.addEventListener("click", () => {
+        optionsContainer.classList.toggle("active");
+        searchBox.value = "";
+        filterList("");
+    });
+
+
+
+     searchBox.addEventListener("keyup", function (e) {
+        filterList(e.target.value);
+    });
+
+    const filterList = searchTerm => {
+        searchTerm = searchTerm.toLowerCase();
+        var i = 0;
+        optionsList.forEach(option => {
+            let label = option.firstElementChild.nextElementSibling.innerText.toLowerCase();
+            if (label.indexOf(searchTerm) != -1) {
+                option.style.display = "block";
+                if (i==0)
+                    option.setAttribute("id", "option1");
+                else
+                    option.removeAttribute("id", "null");
+                i = i + 1;
+            } else {
+                option.style.display = "none";
+                option.removeAttribute("id", "null");
+            }
+        });
+    }
+
+                       
+
+
+
+    </script>
 
   </main><!-- End #main -->
 
