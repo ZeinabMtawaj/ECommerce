@@ -15,11 +15,11 @@
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>WishList Details</h2>
-          <ol>
+          <h2>Products</h2>
+         @* <ol>
             <li><a href="index.html">Order</a></li>
             <li>WishList Details</li>
-          </ol>
+          </ol>*@
         </div>
 
       </div>
@@ -31,28 +31,15 @@
 
  
     <!-- ======= Portfolio Section ======= -->
-    <section id="portfolio" class="portfolio">
+    <section  class="portfolio">
       <div class="container">
 
-        <div class="section-title" data-aos="fade-up">
-          <h2>Trends</h2>
-          <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem</p>
-        </div>
+       @* <div class="section-title" data-aos="fade-up">
+          <h2>Products</h2>
+        
+        </div>*@
 
-        <div class="row" data-aos="fade-up" data-aos-delay="200">
-          <div class="col-lg-12 d-flex justify-content-center">
-            <ul id="portfolio-flters">
-              <li data-filter="*" class="filter-active">All</li>
-                        @foreach (var trend in Model)
-                        {
-                            <li data-filter=".filter-"+@trend.Category.Name>@trend.Category.Name</li>
-                            @*<li data-filter=".filter-card">Card</li>
-                                <li data-filter=".filter-web">Web</li>*@
-                    }    
-            </ul>
-          </div>
-        </div>
-
+    
         <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="400" id="trends">
 
 
@@ -64,8 +51,8 @@
 
 
         @foreach( var trend in Model){
-
-              <div class="col-lg-4 col-md-6 portfolio-item filter-"+@trend.Sku>
+            @if( @trend.Category !=null){
+              <div class="col-lg-3 col-md-2 portfolio-item filter-"+ @trend.Category.Name>
                 <div class="portfolio-wrap">
                   <img src="~/img/portfolio/portfolio-1.jpg" class="img-fluid h-100" alt="">
                   <div class="portfolio-info">
@@ -82,7 +69,7 @@
                   </div>
                 </div>
               </div>
-          }
+          }}
 
          
          
