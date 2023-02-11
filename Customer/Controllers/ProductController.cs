@@ -37,36 +37,43 @@ namespace Customer.Controllers
             lambdas.Add(x => x.Category);
 
             var product_detail = _uow.ProductRepo.Find(x => x.Id == id, lambdas);
-            /*         var lambdas_spec = new List<Expression<Func<ProductSpecificationValue, object>>>();
-                     lambdas_spec.Add(x => x.Specification);*/
             var i = 0;
             Specification spec;
-            var lambdas_spec = new List<Expression<Func<Specification, object>>>();
-            lambdas.Add(x => x.ProductSpecificationValues);
+/*
+            var lambdas_spec = new List<Expression<Func<ProductSpecificationValue, object>>>();
+            lambdas_spec.Add(x => x.Specification);
+            var lambdas_prod = new List<Expression<Func<Product, object>>>();
+            lambdas_prod.Add(x => x.ProductSpecificationValues);
+*/
             string name = "";
             if (product_detail.ProductSpecificationValues != null)
             {
                 foreach (var item in product_detail.ProductSpecificationValues)
-                {
+                {/*
                     name = "";
+                    var prods = _uow.ProductRepo.FindAll(x => ((x.Name == product_detail.Name) && (x.ProductSpecificationValues !=null)), null, null, lambdas_prod);
+*/
                     spec = _uow.SpecificationRepo.Find(x => x.Id == item.SpecificationId);
-                    var Specs_for_same_product = _uow.SpecificationRepo.FindAll(x =>(
-                    ( x.Name == spec.Name) && (x.ProductSpecificationValues !=null) &&(x.ProductSpecificationValues.Any(z=>z.ProductId==product_detail.Id))
-                    ),null, null, lambdas_spec);
-
-                    
-                    foreach (var spec_same in Specs_for_same_product)
-                    {
-                        name +=spec_same.Name+"~";
-
+                    /*foreach (var prod in prods) {
+                        var same_product = _uow.ProductSpecificationValueRepo.Find(x => (
+                        (x.Specification != null) && (x.Specification.Name == spec.Name) && (x.ProductId == prod.Id))
+                        , lambdas_spec);
+                        if (same_product != null)
+                        {
+                            name += same_product.Value + "~";
+                        }
+                        
                     }
-                    name = name.Remove(name.Length - 1, 1);
+
+                    name = name.Remove(name.Length - 1, 1);*/
                     product_detail.ProductSpecificationValues.ElementAt(i).Specification = new Specification
                     {
-                        Name =name
+                        Name =spec.Name
                     };
                     i++;
 
+/*                    product_detail.ProductSpecificationValues.ElementAt(i).Value = name;
+*/
                 }
             }
             return View(product_detail);  

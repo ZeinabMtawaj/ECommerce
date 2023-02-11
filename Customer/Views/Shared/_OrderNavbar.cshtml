@@ -208,10 +208,10 @@
 	              			<a class="   border-bottom" href="#">Page 2 <img  style="width:25%;height:25%;"src="~/img/more-services-1.jpg"/><i class="fa fa-close"></i> </a>
                             <a >TOTAL: </a>
                                        <div class="row-sm-10 d-flex flex-row mt-12"> &nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-outline-primary ml-5" onclick="location.href='@Url.Action("Detail","Product")';">
+            <button type="button" class="btn btn-outline-primary ml-5" onclick="location.href='@Url.Action("Detail","Order")';">
            View Cart</button>
             <div class="ml-2">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
-            <button type="button" class="btn  btn-outline-danger ml-5 " onclick="location.href='@Url.Action("Detail","Product")';">
+            <button type="button" class="btn  btn-outline-danger ml-5 " onclick="location.href='@Url.Action("Detail","WishList")';">
             Check Out <i class="	fa fa-arrow-circle-right" aria-hidden="true"></i></button>
              </div>
                             
@@ -237,10 +237,12 @@
           <li><a class="nav-link scrollto" href="#pricing">&nbsp;</a></li>
 
             <li class="nav-item">
-          <button type="button" class="icon-button " asp-action="Index">
+          <button type="button" class="icon-button " onclick="location.href='@Url.Action("Detail","WishList")';">
 @*            <span class="material-icons">notifications</span>
-*@            <i  class="fa fa-heart " style="font-size:18px;"></i>
+*@            
+                <i  class="fa fa-heart " style="font-size:18px;"></i>
                <span class="icon-button__badge">2</span>
+               
           </button>
           </li>
 
