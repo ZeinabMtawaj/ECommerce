@@ -15,13 +15,9 @@ namespace ECommerce.Controllers
     public class UserController : BaseController
 
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        public UserController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager,
-                            SignInManager<User> signInManager) : base(uow, mapper)
+        public UserController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
-            _userManager = userManager; 
-            _signInManager = signInManager;
+            
         }
 
 
@@ -51,7 +47,7 @@ namespace ECommerce.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, "Customer");
 
-                    var addressController = new AddressController(_uow, _mapper);
+                    var addressController = new AddressController(_uow, _mapper, _userManager, _signInManager);
                     addressController.Create(user.Id, userVM.Addresses);
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     TempData["success"] = "Registered! Now You Are Logged In!";
@@ -173,25 +169,5 @@ namespace ECommerce.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-        public IActionResult LogIn()
-        {
-            return View();
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 }

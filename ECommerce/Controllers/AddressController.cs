@@ -8,14 +8,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Identity;
 
 namespace Ecommerce.Controllers
 {
     public class AddressController : BaseController
     {
-        public AddressController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public AddressController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
-            
+
         }
 
 

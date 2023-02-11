@@ -8,13 +8,14 @@ using System.Linq.Expressions;
 using ECommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
 
 namespace Ecommerce.Controllers
 {
     public class SpecificationController : BaseController
     {
 
-        public SpecificationController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public SpecificationController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
 
         }
@@ -43,6 +44,9 @@ namespace Ecommerce.Controllers
             ViewBag.editAction = "Edit";
             ViewBag.deleteController = "Specification";
             ViewBag.deleteAction = "Delete";
+
+            var user = _userManager.GetUserAsync(User);
+            ViewBag.User = user.Result;
             return View(items);
         }
 

@@ -5,11 +5,13 @@ using AutoMapper;
 using Ecommerce.Models;
 using ApplicationDbContext.Models;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+
 namespace Ecommerce.Controllers
 {
     public class CategorySpecificationValueController : BaseController
     {
-        public CategorySpecificationValueController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public CategorySpecificationValueController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
         }
 
@@ -102,7 +104,7 @@ namespace Ecommerce.Controllers
             {
                 valOfSpec.Add(catSpecVal.SpecificationId, catSpecVal.Value);
             }
-            var specController = new SpecificationController(_uow, _mapper);
+            var specController = new SpecificationController(_uow, _mapper, _userManager, _signInManager);
             var specs = specController.GetAll();
             foreach(var spec in specs)
             {

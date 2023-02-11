@@ -7,14 +7,14 @@ using ECommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
 using System.Linq.Expressions;
-
+using Microsoft.AspNetCore.Identity;
 
 namespace Ecommerce.Controllers
 {
     public class ProductController : BaseController
     {
         //public static string sku = null;
-        public ProductController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public ProductController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
 
         }

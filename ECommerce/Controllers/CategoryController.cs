@@ -1,24 +1,24 @@
-﻿using ApplicationDbContext.UOW;
+﻿
+using ApplicationDbContext.UOW;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationDbContext.Models;
-using System.Linq;
 using Ecommerce.Models;
 using ECommerce.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Identity;
 
 namespace Ecommerce.Controllers
 {
     public class CategoryController : BaseController
     {
-        public CategoryController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public CategoryController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
             
         }
-
-
         public IActionResult Index()
         {
             var items = this.GetAllToView();
@@ -65,7 +65,7 @@ namespace Ecommerce.Controllers
                 _uow.CategoryRepo.Add(newObj);
                 _uow.SaveChanges();
                 obj.Category.Id = newObj.Id;
-                var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper);
+                var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper, _userManager, _signInManager);
                 categorySpecificationValueController.Create(obj);
                 TempData["success"] = "Category Created Successfully!";
                 return RedirectToAction("Index");
@@ -84,7 +84,7 @@ namespace Ecommerce.Controllers
             {
                 return NotFound();
             }
-            var catSpecValController = new CategorySpecificationValueController(_uow, _mapper);
+            var catSpecValController = new CategorySpecificationValueController(_uow, _mapper, _userManager, _signInManager);
             var specVals = catSpecValController.GetAllSpecVals(obj.Id);
             CategoryVM categoryVM = new CategoryVM()
             {
@@ -105,7 +105,7 @@ namespace Ecommerce.Controllers
                 newObj.Id = obj.Category.Id;
                 _uow.CategoryRepo.Update(newObj);
                 _uow.SaveChanges();
-                var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper);
+                var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper, _userManager, _signInManager);
                 categorySpecificationValueController.Edit(obj);
                 TempData["success"] = "Category Updated Successfully!";
                 return RedirectToAction("Index");
@@ -179,10 +179,10 @@ namespace Ecommerce.Controllers
         public IActionResult GetSpecs(string catId)
         {
             int categoryId = int.Parse(catId);
-            var catSpecValController = new CategorySpecificationValueController(_uow, _mapper);
+            var catSpecValController = new CategorySpecificationValueController(_uow, _mapper, _userManager, _signInManager);
             var specVals = catSpecValController.GetAllSpecVals(categoryId);
             var specVM = new SpecificationVM();
-            var specificationController = new SpecificationController(_uow, _mapper);
+            var specificationController = new SpecificationController(_uow, _mapper, _userManager, _signInManager);
             var specs = specificationController.GetAll();
             int cnt = 0;
             foreach (var spec in specs)

@@ -4,7 +4,7 @@ using ApplicationDbContext.Models;
 using System.Linq;
 using Ecommerce.Models;
 using AutoMapper;
-
+using Microsoft.AspNetCore.Identity;
 
 namespace Ecommerce.Controllers
 
@@ -12,8 +12,9 @@ namespace Ecommerce.Controllers
     public class AdminController : BaseController
     {
 
-        public AdminController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public AdminController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
+
         }
 
         public IActionResult SpecificationIndex()
