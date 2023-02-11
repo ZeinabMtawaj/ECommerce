@@ -41,17 +41,19 @@ namespace Customer.Controllers
                      lambdas_spec.Add(x => x.Specification);*/
             var i = 0;
             Specification spec;
-            foreach (var item in product_detail.ProductSpecificationValues)
+            if (product_detail.ProductSpecificationValues != null)
             {
-                spec = _uow.SpecificationRepo.Find(x => x.Id == item.SpecificationId);
-                product_detail.ProductSpecificationValues.ElementAt(i).Specification = new Specification
+                foreach (var item in product_detail.ProductSpecificationValues)
                 {
-                    Name = spec.Name
-                };
-                i++;
+                    spec = _uow.SpecificationRepo.Find(x => x.Id == item.SpecificationId);
+                    product_detail.ProductSpecificationValues.ElementAt(i).Specification = new Specification
+                    {
+                        Name = spec.Name
+                    };
+                    i++;
 
+                }
             }
-
             return View(product_detail);  
         
         

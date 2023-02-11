@@ -1,0 +1,362 @@
+﻿
+<!-- ======= Header ======= -->
+
+
+@*  <header id="header" class="container  d-flex align-items-center " >
+*@
+         @* <div class=" d-flex align-items-center justify-content-between border-bottom " >
+
+
+
+      <nav id="navbar" class="navbar">
+        <ul>
+-moz-text-size-adjust         <li class="nav-item dropdown position-static">
+	              <a class="nav-link dropdown-toggle " href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Eur</a>
+	              <div class="dropdown-menu p-4 w-20" aria-labelledby="dropdown04">
+	              	<div class="row" >
+	              		<a class="dropdown-item  border-bottom" href="#">Eur</a>
+			            <a class="dropdown-item  border-bottom" href="#">Usd</a>
+
+	              	</div>
+	              </div>
+	            </li>
+
+
+
+
+        
+          <li class="nav-item dropdown position-static">
+	              <a class="nav-link dropdown-toggle " href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lang</a>
+	              <div class="dropdown-menu p-4 w-20" aria-labelledby="dropdown04">
+	              	<div class="row" >
+	              		<a class="dropdown-item  border-bottom" href="#">English</a>
+			            <a class="dropdown-item  border-bottom" href="#">French</a>
+                        <a class="dropdown-item  border-bottom" href="#">Arabic</a>
+
+
+	              	</div>
+	              </div>
+	            </li>
+
+
+
+
+                <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
+            <li><a href="#" data-toggle="modal"><i class="icon-user"></i>Login</a></li>
+                <li><a href="#" data-toggle="modal"><i class="icon-user"></i>Register</a></li>
+
+         
+       
+
+          
+        </ul>
+      </nav><!-- .navbar -->
+
+
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*@
+@*    <div id="header" class="fixed-top container d-flex align-items-center justify-content-between ">
+*@
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <div class="logo">
+        <h1><a href="index.html">Ecommerce</a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+
+@*
+              <div class="header-search">
+                         <a href="#" class="search-toggle" role="button" title="Search" style="font-size: 30px;"><i class="fa fa-search fa-2x"></i></a>
+                            <form action="#" method="get">
+                                <div class="header-search-wrapper" style="border:31px;">
+                                    <label for="q" class="sr-only">Search</label>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search in..."  required>
+                                </div><!-- End .header-search-wrapper -->
+                            </form>
+                </div><!-- End .header-search -->
+*@
+
+
+
+
+@*         <a class="nav-link scrollto " href="#portfolio">
+*@@*
+      <i class="fa fa-search btn "></i>
+     <input class="form-control " type="search" placeholder="Search" aria-label="Search">
+*@
+@*
+<form class="nav-link" method="get" asp-action="#" style="display:inline;">
+
+      <input class="form-control rounded" type="search" placeholder="Search in..." aria-label="Search"> <i class="fa fa-search " aria-hidden="true"></i>
+
+</form>
+
+*@
+
+@*    </a>
+*@
+
+
+
+
+
+
+          <li class="nav-item dropdown position-static ">
+	              <a class="nav-link dropdown-toggle " href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category&nbsp;</a>
+	              <div class="dropdown-menu p-4 w-100" aria-labelledby="dropdown04">
+	              	<div class="row" id="categories">
+	              		
+
+
+
+
+
+	              	</div>
+	              </div>
+	            </li>
+
+
+
+                  <li><a class="nav-link " >&nbsp;</a></li>
+
+<!-- Search form -->
+
+
+ <li class="nav-item">
+
+                <form class="form-inline d-flex justify-content-center border-bottom  border-primary border-2  p-1" id="search-form">
+  <input class="form-control form-control-sm mr-3 ml-3 w-75 border-0" type="text" placeholder="Search ..." style="box-shadow: none;"
+    aria-label="Search">  &nbsp;&nbsp;&nbsp;
+  <button type="submit" class="border-0 bg-transparent"><i class="fa fa-search  border-0 " style="margin:0px;" aria-hidden="true"></i></button>
+</form>
+          </li>
+
+
+
+ 
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+         @* <li class="nav-item">
+              <span class="fa-stack fa-fw" data-count="3">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-heart fa-stack-1x fa-inverse"></i>
+                </span>
+          </li>*@
+@*          <li><a class="nav-link scrollto" href="#pricing">Pricing</a></li>
+*@             <li><a class="nav-link " >&nbsp;</a></li>
+
+          <li class="nav-item dropdown position-static ">
+          	              <a class="nav-link dropdown-toggle rounded "  href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <button type="button" class="icon-button" asp-action="Index">
+                                   <i class="fa fa-shopping-cart " style="font-size:19px;"></i>
+                                       <span class="icon-button__badge bg-primary" >2</span>
+                                  </button>
+                                  &nbsp;
+                            </a>
+	              <div class="dropdown-menu p-2 w-50 ml-12 " aria-labelledby="dropdown04" style="max-height:600px;overflow:auto;">
+	              	<div class="row " >
+	              		<div class="col-md-12 ">
+	              			<a class="   border-bottom" href="#">Page 1 <img  style="width:25%;height:25%;"src="~/img/more-services-1.jpg"/><i class="fa fa-close"></i> </a>
+	              			<a class="   border-bottom" href="#">Page 2 <img  style="width:25%;height:25%;"src="~/img/more-services-1.jpg"/><i class="fa fa-close"></i> </a>
+                            <a >TOTAL: </a>
+                                       <div class="row-sm-10 d-flex flex-row mt-12"> &nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-outline-primary ml-5" onclick="location.href='@Url.Action("Detail","Product")';">
+           View Cart</button>
+            <div class="ml-2">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
+            <button type="button" class="btn  btn-outline-danger ml-5 " onclick="location.href='@Url.Action("Detail","Product")';">
+            Check Out <i class="	fa fa-arrow-circle-right" aria-hidden="true"></i></button>
+             </div>
+                            
+
+	              		</div>
+ 
+                       @* <div class="col-5 ">
+	              			<a href="#" class=" img border-bottom h-100 w-100" style="background-image: url(img/more-services-1.jpg);">&nbsp;</a>
+                            <a href="#" class=" img border-bottom" style="background-image: url(img/more-services-1.jpg);">&nbsp;</a>
+
+	              		</div>
+                         <div class="col-2  ">
+	              			<a href="#" class=" border-bottom"> <i class="fa fa-close"></i>&nbsp;</a>
+                            <a href="#" class=" border-bottom"> <i class="fa fa-close"></i>&nbsp;</a>
+
+	              		</div>*@
+
+
+	              </div>
+               </div>
+               </li>
+
+          <li><a class="nav-link scrollto" href="#pricing">&nbsp;</a></li>
+
+            <li class="nav-item">
+          <button type="button" class="icon-button " asp-action="Index">
+@*            <span class="material-icons">notifications</span>
+*@            <i  class="fa fa-heart " style="font-size:18px;"></i>
+               <span class="icon-button__badge">2</span>
+          </button>
+          </li>
+
+           
+
+
+
+
+
+
+
+
+
+
+ <li class="nav-item dropdown position-static ">
+	              <a class="nav-link dropdown-toggle rounded " href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-2xl" style="font-size:30px"></i> &nbsp;</a>
+	              <div class="dropdown-menu p-3 w-20 ml-12" aria-labelledby="dropdown04">
+	              	<div class="row" >
+	              	    <div class="col-md-12">
+	              			<a class="dropdown-item  rounded border-bottom p-2" href="#"><i class="fa fa-info-circle" aria-hidden="true"></i>My Info</a>
+			                <a class="dropdown-item rounded border-bottom p-2" href="#"><i class="fa fa-sign-out" aria-hidden="true"></i>Log Out</a>
+                        </div>
+	              </div>
+               </div>
+	            </li>
+
+
+
+
+
+
+
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+ 
+
+
+
+ @* @section Scripts{*@
+
+	<script type="text/javascript" >
+
+
+
+
+        
+		$.ajax({
+			type:"GET",
+			url: '@(Url.Action("getAll","Category"))',
+			dataType:"json",
+			success:function(result){
+                if (result != null){
+                    var i = 0;
+                    var j = 0;
+				    $.each(result,function(key,value){
+                        if (i==0){
+                             $('#categories').append("<div class='col-md-3' id='sec-"+i+"'> </div>");
+                             j=i;
+                        }
+                        if (((i%6) ==0) && (i!=0)){
+                            $('#categories').append("<div class='col-md-3 d-none d-md-block' id='sec-"+i+"'></div>");  
+                            j=i;
+                        }
+                        $('#sec-'+j).append("<a class='dropdown-item rounded border-bottom cats' value='"+value.image+"' href='#'>"+value.name+"</a>");
+
+                        i= i+1;
+                    });
+                    	
+               
+                }
+
+                $('#categories').append("<div class='col-md-6 d-none d-md-block'><a class='h-100 w-100 rounded img' href='#' id='cat-img' style='background-image: url(img/more-services-1.jpg);'></a></div>");   
+
+                
+               $('#categories').hover(function(event){
+                 $('#cat-img') .css("background-image", "url(img/more-services-1.jpg)");
+                  });
+
+                 eventForChangeImage();  
+                    
+                        
+
+			},
+			error: function(req, status, error){
+			console.log(status);
+			}
+            });
+
+
+
+            function eventForChangeImage(){
+
+               $('.cats').hover(function(event){
+                 let val =$(event.target).attr('value');
+                 $('#cat-img') .css("background-image", "url(" + val + ")");
+                  });
+
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+    </script>
+  @*}*@
+
+
+     </header><!-- End Header -->
