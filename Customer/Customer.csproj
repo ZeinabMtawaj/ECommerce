@@ -33,8 +33,6 @@
 		<ProjectReference Include="..\ApplicationDbContext\ApplicationDbContext.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Views\NewFolder\" />
-	</ItemGroup>
+
 
 </Project>

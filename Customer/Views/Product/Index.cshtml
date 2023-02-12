@@ -1,561 +1,133 @@
-﻿
-@{
-    ViewData["Title"] = "ProductManagement";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+﻿@{
+    ViewData["Title"] = "Products Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-
-
-@model IEnumerable<ProductViewModel> 
-
+    @model IEnumerable<Product> 
 
 
 
 
-<!-- Button -->
-<div>
-	<a class = "d-flex mt-3" asp-controller="@ViewBag.createController" asp-action="@ViewBag.createAction">
-		<span class="btn btn-primary btn-round ml-auto mb-3" data-toggle="modal" data-target="#addRowModal">
-			<i class="fa fa-plus"></i>
-			Create
-		</span>
-	</a>
-</div>
+<main id="main">
 
-	
-<!-- Table -->
-<div class="table-responsive">
-	<table id="add-row" class="display table table-striped table-hover text-center" cellspacing="0" width="100%">
-		<thead>
-			<tr>
-				@foreach(var col in ViewBag.cols){
-					<th>@col</th>
-				}
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tfoot>
-			<tr></tr>
-		</tfoot>
-		<tbody>
-		@if(Model != null && Model.Count() > 0)
-		{
-            var i =0;
-			@foreach(var item in Model)
-			{
-				<tr>
-					<td>
-						@item.Name
-					</td>
-					<td class="overflow-auto">
-						@item.Description
-					</td>
-					<td>
-						@item.Price
-					</td>
-					<td>
-						<div class='p-1'>
-							<img class="w-16 h-16" src="@item.Image">
-						</div>
-					</td>
-					<td>
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs mr-0">
+      <div class="container">
 
-						@if(item.Category !=null)
-						{
-							@item.Category.Name
-						}
-					</td>
-					<td>
-@*						<button data-toggle="tooltip" data-placement="top" title="Photos" class="btn btn-link btn-simple-danger mt-1"> 
-									<i class="fa fa-camera"></i>       
-						</button>*@
-                            @if (item.IsTrend != null)
-                            {
-                                <span class="specPartialCaller btn border-0" data-toggle="modal" data-target="#specsMainModel" item-id="@item.Id" number = "@i"> 
-                                    <i class='fas fa-angle-down text-danger text-3xl'></i>
-                                </span>
-                            }
-                            else{
-                                <span class="specPartialCaller btn border-0" data-toggle="modal" data-target="#specsMainModel" item-id="@item.Id" number = "@i"> 
-							        <i class='fas fa-angle-down text-primary text-3xl'></i>
-						        </span>
-                            }
-					</td>
-					@*<td>
-						<button data-toggle="tooltip" data-placement="top" title="Specification" class="btn btn-link btn-simple-danger mt-1"> 
-									<i class="fa fa-asterisk"></i>       
-						</button>
-					</td>*@
-					<td>
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Products</h2>
+         @* <ol>
+            <li><a href="index.html">Order</a></li>
+            <li>WishList Details</li>
+          </ol>*@
+        </div>
 
-						@item.CreatedDate.ToString("g");
-
-					</td>
-					<td>
-						@item.UpdatedDate.ToString("g");
-
-					</td>
-					<td>
-						<div class="form-button-action">
-							<a asp-controller="@ViewBag.editController" asp-action="@ViewBag.editAction" asp-route-id="@item.Id">
-								<button type="button" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-link btn-simple-primary btn-lg" data-original-title="Edit Task">
-									<i class="fa fa-edit"></i>
-								</button>
-							</a>
-									
-							<span data-toggle="modal" data-target=@("#deleteModal" + @item.Id.ToString())>
-								<button data-toggle="tooltip" data-placement="top" title="Remove" class="btn btn-link btn-simple-danger mt-1"> 
-									<i class="fa fa-times"></i>       
-								</button>
-							</span>
+      </div>
+    </section><!-- End Breadcrumbs -->
 
 
 
 
-							<div id=@("deleteModal" + @item.Id.ToString()) class="modal fade">
-								<div class="modal-dialog modal-confirm">
-									<div class="modal-content">
-										<div class="modal-header flex-column">
-											<div class="icon-box">
-												<i class="material-icons">&#xE5CD;</i>
-											</div>						
-											<h4 class="modal-title w-100">Are you sure?</h4>	
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-										</div>
-										<div class="modal-body">
-											<p>Do you really want to delete? This process cannot be undone.</p>
-										</div>
-										<div class="modal-footer justify-content-center">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-											<form method="post" asp-controller="@ViewBag.deleteController" asp-action="@ViewBag.deleteAction">
-												<input name="Id" value="@item.Id" hidden>
-												<button type="submit" class="btn btn-danger">Delete</button>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>  
-						</div>
-					</td>
-				</tr>
-                i = i+1;
-			}
-		}
-		</tbody>
-	</table>
-	
 
-        <div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="SpecModal">
-	                <div class="modal-dialog modal-dialog-scrollable" role="document" >
-		                <div class="modal-content">
-			                <div class="modal-header">
-				               @* <h5 class="modal-title font-weight-bold" id="exampleModalLabel"> Specifications</h5>*@
-                               <ul class="nav nav-pills nav-primary card-header-pills">
-		                            <li class="nav-item">
-		                            <a class="nav-link"  id="spec_id">Specification</a>
-		                            </li>
-		                            <li class="nav-item">
-		                            <a class="nav-link"  id="photo_id">Photos</a>
-		                            </li>
-	                            </ul>
-				                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-					                <span aria-hidden="true">&times;</span>
-				                </button>
-			                </div>
-			                <div class="modal-body overflow-auto" id="search_input">
-				               @* <div>
-                                        <input id="searchbox" class="search__input " type="text" placeholder="Search">
-                                              
-                                </div>*@
-                                <div class="card mt-2 rounded" id = "Specifications">
-	                            </div>
+ 
+    <!-- ======= Portfolio Section ======= -->
+    <section  class="portfolio">
+      <div class="container">
 
-			                </div>
-			                <div class="modal-footer">
-				                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Done</button>
-			                </div>
-		                </div>
-	                </div>
+       @* <div class="section-title" data-aos="fade-up">
+          <h2>Products</h2>
+        
+        </div>*@
+
+    
+        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="400" id="prods">
+
+
+
+            @*filter-app*@
+
+            @*<div class='col-lg-4 col-md-6 portfolio-item'><div class='portfolio-wrap'><img src='~/img/portfolio/portfolio-1.jpg' class='img-fluid' alt=''> <div class='portfolio-info'> <h4>App 1</h4><p>App</p> <div class='portfolio-links'><a href='~/img/portfolio/portfolio-1.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a asp-action='Detail' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>*@
+
+
+
+        @foreach( var trend in Model){
+            @if( @trend.Category !=null){
+              <div class="col-lg-3 col-md-2 portfolio-item filter-"+ @trend.Category.Name>
+                <div class="portfolio-wrap">
+                  <img src="~/img/portfolio/portfolio-1.jpg" class="img-fluid h-100" alt="">
+                  <div class="portfolio-info">
+                    <h4>@trend.Name</h4>
+                    <p>@trend.Price</p>
+                    <div class="portfolio-links">
+                      <a href="~/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>
+                      <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="More Details"><i class="bx bx-link"></i></a>
+                      <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="Add To WishList"><i class="bx bx-heart"></i></a>
+                      <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="Add To Cart"><i class="bx bx-cart"></i></a>
+
+
+                    </div>
+                  </div>
                 </div>
-</div>
-<script>
-	$('#add-row').DataTable({
-		"pageLength": 5,
-	});
-	
+              </div>
+          }}
 
-</script>
-
-
-
-
-@section Scripts{
-
-	<script >
-    var number = -1;
-    var json_model = '@Html.Raw(Json.Serialize(Model))';
-    var ob = JSON.parse(json_model);
-    $('.specPartialCaller').click(function(){
-    number = $(this).attr("number");
-    if (ob[number].category != null){
-    let catId = ob[number].category.id;
-    eventForCat(catId);
-    //if(catId != null)
-    //    {
-    //        document.getElementById('rad-'+catId).click();
-    //    }
-    }
-    });
-	
-   var content1="";
-   var content2 ="";
-     document.getElementById("spec_id").addEventListener("click", () => {
          
-            $('#photo_id').removeClass('active');
-            $('#spec_id').addClass('active');
-            $('#searchbox').remove();
-            $("<div><input id='searchbox' class='search__input' type='text' placeholder='Search'></div>").insertBefore('#Specifications');
-           
-            
-            var spec_content = document.getElementById('spec_tab'); 
-            var other = document.getElementById('photo_tab');
-            var z = 0;
-            if (other != undefined)
-            {
-                content1 = other.innerHTML; 
-                z=1;
-
-            }
-                
-            //$(".box").remove();
-            $("#spec_tab").remove();
-            $("#photo_tab").remove();
-            if ((spec_content == undefined) && (content2 == ""))
-            {
-                
-                $("#Specifications").append("<div id='spec_tab'><div class='card-header'>you have to select category first</div></div>");
-                
-            }
-            else
-            {
-                if (spec_content != undefined)
-                    $("#Specifications").append("<div id='spec_tab'>"+spec_content.innerHTML+"</div>");
-                else
-                    $("#Specifications").append("<div  id='spec_tab'>"+content2+"</div>");
-
-
-            }
-            
-            if (z==1){
-                 $("#Specifications").append("<div  id='photo_tab' style='display:none;'>"+content1+"</div>");
-
-            }
-            eventForSpec();
-
-
-    });
-
-    document.getElementById("photo_id").addEventListener("click", () => {
          
-            $('#spec_id').removeClass('active');
-            $('#photo_id').addClass('active');
-            $('#searchbox').remove();
+          
+        </div>
 
-            
-            var photo_content = document.getElementById('photo_tab'); 
-            var other = document.getElementById('spec_tab');
-            var z=0;
-            if (other != undefined)
-            {
-                content2 = other.innerHTML; 
-                z=1;
-
-            }
-            //$(".box").remove();
-            $("#spec_tab").remove();
-            $("#photo_tab").remove();
-            if ((photo_content == null) && (content1 == ""))
-            {
-                             
-
-                //<span class='col-1'><i class='fa fa-close'></i></span>
-                ///////////////////////////////////////////////////////////
-               $("#Specifications").append("<div  id='photo_tab'></div>");
-               if (number != -1){
-                   if(ob[number].additionalPhoto != null)
-                    {
-                        var photos = ob[number].additionalPhoto;
-                        for(i=0; i<photos.length; i++){
-                        
-                            if(photos[i] != null){
-                                $("#photo_tab").append("<div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><div class='p-1'><img class='w-100 h-60 photo_input'></div> </div> </div></div>");
-                                document.getElementsByClassName('photo_input')[i].setAttribute("src",photos[i]);
-                            }
+      </div>
 
 
-                        }
-                              
-                               
-                    }
-                }
-                
-            }
-            else
-            {
-                if (photo_content != undefined)
-                    $("#Specifications").append("<div id='photo_tab'>"+photo_content.innerHTML+"</div>");
-                else
-                    $("#Specifications").append("<div id='photo_tab'>"+content1+"</div>");
+    <script type="text/javascript" >
 
-        
-            }
-            if (z==1){
-                $("#Specifications").append("<div id='spec_tab' style='display:none;'>"+content2+"</div>");
-            }
-            //eventForPhoto();
-            
-     
-        
-        
-    
 
 
 
-    });
-
-   
-	
-                    
-                    
-                        
-
-
-
-function eventForCat(categoryID){
-
-    //const selected = document.querySelector(".selectedSelect");
-    //const optionsContainer = document.querySelector(".options-containerSelect");
-    //const searchBox = document.querySelector(".search-boxSelect input");
-    //const optionsList = document.querySelectorAll(".option");
-
-
-    //selected.addEventListener("click", () => {
-    //    optionsContainer.classList.toggle("active");
-    //    searchBox.value = "";
-    //    filterList("");
-
-    //    //if (optionsContainer.classList.contains("active")) {
-    //    //    searchBox.focus();
-    //    //}
-    //});
-
-
-
-    //optionsList.forEach(o => {
-    //    o.addEventListener("click", () => {
-    //        selected.innerHTML = o.querySelector("label").innerHTML;
-    //        optionsContainer.classList.remove("active");
-    //        var value= o.querySelector("input").getAttribute("value");
-    //        o.querySelector("input").checked= true;
-
-            $.ajax({
-			    type:"GET",
-			    url: '@(Url.Action("getOtherSpecifications","Specification"))',
-			    dataType:"json",
-                data:{
-                    categoryId:categoryID
-                },
-			    success:function(result){
-                     $('#searchbox').remove();
-                     $("<div><input id='searchbox' class='search__input' type='text' placeholder='Search'></div>").insertBefore('#Specifications');
-                     //$('.box').remove();
-                     var other = document.getElementById('photo_tab');
-                     var z=0;
-                    if (other != undefined)
-                    {
-                        content1 = other.innerHTML; 
-                        z =1;
-
-                    } 
-                      $('#spec_tab').remove();
-                      $('#photo_tab').remove();
-
-                    if (result != null){
-                        var i = 0;
-                         $('#Specifications').append("<div id='spec_tab'></div>");
-				        $.each(result,function(key,value){
-                            
-                              $('#spec_tab').append(" <div class='box in'  id ='box-"+value.id+"' ><div id='con-"+ value.id+"' class='card-header hover:cursor-pointer  text-[#000000] border-[#48abf7]' data-toggle='collapse' data-target='#coll-"+value.id+"'aria-expanded='false' aria-controls='coll-"+value.id+"'>"+ value.name+"</div><div id='coll-"+value.id+"' class='collapse' aria-labelledby='head-"+value.id +"' data-parent='#accordion'><div class='card-body'><input name='SpecsId[]' type='checkbox' id='Id-"+value.id+"' style='display:none;' value= '' disabled/> <input name='SpecsValue[]' class='form-control inp-coll' id='inp-"+value.id+"' type='text' placeholder='Enter Value' disabled/></div></div></div>");
-
-			                                   
-                        });
-                        
+        
+		$.ajax({
+			type:"GET",
+			url: '@(Url.Action("getAll","Product"))',
+			dataType:"json",
+			success:function(result){
+                if (result != null){
+				    $.each(result,function(key,value){
+                       console.log(value);
+                           //  $('#trends').append("<div class='col-lg-4 col-md-6 portfolio-item filter-'"+"value.category.name"+"><div class='portfolio-wrap'><img src='~/img/portfolio/portfolio-1.jpg' class='img-fluid' alt=''> <div class='portfolio-info'> <h4>"+value.name+"</h4><p>"+value.price+"</p> <div class='portfolio-links'><a href='~/img/portfolio/portfolio-1.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a asp-action='Detail' asp-route-id='"+value.id+"' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
+                            $('#prods').append("<div class='col-lg-4 col-md-6 portfolio-item'><div class='portfolio-wrap'><img src='~/img/portfolio/portfolio-1.jpg' class='img-fluid ' alt=''> <div class='portfolio-info'> <h4>App 1</h4><p>App</p> <div class='portfolio-links'><a href='~/img/portfolio/portfolio-1.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a asp-action='Detail' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
+                    });
+                    	
                
-                    }
-                            if (z==1){
-                            $("#Specifications").append("<div  id='photo_tab' style='display:none;'>"+content1+"</div>");
+                }
 
-                                }
-                            eventForSpec();
-                             $('#photo_id').removeClass('active');
-                            $('#spec_id').addClass('active');
-                            $('#SpecModal').modal("toggle");
-                            if (number != -1){
-                                if (ob[number].additionalPhoto != null){
-                                    document.getElementById('photo_id').click();
-                                }
-                                 document.getElementById('spec_id').click();
-                                if(ob[number].specsId != null)
-                                {
-                                    var specsId = ob[number].specsId;
-                                    var specs = ob[number].specsValue;
-                                    const arrayWithoutNull = specs.filter(function (inp) {
-                                            return inp != null;
-                                        });
-                                    specs = arrayWithoutNull;
-                                    for(i=0; i<specsId.length;i++  ){
-                                    
-                                        //document.getElementById("inp-"+specsId[i]).value= specs[i];
-                                        //console.log(specs.length);
-                                        document.getElementById("inp-"+specsId[i]).setAttribute("value",  specs[i]);
-                                        document.getElementById("con-"+specsId[i]).classList.add("border-l-8"); 
-                                        //document.getElementById("con-"+specsId[i]).click();
-                                        document.getElementById('Id-'+specsId[i]).setAttribute("checked", true);
-                                        document.getElementById('Id-'+specsId[i]).setAttribute("value", specsId[i]);
-                                       $('#box-'+specsId[i]).removeClass('in');
+                
+                        
+
+			},
+			error: function(req, status, error){
+			console.log(status);
+			}
+            });
 
 
 
-                                    }
-                              
-                               
-                                }
-                                $('.in').remove();
-                                
-                            }
-                            
-                                
-                            
-                            
-
-			    },
-			    error: function(req, status, error){
-			    console.log(error);
-			    }
-
-    });
-
-
-
-
-
-
-    //    });
-    //});
-
-
-    //searchBox.addEventListener("keyup", function (e) {
-    //    filterList(e.target.value);
-    //});
-
-    //const filterList = searchTerm => {
-    //    searchTerm = searchTerm.toLowerCase();
-    //    var i = 0;
-    //    //optionsList.forEach(option => {
-    //    //    let label = option.firstElementChild.nextElementSibling.innerText.toLowerCase();
-    //    //    if (label.indexOf(searchTerm) != -1) {
-    //    //        option.style.display = "block";
-    //    //        if (i==0)
-    //    //            option.setAttribute("id", "option1");
-    //    //        else
-    //    //            option.removeAttribute("id", "null");
-    //    //        i = i + 1;
-    //    //    } else {
-    //    //        option.style.display = "none";
-    //    //        option.removeAttribute("id", "null");
-    //    //    }
-    //    //});
-    //};
-
-                       
-
-}
-
-function eventForSpec(){
-let cards = document.querySelectorAll('.box')
-    
-    function liveSearch() {
-        let search_query = document.getElementById("searchbox").value;
-    
-        //Use innerText if all contents are visible
-        //Use textContent for including hidden elements
-        for (var i = 0; i < cards.length; i++) {
-            if(cards[i].textContent.toLowerCase()
-                    .includes(search_query.toLowerCase())) {
-                cards[i].classList.remove("d-none");
-            } else {
-                cards[i].classList.add("d-none");
-            }
-        }
-    }
-
-    //A little delay
-    let typingTimer;               
-    let typeInterval = 200;  
-    let searchInput = document.getElementById('searchbox');
-    searchInput.addEventListener('keyup', () => {
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(liveSearch, typeInterval);
-    });
-
-    $(".inp-coll").bind('keyup', (event) => {
-        let id = $(event.target).attr('id');
-        let nm = id.split('-')[1];
-        let conId = "#con-" + nm;
-        var SpecId = document.getElementById('Id-'+nm);
-        var specsvalue = document.getElementById('inp-'+nm);
-        if($(event.target).val())
-        {
            
-            $(conId).addClass('border-l-8'); 
-            
-            SpecId.setAttribute("value", nm);
-            //SpecId.disabled= false;
-            //SpecId.checked= true;
-            SpecId.setAttribute("checked",true);
 
-             var t = $(event.target).val();
-            specsvalue.setAttribute("value",t);
-
-            //SpecId.disabled= true;
-
-
-        }
-        else
-        {
-            $(conId).removeClass('border-l-8');
-            //SpecId.disabled= false;
-
-
-            //SpecId.checked= false;
-            //SpecId.setAttribute("checked",false);
-            SpecId.removeAttribute("checked");
-
-            //SpecId.disabled= true;;
-        }
-        
-    });
-
-
-    //$('#photo_id').removeClass('active');
-    //$('#spec_id').addClass('active');
-    //$('#SpecModal').modal("toggle");
-
-
-}
 
 
 
     </script>
-}
+
+
+
+
+
+
+
+
+    </section><!-- End Portfolio Section -->
+
+
+    </main>
+
+    

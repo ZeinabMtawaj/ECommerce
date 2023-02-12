@@ -82,6 +82,22 @@ namespace Customer.Controllers
         }
 
 
+        public IActionResult Index(bool match) {
+            var lambdas = new List<Expression<Func<Product, object>>>();
+            lambdas.Add(x => x.Category);
+            var products = _uow.ProductRepo.FindAll(x => x.Id > 1, 40, 0, lambdas);
+            return View(products);
+        
+        }
+
+        public JsonResult getProducts(bool match,int take, int skip) {
+            var lambdas = new List<Expression<Func<Product, object>>>();
+            lambdas.Add(x => x.Category);
+            var products = _uow.ProductRepo.FindAll(x => x.Id>1, take, skip, lambdas);
+            return Json(products);  
+        
+        
+        }
 
 
        
