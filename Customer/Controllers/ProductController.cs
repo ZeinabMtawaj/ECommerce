@@ -18,6 +18,10 @@ namespace Customer.Controllers
 
         }
 
+
+
+
+        
         public Product getCategory( int id)
         {
             var lambdas = new List<Expression<Func<Product, object>>>();
@@ -35,8 +39,8 @@ namespace Customer.Controllers
             lambdas.Add(x => x.Photos);
             lambdas.Add(x => x.Ratings);
             lambdas.Add(x => x.Category);
-
-            var product_detail = _uow.ProductRepo.Find(x => x.Id == id, lambdas);
+            Product product_detail = null;
+            product_detail = _uow.ProductRepo.Find(x => x.Id == id, lambdas);
             var i = 0;
             Specification spec;
 /*
@@ -44,7 +48,11 @@ namespace Customer.Controllers
             lambdas_spec.Add(x => x.Specification);
             var lambdas_prod = new List<Expression<Func<Product, object>>>();
             lambdas_prod.Add(x => x.ProductSpecificationValues);
-*/
+             
+*/           if (product_detail == null)
+            {
+                this.Index("","all");
+            }
             string name = "";
             if (product_detail.ProductSpecificationValues != null)
             {
@@ -80,21 +88,73 @@ namespace Customer.Controllers
         
         
         }
+       
 
-
-        public IActionResult Index(bool match) {
+        public IActionResult Index(string match, string exp) {
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.Category);
-            var products = _uow.ProductRepo.FindAll(x => x.Id >= 1, 40, 0, lambdas);
+            IEnumerable<Product> products = null;
+            int take = 20;
+            if (exp == "all")
+            {
+                products = _uow.ProductRepo.FindAll(x => x.Id >= 1, take, 0, lambdas);
+                ViewBag.subtitle = "All Products";
+            }
+           else if (exp == "category")
+            {
+                products = _uow.ProductRepo.FindAll(x => (x.Category.Name) == match, take, 0, lambdas);
+                ViewBag.subtitle = "Products in "+match+" Category";
+
+
+            }
+            else
+            {
+                var z = Request.Form["match"];
+                var e = 0;
+                products = _uow.ProductRepo.FindAll(x => (((x.Name).Contains(z))|| ((x.Description).Contains(z))) , take, 0, lambdas);
+                ViewBag.subtitle = "Searching for "+match+" ...";
+
+
+            }
+            ViewBag.exp = exp;
+            ViewBag.match = match;
             return View(products);
         
         }
 
-        public JsonResult getProducts(bool match,int take, int skip) {
+
+       
+
+        public JsonResult getProducts(string match, string exp,int take, int skip) {
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.Category);
-            var products = _uow.ProductRepo.FindAll(x => x.Id>=1, take, skip, lambdas);
-            products.ToList().ForEach(x => x.Category = null); 
+            IEnumerable<Product> products = null;
+            if (exp == "all")
+            {
+                products = _uow.ProductRepo.FindAll(x => x.Id >= 1, take, skip, lambdas);
+                ViewBag.subtitle = "All Products";
+
+
+            }
+            else if (exp == "category")
+            {
+                products = _uow.ProductRepo.FindAll(x => (x.Category.Name) == match, take, skip, lambdas);
+                ViewBag.subtitle = "Products in " + match + " Category";
+
+
+            }
+            else
+            {
+              
+                products = _uow.ProductRepo.FindAll(x => (((x.Name).Contains(match)) || ((x.Description).Contains(match))), take, skip, lambdas);
+                ViewBag.subtitle = "Searching for " + match + " ...";
+
+
+            }
+            products.ToList().ForEach(x => x.Category = null);
+            ViewBag.exp = exp;
+            ViewBag.match = match;
+
             return Json(products);  
         
         

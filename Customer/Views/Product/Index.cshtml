@@ -8,14 +8,14 @@
 
 
 
-<main id="main">
+<main id="main" >
 
     <!-- ======= Breadcrumbs ======= -->
     <section id="breadcrumbs" class="breadcrumbs mr-0">
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>Products</h2>
+          <h2>@ViewBag.subtitle</h2>
          @* <ol>
             <li><a href="index.html">Order</a></li>
             <li>WishList Details</li>
@@ -31,7 +31,7 @@
 
  
     <!-- ======= Portfolio Section ======= -->
-    <section  class="portfolio">
+    <section  class="portfolio" style="overflow:inherit;">
       <div class="container">
 
        @* <div class="section-title" data-aos="fade-up">
@@ -47,18 +47,26 @@
             @*filter-app*@
 
             @*<div class='col-lg-4 col-md-6 portfolio-item'><div class='portfolio-wrap'><img src='~/img/portfolio/portfolio-1.jpg' class='img-fluid' alt=''> <div class='portfolio-info'> <h4>App 1</h4><p>App</p> <div class='portfolio-links'><a href='~/img/portfolio/portfolio-1.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a asp-action='Detail' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>*@
-
-
-
+@*
+                @if (Model !=null)
+                {
+                    <div>
+                        Nothing there
+                    </div>
+                }
+*@  
         @foreach( var trend in Model){
             @if( @trend.Category !=null){
-              <div class="col-lg-3 col-md-2 portfolio-item filter-"+ @trend.Category.Name>
-                <div class="portfolio-wrap">
-                  <img src="~/img/portfolio/portfolio-1.jpg" class="img-fluid h-100" alt="">
-                  <div class="portfolio-info">
+                var @e = Math.Round(@trend.Price.Value,2);
+              <div class="col-lg-3 col-md-2 portfolio-item port-first " >
+                <div class="portfolio-wrap" style="height:170px;">
+                    
+                      <span class="notify-badge">@e</span>
+                  <img src=@trend.Image class="img-fluid h-100 w-100" alt="" >
+                  <div class="portfolio-info" >
                     <h4>@trend.Name</h4>
-                    <p>@trend.Price</p>
-                    <div class="portfolio-links">
+@*                    <p style="opacity:20;"></p>
+*@                    <div class="portfolio-links">
                       <a href="~/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>
                       <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="More Details"><i class="bx bx-link"></i></a>
                       <a asp-controller='Product' asp-action='Detail' asp-route-id =@trend.Id title='Add To WishList'><i class='bx bx-heart'></i></a>
@@ -79,29 +87,49 @@
 
 
     <script type="text/javascript" >
+       
+
+          let json_model = '@Html.Raw(Json.Serialize(ViewBag.exp))';
+          let searchType = JSON.parse(json_model);
+          let json_model2 = '@Html.Raw(Json.Serialize(ViewBag.match))';
+          let searchContent = JSON.parse(json_model2);
+          console.log(searchType);
+          console.log(searchContent);
 
 
 
+        var skip_value = 0;
 
-        
+        $(window).scroll(function() {
+    if($(window).scrollTop() == $(document).height() - $(window).height()) {
+       // isScrolle = true;
+           // ajax call get data from server and append to the div
 		$.ajax({
 			type:"GET",
             
 			url: '@(Url.Action("getProducts","Product"))',
             data:{
-               match:true,
-               take:1,
-               skip:2
+               match:searchContent,
+               exp:searchType,
+               take:5,
+               skip:skip_value
 
             },
 			dataType:"json",
 
 			success:function(result){
+              //  $('.port-first').attr("position","relative");
                 if (result != null){
 				    $.each(result,function(key,value){
-                             $('#prods').append("<div class='col-lg-3 col-md-2 portfolio-item' ><div class='portfolio-wrap'><img src='"+value.image+"' class='img-fluid' alt=''> <div class='portfolio-info'> <h4>"+value.name+"</h4><p>"+value.price+"</p> <div class='portfolio-links'><a href='"+value.image+"' data-gallery='portfolioGallery' class='portfolio-lightbox' title='"+value.description+"'><i class='bx bx-plus'></i></a><a href='https://localhost:7068/Product/Detail/"+value.id+"' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
+                            let pr = Math.round((value.price) * 100) / 100.0;
+                            let price= ""+pr+"";
+                            if (!price.includes(".")){
+                                price +=".00"
+                            }
+                             $('#prods').append("<div class='col-lg-3 col-md-2 portfolio-item' ><div class='portfolio-wrap' style='height:170px;'> <span class='notify-badge'>"+price+"</span><img src='"+value.image+"' class='img-fluid h-100 w-100' alt=''> <div class='portfolio-info'> <h4>"+value.name+"</h4> <div class='portfolio-links'><a href='"+value.image+"' data-gallery='portfolioGallery' class='portfolio-lightbox' title='"+value.description+"'><i class='bx bx-plus'></i></a><a href='https://localhost:7068/Product/Detail/"+value.id+"' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
                          //   $('#prods').append("<div class='col-lg-3 col-md-2 portfolio-item'><div class='portfolio-wrap'><img src='https://m.media-amazon.com/images/I/81n2sLhksUL._AC_UL320_.jpg' class='img-fluid ' alt=''> <div class='portfolio-info'> <h4>App 1</h4><p>App</p> <div class='portfolio-links'><a href='https://m.media-amazon.com/images/I/81n2sLhksUL._AC_UL320_.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a href='https://localhost:7068/Product/Detail/1' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
                     });
+                    $('.port-first').css("position","");
                     	
                
                 }
@@ -110,7 +138,7 @@
 
 
 
-                        
+                        skip_value +=20;
 
 			},
 			error: function(req, status, error){
@@ -119,6 +147,8 @@
             });
 
 
+             }
+});
 
            
 

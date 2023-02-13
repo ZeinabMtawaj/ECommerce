@@ -16,7 +16,7 @@
           <h1 data-aos="fade-up">Get All Of Your Stuff Here</h1>
           <h2 data-aos="fade-up" data-aos-delay="400">We are team of talented designers making websites with Bootstrap</h2>
           <div data-aos="fade-up" data-aos-delay="800">
-            <a asp-controller="Product" asp-action="Index" class="btn-get-started ">Start Shopping</a>
+            <a asp-controller="Product" asp-action="Index" asp-route-exp="all" asp-route-match="" class="btn-get-started ">Start Shopping</a>
           </div>
         </div>
         <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left" data-aos-delay="200">
@@ -445,7 +445,8 @@
                         {
                             @if (@trend.Category != null)
                             {
-                                <li data-filter=".filter-"+@trend.Category.Name>@trend.Category.Name</li>
+@*                                string @filter = ".filter-" + @trend.Category.Name;
+*@                                <li data-filter=".filter-@trend.Category.Name">@trend.Category.Name</li>
                                 @*<li data-filter=".filter-card">Card</li>
                                     <li data-filter=".filter-web">Web</li>*@
                             }
@@ -466,7 +467,8 @@
 
         @foreach( var trend in Model){
               @if (@trend.Category != null){
-              <div class="col-lg-4 col-md-6 portfolio-item filter-"+ @trend.Category.Name>
+@*                  string @filter = "col-lg-4 col-md-6 portfolio-item filter-"+@trend.Category.Name;
+*@              <div class="col-lg-4 col-md-6 portfolio-item filter-@trend.Category.Name">
               
                 <div class="portfolio-wrap">
                   <img src="~/img/portfolio/portfolio-1.jpg" class="img-fluid h-100" alt="">

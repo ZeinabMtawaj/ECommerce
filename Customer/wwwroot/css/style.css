@@ -1772,3 +1772,44 @@ section {
 }
 
 
+/*    zoom in products    */
+/*.zoom {
+    transition: 0.5s all ease-in-out;*/
+    /* width: 200px;
+    height: 200px;
+    margin: 0 auto;*/
+/*}
+
+    .zoom:hover {*/
+        /*-ms-transform: scale(1.5);*/ /* IE 9 */
+        /*-webkit-transform: scale(1.5);
+        Safari 3-8 transform: scale(1.5);*/
+
+        /*transform: scale(1.5);
+    }
+
+
+bb {
+    overflow: hidden;
+    transition: all .3s linear;
+}
+
+
+.zoom-in:hover {
+    transform: scale(2);
+    transition: all .2s linear;
+}*/
+
+
+.notify-badge {
+    position: absolute;
+    left: -2px;
+    top: 0px;
+    background: #4169E1;
+    text-align: center;
+    border-radius: 10px 10px 10px 10px;
+    color: white;
+    padding: 5px 10px;
+    font-size: 15px;
+    z-index: 100;
+}
