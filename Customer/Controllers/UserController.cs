@@ -57,7 +57,7 @@ namespace Customer.Controllers
 
                     var addressController = new AddressController(_uow, _mapper);
                     addressController.Create(user.Id, userVM.Addresses);
-                    await _signInManager.SignInAsync(user, isPersistent: true);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
                     TempData["success"] = "Registered! Now You Are Logged In!";
                     HttpContext.Session.SetString("UserId", user.Id.ToString());
                     return RedirectToAction("Index", "Home");

@@ -2,6 +2,7 @@ using ApplicationDbContext.Models;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDbContext.UOW;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -18,6 +19,10 @@ builder.Services.AddIdentity<User, UserRole>()
             .AddEntityFrameworkStores<ECommerceDBContext>()
             .AddDefaultTokenProviders();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+
+
 
 var app = builder.Build();
 

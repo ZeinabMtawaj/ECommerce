@@ -2,12 +2,15 @@ using ApplicationDbContext.Models;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDbContext.UOW;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
+builder.Services.AddSession();
 
 // dataBaseServices
 builder.Services.AddDbContext<ECommerceDBContext>(options => options.UseSqlServer(
@@ -18,6 +21,8 @@ builder.Services.AddIdentity<User, UserRole>()
             .AddEntityFrameworkStores<ECommerceDBContext>()
             .AddDefaultTokenProviders();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
 
 var app = builder.Build();
 
@@ -31,14 +36,17 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Specification}/{action=Index}/{id?}");
+    pattern: "{controller=Admin}/{action=Dashboard}/{id?}");
 
 //pattern: "{controller=Home}/{action=Index}/{id?}");
 

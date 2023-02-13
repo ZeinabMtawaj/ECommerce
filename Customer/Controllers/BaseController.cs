@@ -3,6 +3,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationDbContext.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+
 
 namespace Customer.Controllers
 {
@@ -25,6 +27,22 @@ namespace Customer.Controllers
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+        }
+        protected void getUserFromSession()
+        {
+            if (HttpContext.Session.Keys.Contains("UserId"))
+            {
+                var userId = HttpContext.Session.GetString("UserId");
+                ViewBag.UserId = userId;
+
+                var user = _userManager.FindByIdAsync(userId).Result;
+                ViewBag.UserName = user.FirstName + " " + user.LastName;
+
+
+                var roles = _userManager.GetRolesAsync(user).Result;
+                if (roles.Contains("Admin"))
+                    ViewBag.HasDashboard = true;
+            }
         }
     }
 }

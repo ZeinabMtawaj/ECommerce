@@ -9,6 +9,7 @@ using ECommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ecommerce.Controllers
 {
@@ -34,7 +35,7 @@ namespace Ecommerce.Controllers
         }
 
 
-
+        //[Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             var items = this.GetAllToView();
@@ -46,7 +47,6 @@ namespace Ecommerce.Controllers
             ViewBag.deleteController = "Specification";
             ViewBag.deleteAction = "Delete";
 
-            ViewBag.user = User;
             return View(items);
         }
 
