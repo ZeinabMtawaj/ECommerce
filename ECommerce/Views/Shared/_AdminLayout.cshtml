@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -167,8 +168,8 @@
           </a>
         </li><!-- End Search Icon-->
       </ul>
-      <span>
-          <a > @*asp-controller="Admin" asp-action="SpecificationIndex"*@
+      <div class="text-lg border mr-11">
+          <a class="link-primary "> @*asp-controller="Admin" asp-action="SpecificationIndex"*@
               @if(ViewBag.User != null)
                 {
                     @Html.Raw(ViewBag.User.FirstName);
@@ -177,7 +178,7 @@
                 }
           </a>
 
-      </span>
+      </div>
     </nav><!-- End Icons Navigation -->
   
   </header><!-- End Header -->
