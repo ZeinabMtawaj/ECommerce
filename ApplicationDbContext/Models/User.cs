@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace ApplicationDbContext.Models
 {
-    public partial class User: IdentityUser<int>
+    public partial class User : IdentityUser<int>
     {
-        public User():base()
+        public User() : base()
         {
             Addresses = new HashSet<Address>();
             Orders = new HashSet<Order>();
@@ -18,11 +18,9 @@ namespace ApplicationDbContext.Models
         //public int Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public string Email { get; set; } = null!;
-        public string? Password { get; set; }
-        public string? PhoneNumber { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
+
 
 
         public virtual ICollection<Address> Addresses { get; set; }

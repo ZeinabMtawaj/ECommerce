@@ -60,7 +60,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-
+     <!-- for toastr-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
 
 
@@ -114,6 +116,7 @@
 
 
    <div class="container">
+       <partial name="_Notification" />
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

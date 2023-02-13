@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using ECommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
 
 namespace Ecommerce.Controllers
 {
@@ -18,6 +19,7 @@ namespace Ecommerce.Controllers
         {
 
         }
+      
 
 
         [HttpGet]
@@ -43,6 +45,8 @@ namespace Ecommerce.Controllers
             ViewBag.editAction = "Edit";
             ViewBag.deleteController = "Specification";
             ViewBag.deleteAction = "Delete";
+
+            ViewBag.user = User;
             return View(items);
         }
 

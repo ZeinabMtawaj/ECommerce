@@ -8,7 +8,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-
+builder.Services.AddSession();
 // dataBaseServices
 builder.Services.AddDbContext<ECommerceDBContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection"))
@@ -31,6 +31,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseSession();   
 
 app.UseRouting();
 app.UseAuthentication();

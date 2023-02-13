@@ -23,7 +23,7 @@ namespace ApplicationDbContext.UOW
 
         public ITrendRepo TrendRepo { get; set; }
 
-
+        public IAddressRepo AddressRepo { get; set; }  
 
 
 
@@ -39,10 +39,14 @@ namespace ApplicationDbContext.UOW
             ProductSpecificationValueRepo = new ProductSpecificationValueRepo(db);
             PhotoRepo = new PhotoRepo(db);
             TrendRepo = new TrendRepo(db);
+            AddressRepo = new AddressRepo(db);
 
 
 
-
+        }
+        public ECommerceDBContext GetContext()
+        {
+            return _db;
         }
 
         public void RollBack()

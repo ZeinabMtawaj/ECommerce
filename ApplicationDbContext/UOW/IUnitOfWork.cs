@@ -1,5 +1,6 @@
 ﻿using ApplicationDbContext.IRepos;
 using System;
+using ApplicationDbContext.Models;
 using System.Collections.Generic;
 using System.Text;
 
@@ -21,8 +22,9 @@ namespace ApplicationDbContext.UOW
 
         public ITrendRepo TrendRepo { get; set; }
 
+        public IAddressRepo AddressRepo { get; set; }
 
-
+        public ECommerceDBContext GetContext();
         public void SaveChanges ();
 
         public void RollBack();

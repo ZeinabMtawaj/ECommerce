@@ -93,7 +93,11 @@
     <div class="container d-flex align-items-center justify-content-between">
 
       <div class="logo">
-        <h1><a href="index.html">Ecommerce</a></h1>
+        <h1>
+            <a asp-action="Index" asp-controller="Home">
+                <span class="ml-10" style="color: #106eea">EC</span>ommerce
+            </a>
+        </h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
@@ -220,17 +224,49 @@
 
 
 
- <li class="nav-item dropdown position-static ">
-	              <a class="nav-link dropdown-toggle rounded active" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sign In/Up</a>
-	              <div class="dropdown-menu p-3 w-20 ml-12" aria-labelledby="dropdown04">
-	              	<div class="row" >
-	              	    <div class="col-md-12">
-	              			<a class="dropdown-item  rounded border-bottom p-2" href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a>
-			                <a class="dropdown-item rounded border-bottom p-2" href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Sign Up</a>
-                        </div>
-	              </div>
-               </div>
-	            </li>
+     <li class="nav-item dropdown position-static ">
+	    <a class="nav-link dropdown-toggle rounded active" href="#" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @if(ViewBag.UserName == null)
+            {
+                 @Html.Raw("Sign Up/In");     
+                 
+            }
+            else
+            {
+                @Html.Raw(ViewBag.UserName);    
+            }
+                        
+        </a>
+	    <div class="dropdown-menu p-3 w-20 ml-12" aria-labelledby="dropdown05">
+	        <div class="row" >
+	            <div class="col-md-12">
+                    @if(ViewBag.UserId == null)
+                    {
+                        <a class="dropdown-item rounded border-bottom p-2" asp-controller="User" asp-action="Register"><i class="fa fa-user-plus" aria-hidden="true"></i>Sign Up</a>
+                        <a class="dropdown-item  rounded border-bottom p-2" asp-controller="User" asp-action="Login"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a>
+
+                    }
+                    else
+                    {
+                    
+                        <a class="dropdown-item  rounded border-bottom p-2" href="#"><i class="fa fa-info-circle" aria-hidden="true"></i>My Info</a>
+                        @if(ViewBag.hasDashboard != null)
+                        {
+                            <a class="dropdown-item  rounded border-bottom p-2" asp-action="Dashboard" asp-controller="User" ><i class="fa fa-dashboard" aria-hidden="true"></i>Dashboard</a>  
+                        }
+		                <a class="dropdown-item  rounded border-bottom p-2" href="#" onclick="document.getElementById('logout-form').submit();" ><i class="fa fa-sign-out" aria-hidden="true"></i>Log Out</a>
+                                    
+                        <span>
+                           <form id="logout-form" asp-controller="User" asp-action="Logout" method="post">
+                                <button type="submit" id="logout-btn">Logout</button>
+                            </form>
+                        </span>
+                    }
+                </div>
+	        </div>
+        </div>
+
+    </li>
 
 
 
@@ -240,9 +276,11 @@
 
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
+
       </nav><!-- .navbar -->
 
     </div>
+
  
 
 
