@@ -6,19 +6,19 @@ using Ecommerce.Models;
 using AutoMapper;
 using ApplicationDbContext.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ecommerce.Controllers
 
 {
+    [Authorize]
     public class AdminController : BaseController
     {
 
-        public AdminController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        
+        public AdminController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
         }
-        //public AdminController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
-        //{
-        //}
 
         public IActionResult SpecificationIndex()
         {
@@ -37,7 +37,6 @@ namespace Ecommerce.Controllers
             getUserFromSession();
             return RedirectToAction("Index", "Product");
         }
-
         public IActionResult Dashboard()
         {
             getUserFromSession();

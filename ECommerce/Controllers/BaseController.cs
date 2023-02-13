@@ -38,10 +38,7 @@ namespace Ecommerce.Controllers
                 var user = _userManager.FindByIdAsync(userId).Result;
                 ViewBag.UserName = user.FirstName + " " + user.LastName;
 
-
-                var roles = _userManager.GetRolesAsync(user).Result;
-                if (roles.Contains("Admin"))
-                    ViewBag.HasDashboard = true;
+                ViewBag.SiteLink = "https://localhost:7068";
             }
         }
     }

@@ -365,42 +365,27 @@
         </li><!-- End Profile Nav -->
         *@
 
-
-          <li class="nav-item dropdown position-static" style="margin-left:-200px">
+        @if(ViewBag.UserName != null)
+        {
+            <li class="nav-item dropdown position-static" style="margin-left:-200px">
 	    <a class="nav-link dropdown-toggle rounded active" href="#" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            @if(ViewBag.UserName == null)
-            {
-                 @Html.Raw("Sign Up/In");     
-                 
-            }
-            else
-            {
+            
                 @Html.Raw(ViewBag.UserName);    
-            }
+            
                         
         </a>
         <div class="border" style="position:absolute; margin-left:-30px">
             <div class="dropdown-menu p-3 w-20 ml-12" aria-labelledby="dropdown05">
 	        <div class="row" >
 	            <div class="col-md-12">
-                    @if(ViewBag.UserId == null)
+                    @if(ViewBag.UserId != null)
                     {
-                        <a class="dropdown-item rounded border-bottom p-2" asp-controller="User" asp-action="Register"><i class="fa fa-user-plus" aria-hidden="true"></i>Sign Up</a>
-                        <a class="dropdown-item  rounded border-bottom p-2" asp-controller="User" asp-action="Login"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a>
-
-                    }
-                    else
-                    {
-                    
                         <a class="dropdown-item  rounded border-bottom p-2" href="#"><i class="fa fa-info-circle" aria-hidden="true"></i>My Info</a>
-                        @if(ViewBag.hasDashboard != null)
-                        {
-                            <a class="dropdown-item  rounded border-bottom p-2" asp-action="Dashboard" asp-controller="User" ><i class="fa fa-dashboard" aria-hidden="true"></i>Dashboard</a>  
-                        }
+                        <a class="dropdown-item  rounded border-bottom p-2" href="@ViewBag.SiteLink"><i class="fa fa-home" aria-hidden="true"></i>Site</a>
 		                <a class="dropdown-item  rounded border-bottom p-2" href="#" onclick="document.getElementById('logout-form').submit();" ><i class="fa fa-sign-out" aria-hidden="true"></i>Log Out</a>
                                     
                         <span>
-                           <form id="logout-form" asp-controller="User" asp-action="Logout" method="post">
+                           <form id="logout-form" class="d-none" asp-controller="User" asp-action="Logout" method="post">
                                 <button type="submit" id="logout-btn">Logout</button>
                             </form>
                         </span>
@@ -411,7 +396,10 @@
         </div>
 	    
 
-    </li>
+    </li>        
+        }
+                
+        
       </ul>
     </nav><!-- End Icons Navigation -->
 

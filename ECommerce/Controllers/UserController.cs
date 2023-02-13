@@ -26,6 +26,7 @@ namespace Ecommerce.Controllers
         
 
         [HttpGet]
+        [Route("Account/Login")]
         public IActionResult Login()
         {
             UserLoginVM userLoginVM = new UserLoginVM();
@@ -34,6 +35,7 @@ namespace Ecommerce.Controllers
 
 
         [HttpPost]
+        [Route("Account/Login")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserLoginVM userVM)
         {
@@ -82,7 +84,7 @@ namespace Ecommerce.Controllers
             await _signInManager.SignOutAsync();
             HttpContext.Session.Remove("UserId");
             TempData["success"] = "Logged Out Successfully!";
-            return Redirect("https://localhost:7068/Home/Index");
+            return Redirect("https://localhost:7068");
         }
 
 
