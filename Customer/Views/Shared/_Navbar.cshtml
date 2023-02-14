@@ -327,7 +327,6 @@
 
                  eventForChangeImage();  
                     
-                        
 
 			},
 			error: function(req, status, error){
@@ -338,10 +337,11 @@
 
 
             function eventForChangeImage(){
-
                $('.cats').hover(function(event){
                  let val =$(event.target).attr('value');
-                 $('#cat-img') .css("background-image", "url(" + val + ")");
+                 //val = "";
+                 $('#cat-img') .css("background-image", "url('" + val + "')");
+                 console.log(val);
                   });
 
 
