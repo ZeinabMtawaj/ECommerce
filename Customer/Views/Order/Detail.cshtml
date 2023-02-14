@@ -66,57 +66,14 @@
 
 
 
-
+@*
 
    <section id="portfolio-details" class="portfolio-details" >
       <div class="container" style="margin-left:10%;">
 
         <div class="row gy-4">
 
-          @*<div class="col-lg-7">
-            <div class="portfolio-details-slider swiper">
-              <div class="swiper-wrapper align-items-center">
-
-
-                <div class="swiper-slide">
-                  <img src=@Model.Image style="height:320px;" alt="">
-                </div>
-
-                @if(@Model.Photos != null){
-                  @foreach(var item in @Model.Photos){
-                        <div class="swiper-slide">
-                          <img src=item alt="">
-                        </div>
-                   }
-                }
-                @*<div class="swiper-slide">
-                  <img src="assets/img/portfolio/portfolio-details-2.jpg" alt="">
-                </div>
-
-                <div class="swiper-slide">
-                  <img src="assets/img/portfolio/portfolio-details-3.jpg" alt="">
-                </div>
-
-              </div>
-              <div class="swiper-pagination"></div>
-            </div>
-
-            <div class="portfolio-info ">
-               <h3>Description</h3>
-
-               
-                
-
-
-
-              <p>
-                  @Model.Description
-              </p>
-            </div>
-
-
-          </div>
-*@
+         
           <div class="col-lg-10">
             <div class="portfolio-info ">
               <h3>blahhhhh</h3>
@@ -128,67 +85,11 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@*                <li><strong>Name</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @Model.Name</li>
-*@
-
-
-
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <li><strong>Price</strong>: &nbsp;&nbsp;&nbsp;&nbsp; 9000000 &nbsp;&nbsp;
 </li>
 
 
 
-
-@*
-                @if (@Model.Category !=null)
-                {
-                    <li><strong>Category</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @Model.Category.Name</li>
-                }
-                <li><strong>Price</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @Model.Price</li>
-                
-             *@
                        
 
             <li class="row mb-2 mt-3 ml-4">
@@ -196,9 +97,7 @@
                     <div class="col-sm-9">
                         <input type="number" class="form-control w-25 h-75" >
                     </div>
-                   @* <div class="col-sm-6">
-                       &nbsp;
-                    </div>*@
+                
                 </li>
                 
             
@@ -234,7 +133,7 @@
       </div>
     </section><!-- End Portfolio Details Section -->
 
-
+*@
 
               <div class="row-sm-10 d-flex flex-row mt-12" style="margin:auto;margin-top:5%;">
             <button type="button" class="btn btn-outline-danger ml-5" onclick="location.href='@Url.Action("Detail","Product")';"><i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -253,12 +152,6 @@
 
 
 
-            @*<div class="portfolio-description">
-              <h2>Description</h2>
-              <p>
-                  @Model.Description
-              </p>
-            </div>*@
         
 
    
