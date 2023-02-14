@@ -83,10 +83,15 @@
       <partial name = "_Header" />
 
 *@
-
     <!-- ======= Header ======= -->
-      <partial name = "_Navbar" />
-
+    @if (ViewBag.Home == "true")
+    {
+        <partial name = "_Navbar" />
+    }
+    else
+    {
+        <partial name = "_OrderNavbar" />
+    }
 
 
 

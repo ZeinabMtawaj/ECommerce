@@ -19,6 +19,7 @@ namespace Customer.Controllers
             getUserFromSession();
             TrendController trendCon = new TrendController(_uow, _mapper);
             var trends = trendCon.GetAll();
+            ViewBag.Home = "true";
             return View(trends);
         }
     }
