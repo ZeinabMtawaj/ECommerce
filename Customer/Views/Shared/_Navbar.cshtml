@@ -112,8 +112,8 @@
 
  <li class="nav-item">
 
-                <form class="form-inline d-flex justify-content-center border-bottom  border-primary border-2  p-1" id="search-form">
-  <input class="form-control form-control-sm mr-3 ml-3 w-75 border-0" type="text" placeholder="Search ..." style="box-shadow: none;"
+                <form  asp-controller="Product" asp-action="Index" asp-route-exp="search" asp-route-match="" class="form-inline d-flex justify-content-center border-bottom  border-primary border-2  p-1" id="search-form">
+  <input name="match" class="form-control form-control-sm mr-3 ml-3 w-75 border-0" type="text" placeholder="Search ..." style="box-shadow: none;"
     aria-label="Search">  &nbsp;&nbsp;&nbsp;
   <button type="submit" class="border-0 bg-transparent"><i class="fa fa-search  border-0 " style="margin:0px;" aria-hidden="true"></i></button>
 </form>
@@ -310,7 +310,7 @@
                             $('#categories').append("<div class='col-md-3 d-none d-md-block' id='sec-"+i+"'></div>");  
                             j=i;
                         }
-                        $('#sec-'+j).append("<a class='dropdown-item rounded border-bottom cats' value='"+value.image+"' href='#'>"+value.name+"</a>");
+                        $('#sec-'+j).append("<a class='dropdown-item rounded border-bottom cats' value='"+value.image+"' href='https://localhost:7068/Product/Index?exp=category&&match="+value.name+"' >"+value.name+"</a>");
 
                         i= i+1;
                     });
@@ -318,7 +318,7 @@
                
                 }
 
-                $('#categories').append("<div class='col-md-6 d-none d-md-block'><a class='h-100 w-100 rounded img' href='#' id='cat-img' style='background-image: url(img/more-services-1.jpg);'></a></div>");   
+                $('#categories').append("<div class='col-md-6 d-none d-md-block'><a class='h-100 w-100 rounded img' href='#' id='cat-img' style='background-image: url(img/more-services-1.jpg);background-repeat:no-repeat;'></a></div>");   
 
                 
                $('#categories').hover(function(event){

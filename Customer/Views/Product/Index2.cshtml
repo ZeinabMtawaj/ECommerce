@@ -1,0 +1,325 @@
+﻿@{
+    ViewData["Title"] = "Products Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    @model IEnumerable<Product> 
+
+
+
+
+<main id="main" style="margin:0px;">
+
+    <!-- ======= Breadcrumbs ======= -->
+ @*   <section id="breadcrumbs" class="breadcrumbs mr-0" style="margin:0px;">
+      <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Products</h2>
+        </div>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+*@
+
+
+
+ 
+    <!-- ======= Portfolio Section ======= -->
+   <section style="background-color: rgba(251, 251, 251, 0.15);" >
+  <div class="text-center container py-5" id="all">
+@*    <h4 class="mt-4 mb-5"><strong>Bestsellers</strong></h4>
+*@
+    <div class="row">
+      <div class="col-lg-3 col-md-12 mb-4">
+        <div class="card">
+          <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+            data-mdb-ripple-color="light">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/belt.webp"
+              class="w-100 " />
+
+            <a href="#!">
+              <div class="mask">
+                <div class="d-flex justify-content-start align-items-end h-100">
+@*                  <h5><span class="badge bg-primary ms-2">New</span></h5>
+*@                </div>
+              </div>
+              <div class="hover-overlay">
+                <div class="mask" style="background-color: #eee;"></div>
+              </div>
+            </a>
+          </div>
+          <div class="card-body">
+            <a href="" class="text-reset">
+              <h5 class="card-title mb-3">Product name</h5>
+            </a>
+          @*  <a href="" class="text-reset">
+              <p>Category</p>
+            </a>*@
+            <h6 class="mb-3">$61.99</h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+            data-mdb-ripple-color="light">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/img%20(4).webp"
+              class="w-100" />
+            <a href="#!">
+              <div class="mask">
+                <div class="d-flex justify-content-start align-items-end h-100">
+@*                  <h5><span class="badge bg-success ms-2">Eco</span></h5>
+*@                </div>
+              </div>
+              <div class="hover-overlay">
+                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+              </div>
+            </a>
+          </div>
+          <div class="card-body">
+            <a href="" class="text-reset">
+              <h5 class="card-title mb-3">Product name</h5>
+            </a>
+         @*   <a href="" class="text-reset">
+              <p>Category</p>
+            </a>*@
+            <h6 class="mb-3">$61.99</h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="bg-image hover-zoom ripple" data-mdb-ripple-color="light">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/shoes%20(3).webp"
+              class="w-100" />
+            <a href="#!">
+              <div class="mask">
+                <div class="d-flex justify-content-start align-items-end h-100">
+@*                  <h5><span class="badge bg-danger ms-2">-10%</span></h5>
+*@                </div>
+              </div>
+              <div class="hover-overlay">
+                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+              </div>
+            </a>
+          </div>
+          <div class="card-body">
+            <a href="" class="text-reset">
+              <h5 class="card-title mb-3">Product name</h5>
+            </a>
+          @*  <a href="" class="text-reset">
+              <p>Category</p>
+            </a>*@
+            <h6 class="mb-3">
+              <s>$61.99</s><strong class="ms-2 text-danger">$50.99</strong>
+            </h6>
+          </div>
+        </div>
+      </div>
+   
+      <div class="col-lg-3 col-md-12 mb-4">
+        <div class="card">
+          <div class="bg-image hover-zoom ripple" data-mdb-ripple-color="light">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/img%20(23).webp"
+              class="w-100" />
+            <a href="#!">
+              <div class="mask">
+                <div class="d-flex justify-content-start align-items-end h-100">
+             @*     <h5>
+                    <span class="badge bg-success ms-2">Eco</span><span
+                      class="badge bg-danger ms-2">-10%</span>
+                  </h5>*@
+                </div>
+              </div>
+              <div class="hover-overlay">
+                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+              </div>
+            </a>
+          </div>
+          <div class="card-body">
+            <a href="" class="text-reset">
+              <h5 class="card-title mb-3">Product name</h5>
+            </a>
+         @*   <a href="" class="text-reset">
+              <p>Category</p>
+            </a>*@
+            <h6 class="mb-3">
+              <s>$61.99</s><strong class="ms-2 text-danger">$50.99</strong>
+            </h6>
+          </div>
+        </div>
+      </div>
+       </div>
+
+    <div class="row">
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+            data-mdb-ripple-color="light">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/img%20(17).webp"
+              class="w-100" />
+            <a href="#!">
+              <div class="mask">
+                <div class="d-flex justify-content-start align-items-end h-100"></div>
+              </div>
+              <div class="hover-overlay">
+                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+              </div>
+            </a>
+          </div>
+          <div class="card-body">
+            <a href="" class="text-reset">
+              <h5 class="card-title mb-3">Product name</h5>
+            </a>
+           @* <a href="" class="text-reset">
+              <p>Category</p>
+            </a>*@
+            <h6 class="mb-3">$61.99</h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="bg-image hover-zoom ripple" data-mdb-ripple-color="light">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/img%20(30).webp"
+              class="w-100" />
+            <a href="#!">
+              <div class="mask">
+                <div class="d-flex justify-content-start align-items-end h-100">
+                @*  <h5>
+                    <span class="badge bg-primary ms-2">New</span><span
+                      class="badge bg-success ms-2">Eco</span><span class="badge bg-danger ms-2">-10%</span>
+                  </h5>*@
+                </div>
+              </div>
+              <div class="hover-overlay">
+                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+              </div>
+            </a>
+          </div>
+          <div class="card-body">
+            <a href="" class="text-reset">
+              <h5 class="card-title mb-3">Product name</h5>
+            </a>
+        @*    <a href="" class="text-reset">
+              <p>Category</p>
+            </a>*@
+            <h6 class="mb-3">
+              <s>$61.99</s><strong class="ms-2 text-danger">$50.99</strong>
+            </h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+    <script type="text/javascript" >
+        $(window).scroll(function() {
+    if($(window).scrollTop() == $(document).height() - $(window).height()) {
+           // ajax call get data from server and append to the div
+		$.ajax({
+			type:"GET",
+            
+			url: '@(Url.Action("getProducts","Product"))',
+            data:{
+               match:true,
+               take:5,
+               skip:0
+
+            },
+			dataType:"json",
+
+			success:function(result){
+                if (result != null){
+                    var i=1;
+                    var j=0;
+				    $.each(result,function(key,value){
+                        if (i == 4)
+                        {
+                            j++;
+                            $('#all').append(" <div class='row' id='roo-"+j+"'></div>");   
+                            i=1;
+                        }
+                    $('#roo-'+j).append(`   
+                     <div class="col-lg-3 col-md-12 mb-4">
+                        <div class="card">
+                          <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+                            data-mdb-ripple-color="light">
+                            <img src="`+value.image+`"
+                              class="w-100 " />
+
+                            <a href="#!">
+                              <div class="mask">
+                                <div class="d-flex justify-content-start align-items-end h-100">
+                                </div>
+                              </div>
+                              <div class="hover-overlay">
+                                <div class="mask" style="background-color: #eee;"></div>
+                              </div>
+                            </a>
+                          </div>
+                          <div class="card-body">
+                            <a href="" class="text-reset">
+                              <h5 class="card-title mb-3">`+value.name+`</h5>
+                            </a>
+                            <h6 class="mb-3">`+value.price+`</h6>
+                          </div>
+                        </div>
+                      </div>
+                    `);
+                    i++;
+                    });
+                    	
+               
+                }
+
+               // script_tag.setAttribute('src','~/js/main.js');
+
+
+
+                        
+
+			},
+			error: function(req, status, error){
+			console.log(status);
+			}
+            });
+
+
+             }
+});
+
+           
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+    </section><!-- End Portfolio Section -->
+
+
+    </main>
+
+    
+
+
+
+
+
+   

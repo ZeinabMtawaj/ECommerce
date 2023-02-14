@@ -44,12 +44,12 @@
             var i =0;
 			@foreach(var item in Model)
 			{
-				<tr>
+				<tr  >
 					<td>
 						@item.Name
 					</td>
-					<td class="overflow-auto">
-						@item.Description
+					<td >
+						<div style="height: 50px;max-height: 50px;overflow: auto;">@item.Description</div>
 					</td>
 					<td>
 						@item.Price
