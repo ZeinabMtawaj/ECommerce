@@ -25,6 +25,49 @@
     </section><!-- End Breadcrumbs -->
 
     <!-- ======= Order Details Section ======= -->
+    
+   <section id="portfolio-details" class="portfolio-details ">
+      <div class="container" style="margin-left:10%;">
+        <div class="row gy-4">        
+          <div class="col-lg-10">
+            <div class="portfolio-info ">
+                <div class="row ">
+                   <div class="col-4">
+                        <img src="~/img/more-services-1.jpg " style="width:230px;height:120px;" />
+                    </div>
+                    <ul class="col-4 p-2">
+                        <li ><strong>Name</strong>: &nbsp;&nbsp;&nbsp;&nbsp; blaaaaaaah &nbsp;&nbsp;</li >
+                        <li ><strong>Price</strong>: &nbsp;&nbsp;&nbsp;&nbsp; 9000000 &nbsp;&nbsp;</li >
+                     
+                        <li class="row mb-2 mt-3 ml-4">
+                            <label  class="col-sm-3 form-label font-weight-bold"><strong>Quantity: </strong></label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control w-25 h-75" >
+                            </div>                 
+                         </li>
+                    </ul>
+
+                    <ul class="col-4 border-sm-start-none border-start p-3">
+                         <li><strong>&nbsp;&nbsp;Total</strong>: &nbsp;&nbsp;&nbsp;&nbsp; 9000000</li>
+                          <li>&nbsp;&nbsp;<button type="button" class="btn btn-outline-danger ml-5" onclick="location.href='@Url.Action("Detail","Product")';"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                           Delete Product</button></li>
+                    </ul>
+                    @*<div class="col-1 " style="margin:auto;">
+                       <button data-toggle="tooltip" data-placement="top" title="delete" class="btn btn-link btn-simple-danger mt-1"> 
+									<i class="fa fa-close text-danger"></i>       
+						</button>
+                    </div>*@
+               </div>
+            </div>
+          </div>
+       </div>
+     </div>
+  </section><!-- End Portfolio Details Section -->
+
+
+
+
+
    <section id="portfolio-details" class="portfolio-details" >
       <div class="container" style="margin-left:10%;">
 
@@ -184,6 +227,13 @@
 
 
             </div>
+              </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+
 
 
               <div class="row-sm-10 d-flex flex-row mt-12" style="margin:auto;margin-top:5%;">
@@ -209,13 +259,7 @@
                   @Model.Description
               </p>
             </div>*@
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Portfolio Details Section -->
-
+        
 
    
    
