@@ -137,7 +137,7 @@
 
 
           <li class="nav-item dropdown position-static ">
-	              <a class="nav-link dropdown-toggle " href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category&nbsp;</a>
+	              <a class="nav-link dropdown-toggle " href="#" id="dropdownCat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category&nbsp;</a>
 	              <div class="dropdown-menu p-4 w-100" aria-labelledby="dropdown04">
 	              	<div class="row" id="categories">
 	              		
@@ -369,7 +369,7 @@
                 $('#categories').append("<div class='col-md-6 d-none d-md-block'><a class='h-100 w-100 rounded img' href='#' id='cat-img' style='background-image: url(img/more-services-1.jpg);background-repeat:no-repeat;'></a></div>");   
 
                 
-               $('#categories').hover(function(event){
+               $('#dropdownCat').hover(function(event){
                  $('#cat-img') .css("background-image", "url(img/more-services-1.jpg)");
                   });
 
