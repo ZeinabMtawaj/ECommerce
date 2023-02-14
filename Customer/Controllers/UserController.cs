@@ -78,6 +78,7 @@ namespace Customer.Controllers
 
 
         [HttpGet]
+        [Route("Account/Login")]
         public IActionResult Login()
         {
             UserLoginVM userLoginVM = new UserLoginVM();
@@ -86,6 +87,7 @@ namespace Customer.Controllers
 
 
         [HttpPost]
+        [Route("Account/Login")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserLoginVM userVM)
         {
@@ -186,7 +188,7 @@ namespace Customer.Controllers
         [HttpGet]
         public IActionResult Dashboard()
         {
-            return Redirect("https://localhost:7156/Specification/Index");
+            return Redirect("https://localhost:7156");
         }
 
     }
