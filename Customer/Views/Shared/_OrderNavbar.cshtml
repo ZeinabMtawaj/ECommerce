@@ -191,7 +191,10 @@
                 </span>
           </li>*@
 @*          <li><a class="nav-link scrollto" href="#pricing">Pricing</a></li>
-*@             <li><a class="nav-link " >&nbsp;</a></li>
+*@             @if (ViewBag.UserName != null)
+                {
+
+            <li><a class="nav-link " >&nbsp;</a></li>
 
           <li class="nav-item dropdown position-static ">
           	              <a class="nav-link dropdown-toggle rounded "  href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -233,19 +236,19 @@
 	              </div>
                </div>
                </li>
+              
+                    <li><a class="nav-link scrollto" href="#pricing">&nbsp;</a></li>
 
-          <li><a class="nav-link scrollto" href="#pricing">&nbsp;</a></li>
-
-            <li class="nav-item">
-          <button type="button" class="icon-button " onclick="location.href='@Url.Action("Detail","WishList")';">
+                    <li class="nav-item">
+                        <button type="button" class="icon-button " onclick="location.href='@Url.Action("Detail","WishList")';">
 @*            <span class="material-icons">notifications</span>
 *@            
-                <i  class="fa fa-heart " style="font-size:18px;"></i>
-               <span class="icon-button__badge">2</span>
+                        <i  class="fa fa-heart " style="font-size:18px;"></i>
+                        <span class="icon-button__badge">2</span>
                
-          </button>
-          </li>
-
+                        </button>
+                    </li>
+          }
            
 
 
@@ -255,7 +258,7 @@
 
 
 
-
+@*
 
  <li class="nav-item dropdown position-static ">
 	<a class="nav-link dropdown-toggle rounded " href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-2xl" style="font-size:30px"></i> &nbsp;</a>
@@ -268,6 +271,52 @@
         </div>
     </div>
 </li>
+
+*@
+
+ <li class="nav-item dropdown position-static ">
+	    <a class="nav-link dropdown-toggle rounded active" href="#" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @if(ViewBag.UserName == null)
+            {
+                 @Html.Raw("Sign Up/In");     
+                 
+            }
+            else
+            {
+                @Html.Raw(ViewBag.UserName);    
+            }
+                        
+        </a>
+	    <div class="dropdown-menu p-3 w-20 ml-12" aria-labelledby="dropdown05">
+	        <div class="row" >
+	            <div class="col-md-12">
+                    @if(ViewBag.UserId == null)
+                    {
+                        <a class="dropdown-item rounded border-bottom p-2" asp-controller="User" asp-action="Register"><i class="fa fa-user-plus" aria-hidden="true"></i>Sign Up</a>
+                        <a class="dropdown-item  rounded border-bottom p-2" asp-controller="User" asp-action="Login"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a>
+
+                    }
+                    else
+                    {
+                    
+                        <a class="dropdown-item  rounded border-bottom p-2" href="#"><i class="fa fa-info-circle" aria-hidden="true"></i>My Info</a>
+                        @if(ViewBag.hasDashboard != null)
+                        {
+                            <a class="dropdown-item  rounded border-bottom p-2" asp-action="Dashboard" asp-controller="User" ><i class="fa fa-dashboard" aria-hidden="true"></i>Dashboard</a>  
+                        }
+		                <a class="dropdown-item  rounded border-bottom p-2" href="#" onclick="document.getElementById('logout-form').submit();" ><i class="fa fa-sign-out" aria-hidden="true"></i>Log Out</a>
+                                    
+                        <span>
+                           <form id="logout-form" asp-controller="User" asp-action="Logout" method="post">
+                                <button type="submit" id="logout-btn">Logout</button>
+                            </form>
+                        </span>
+                    }
+                </div>
+	        </div>
+        </div>
+
+    </li>
 
 
 

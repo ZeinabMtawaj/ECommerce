@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Products Page";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_OrderLayout.cshtml";
 }
 
     @model IEnumerable<Product> 
@@ -67,7 +67,7 @@
                     <h4>@trend.Name</h4>
 @*                    <p style="opacity:20;"></p>
 *@                    <div class="portfolio-links">
-                      <a href="~/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>
+                      <a href=@trend.Image data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>
                       <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="More Details"><i class="bx bx-link"></i></a>
                       <a asp-controller='Product' asp-action='Detail' asp-route-id =@trend.Id title='Add To WishList'><i class='bx bx-heart'></i></a>
                       <a asp-controller='Product' asp-action='Detail' asp-route-id =@trend.Id title='Add To Cart'><i class='bx bx-cart'></i></a>

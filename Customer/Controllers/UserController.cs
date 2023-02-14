@@ -25,18 +25,19 @@ namespace Customer.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            //_uow.GetContext().Roles.Add(new ApplicationDbContext.Models.UserRole()
-            //{
-            //    Name = "Admin",
-            //    NormalizedName = "ADMIN"
-            //});
-            //_uow.GetContext().SaveChanges();
-            //_uow.GetContext().Roles.Add(new ApplicationDbContext.Models.UserRole()
-            //{
-            //    Name = "Customer",
-            //    NormalizedName = "CUSTOMER"
-            //});
-            //_uow.GetContext().SaveChanges();
+           /* _uow.GetContext().Roles.Add(new ApplicationDbContext.Models.UserRole()
+            {
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            });
+            _uow.GetContext().SaveChanges();
+            _uow.GetContext().Roles.Add(new ApplicationDbContext.Models.UserRole()
+            {
+                Name = "Customer",
+                NormalizedName = "CUSTOMER"
+            });
+            _uow.GetContext().SaveChanges();
+*/
             UserRegisterVM userVM = new UserRegisterVM();
             return View(userVM);
         }
@@ -53,7 +54,7 @@ namespace Customer.Controllers
                 var result = await _userManager.CreateAsync(user, userVM.User.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Customer");
+                    await _userManager.AddToRoleAsync(user, "Admin");
 
                     var addressController = new AddressController(_uow, _mapper);
                     addressController.Create(user.Id, userVM.Addresses);
