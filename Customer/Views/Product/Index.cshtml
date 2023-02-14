@@ -93,9 +93,7 @@
           let searchType = JSON.parse(json_model);
           let json_model2 = '@Html.Raw(Json.Serialize(ViewBag.match))';
           let searchContent = JSON.parse(json_model2);
-          console.log(searchType);
-          console.log(searchContent);
-
+        
 
 
         var skip_value = 0;
@@ -131,7 +129,8 @@
                     });
                     $('.port-first').css("position","");
                     $('#footer').remove();
-                    $(`  <footer id="footer" >
+                    var newHeight = $(document).height() - 600;
+                    $(`  <footer id="footer"  style="position:relative;top:`+newHeight+`px;">
     <div class="container">
       <div class="row d-flex align-items-center">
         <div class="col-lg-6 text-lg-left text-center">
