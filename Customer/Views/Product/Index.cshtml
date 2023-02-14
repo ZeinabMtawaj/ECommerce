@@ -130,7 +130,34 @@
                          //   $('#prods').append("<div class='col-lg-3 col-md-2 portfolio-item'><div class='portfolio-wrap'><img src='https://m.media-amazon.com/images/I/81n2sLhksUL._AC_UL320_.jpg' class='img-fluid ' alt=''> <div class='portfolio-info'> <h4>App 1</h4><p>App</p> <div class='portfolio-links'><a href='https://m.media-amazon.com/images/I/81n2sLhksUL._AC_UL320_.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a href='https://localhost:7068/Product/Detail/1' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
                     });
                     $('.port-first').css("position","");
-                    	
+                    $('#footer').remove();
+                    $(`  <footer id="footer" >
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-lg-6 text-lg-left text-center">
+          <div class="copyright">
+            &copy; Copyright <strong>Vesperr</strong>. All Rights Reserved
+          </div>
+          <div class="credits">
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+            <a href="#intro" class="scrollto">Home</a>
+            <a href="#about" class="scrollto">About</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+
+    `).insertAfter('#all-here');
+	
                
                 }
 
@@ -138,7 +165,7 @@
 
 
 
-                        skip_value +=20;
+                       // skip_value +=20;
 
 			},
 			error: function(req, status, error){
