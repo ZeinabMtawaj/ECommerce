@@ -93,6 +93,8 @@
         let searchType = JSON.parse(json_model);
         let json_model2 = '@Html.Raw(Json.Serialize(ViewBag.match))';
         let searchContent = JSON.parse(json_model2);
+         let json_model3 = '@Html.Raw(Json.Serialize(ViewBag.subtitle))';
+        let subtitleView = JSON.parse(json_model3);
 
          createWish();
 
@@ -189,19 +191,34 @@
                      $('.wish').click(function(event){
                      let val =$(event.target).attr("value");   
                      let valId= parseInt(val);
+                     let heart = $(event.target);
 		             $.ajax({
 			            type:"GET",
-			            url: '@(Url.Action("create","WishList"))',
+			            url: '@(Url.Action("manage","WishList"))',
                         data :{
-                            productId: valId
+                            productId: valId,
+                            subtitle: subtitleView
                         },
 			            dataType:"json",
 			            success:function(result){
-                            if (result != null){
-				               console.log(result);
-                            }                        
+                            console.log(result);
+                            if (result == "Add")
+                            {
+                                 $(event.target).removeClass("bx-heart");
+                                 $(event.target).addClass("bxs-heart");
+                                 $(event.target).parent().removeAttr("title");
+                                 $(event.target).parent().attr("title","remove from wishlist");                                                    
 
-			            },
+			                 }
+                             if (result == "Delete")
+                             {
+                                 $(event.target).removeClass("bxs-heart");
+                                 $(event.target).addClass("bx-heart");
+                                 $(event.target).parent().removeAttr("title");
+                                 $(event.target).parent().attr("title","add to wishlist"); 
+                             
+                             }
+                        },
 			            error: function(req, status, error){
 			            console.log(status);
 			            }

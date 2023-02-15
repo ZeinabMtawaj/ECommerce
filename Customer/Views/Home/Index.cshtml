@@ -930,7 +930,8 @@
 			    type:"GET",
 			    url: '@(Url.Action("create","WishList"))',
                 data :{
-                    productId: valId
+                    productId: valId,
+                    subtitle: ""
                 },
 			    dataType:"json",
 			    success:function(result){

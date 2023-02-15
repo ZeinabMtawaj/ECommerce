@@ -34,21 +34,53 @@ namespace Customer.Controllers
         }
 
 
-        public JsonResult Create( int productId)
+        public JsonResult Manage( int productId, string subtitle)
         {
             getUserFromSession();
             var product = _uow.ProductRepo.Find(x=> x.Id == productId);
+            ViewBag.Subtitle = subtitle;
             if (product == null) {
+               /* TempData["error"] = "This Product is Not Available!";*/
                 return Json("false");
             }
-            var userId = ViewBag.UserId;
-            WishList wishList = new WishList() { 
-                ProductId = productId, 
-                UserId = userId
+            int userId = int.Parse(ViewBag.UserId);
+            WishList wishList = new WishList() {
+                ProductId = productId,
+                UserId = userId,
+                Quantity = 1
             };
-            _uow.WishListRepo.Add(wishList);
-            return Json("true");
+            var wish = _uow.WishListRepo.Find(x => ((x.UserId == userId) && (x.ProductId == productId)));   
+            if (wish != null)
+            {
+                this.Delete(wish);
+               return Json("Delete");
 
+            }
+            this.Create(wishList);
+           
+          
+            return Json("Add");
+
+
+
+
+        }
+
+        public void Create(WishList wish)
+        {
+
+            _uow.WishListRepo.Add(wish);
+            _uow.SaveChanges();
+
+
+
+        }
+
+        public void Delete(WishList wish)
+        {
+
+            _uow.WishListRepo.Delete(wish);
+            _uow.SaveChanges();
 
 
 
