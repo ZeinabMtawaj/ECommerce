@@ -96,7 +96,7 @@
          let json_model3 = '@Html.Raw(Json.Serialize(ViewBag.subtitle))';
         let subtitleView = JSON.parse(json_model3);
 
-         createWish();
+         manageWish();
 
         
 
@@ -134,7 +134,7 @@
                     });
                     $('.port-first').css("position","");
                     footerDesign();
-                    createWish();
+                    manageWish();
                    
 	
                
@@ -187,7 +187,7 @@
                           }
 
            
-             function createWish(){
+             function manageWish(){
                      $('.wish').click(function(event){
                      let val =$(event.target).attr("value");   
                      let valId= parseInt(val);

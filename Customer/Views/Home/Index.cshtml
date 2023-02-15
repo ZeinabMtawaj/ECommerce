@@ -921,32 +921,50 @@
     
 	<script type="text/javascript" >
 
-
+        manageWish();
         
-        $('.wish').click(function(event){
-            let val =$(event.target).attr("value");   
-            let valId= parseInt(val);
-		    $.ajax({
-			    type:"GET",
-			    url: '@(Url.Action("create","WishList"))',
-                data :{
-                    productId: valId,
-                    subtitle: ""
-                },
-			    dataType:"json",
-			    success:function(result){
-                    if (result != null){
-				       console.log(result);
-                    }                        
+       function manageWish(){
+                     $('.wish').click(function(event){
+                     let val =$(event.target).attr("value");   
+                     let valId= parseInt(val);
+                     let heart = $(event.target);
+		             $.ajax({
+			            type:"GET",
+			            url: '@(Url.Action("manage","WishList"))',
+                        data :{
+                            productId: valId,
+                            subtitle: ""
+                        },
+			            dataType:"json",
+			            success:function(result){
+                            console.log(result);
+                            if (result == "Add")
+                            {
+                                 $(event.target).removeClass("bx-heart");
+                                 $(event.target).addClass("bxs-heart");
+                                 $(event.target).parent().removeAttr("title");
+                                 $(event.target).parent().attr("title","remove from wishlist");                                                    
 
-			    },
-			    error: function(req, status, error){
-			    console.log(status);
-			    }
-                });
+			                 }
+                             if (result == "Delete")
+                             {
+                                 $(event.target).removeClass("bxs-heart");
+                                 $(event.target).addClass("bx-heart");
+                                 $(event.target).parent().removeAttr("title");
+                                 $(event.target).parent().attr("title","add to wishlist"); 
+                             
+                             }
+                        },
+			            error: function(req, status, error){
+			            console.log(status);
+			            }
+                        });
 
 
-              });
+                      });
+
+             }
+
            
 
 
