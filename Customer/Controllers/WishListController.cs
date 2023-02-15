@@ -37,7 +37,7 @@ namespace Customer.Controllers
         public JsonResult Create( int productId)
         {
             getUserFromSession();
-            var product = _uow.ProductRepo.Find(x=>x.Id== productId);
+            var product = _uow.ProductRepo.Find(x=> x.Id == productId);
             if (product == null) {
                 return Json("false");
             }
@@ -46,7 +46,7 @@ namespace Customer.Controllers
                 ProductId = productId, 
                 UserId = userId
             };
-            
+            _uow.WishListRepo.Add(wishList);
             return Json("true");
 
 
