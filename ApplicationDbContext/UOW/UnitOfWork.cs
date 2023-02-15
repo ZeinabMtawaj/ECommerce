@@ -23,7 +23,10 @@ namespace ApplicationDbContext.UOW
 
         public ITrendRepo TrendRepo { get; set; }
 
-        public IAddressRepo AddressRepo { get; set; }  
+        public IAddressRepo AddressRepo { get; set; }
+
+        public IWishListRepo WishListRepo { get; set; }
+
 
 
 
@@ -40,6 +43,8 @@ namespace ApplicationDbContext.UOW
             PhotoRepo = new PhotoRepo(db);
             TrendRepo = new TrendRepo(db);
             AddressRepo = new AddressRepo(db);
+            WishListRepo = new WishListRepo(db);
+
 
 
 
