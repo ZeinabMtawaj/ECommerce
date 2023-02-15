@@ -3,15 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Customer.Models
 {
-    public class UserViewModel : BaseEntity
+    public class ProfileViewModel : BaseEntity
     {
-        public UserViewModel()
+        public ProfileViewModel()
         {
-            Addresses = new HashSet<AddressViewModel>();
-            Orders = new HashSet<OrderViewModel>();
-            Ratings = new HashSet<RatingViewModel>();
-            UserHasNotifications = new HashSet<UserHasNotificationViewModel>();
-            WishLists = new HashSet<WishListViewModel>();
         }
 
         [RegularExpression(@"^.{3,}$", ErrorMessage = "Minimum 3 characters required")]
@@ -29,25 +24,18 @@ namespace Customer.Models
         [Required(ErrorMessage = "Required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string? Email { get; set; }
-        [Required(ErrorMessage = "Required")]
-        public string Password { get; set; }
+        public string? Password { get; set; }
+        [Display(Name ="Old Password")]
+        public string? OldPassword { get; set; }
         [Display(Name = "Confirm Password")]
-        [Required(ErrorMessage = "Required")]
         [Compare("Password", ErrorMessage = "Password doesn't match")]
-        public string ConfirmPassword { get; set; }
+        public string? ConfirmPassword { get; set; }
         [Required(ErrorMessage = "Required")]
-        [Display(Name = "Phone Number")]
+        [Display(Name ="Phone Number")]
         //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string? PhoneNumber { get; set; }
 
         //public DateTime CreatedDate { get; set; }
         //public DateTime UpdatedDate { get; set; }
-
-
-        public virtual ICollection<AddressViewModel> Addresses { get; set; }
-        public virtual ICollection<OrderViewModel> Orders { get; set; }
-        public virtual ICollection<RatingViewModel> Ratings { get; set; }
-        public virtual ICollection<UserHasNotificationViewModel> UserHasNotifications { get; set; }
-        public virtual ICollection<WishListViewModel> WishLists { get; set; }
     }
 }

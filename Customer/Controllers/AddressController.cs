@@ -35,5 +35,14 @@ namespace Customer.Controllers
             _uow.SaveChanges();
         }
 
+        public void Update(int userId, IEnumerable<string> Addresses)
+        {
+
+        }
+
+        public IEnumerable<Address> getAddressByUserId(int userId)
+        {
+            return _uow.AddressRepo.FindAll(x => x.UserId == userId);
+        }
     }
 }

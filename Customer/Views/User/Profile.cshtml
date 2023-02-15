@@ -1,0 +1,173 @@
+﻿
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_StandardLayout.cshtml";
+	
+	string FirstNameErrMsg = ViewBag.FirstNameErrMsg;
+	string LastNameErrMsg = ViewBag.LastNameErrMsg;
+	string PhoneNumberErrMsg = ViewBag.PhoneNumberErrMsg;
+	string AddressErrMsg = ViewBag.AddressErrMsg;
+	string EmailErrMsg = ViewBag.EmailErrMsg;
+	string PasswordErrMsg = ViewBag.PasswordErrMsg;
+	string ConfirmPasswordErrMsg = ViewBag.ConfirmPasswordErrMsg;
+
+}
+
+
+
+
+@model UserProfileVM
+
+
+
+
+<div class="limiter mt-18">
+	<div class="container-login100 ">
+		<div class="wrap-register100 shadow mt-20">
+		
+			<form class="login100-form validate-form" method="post" asp-action="Profile">
+				<div class="d-flex flex-column align-items-center">
+					<span class="login100-form-title">
+						Member Profile
+					</span>
+					<div class="d-flex flex-row w-96">
+						<div class="wrap-input100 validate-input" data-validate="@FirstNameErrMsg">
+							
+							<input class="input100" type="text" asp-for="Profile.FirstName" placeholder="First Name">
+							<span class="focus-input100"></span>
+							<span class="symbol-input100">
+								<i class="fa-solid fa-f"></i>
+							</span>
+						</div>
+
+						<div class="wrap-input100 ml-1 validate-input" data-validate = "@LastNameErrMsg">
+							<input class="input100" type="text" asp-for="Profile.LastName" placeholder="Last Name">
+							<span class="focus-input100"></span>
+							<span class="symbol-input100">
+								<i class="fa-solid fa-s"></i>
+							</span>
+						</div>
+					</div>
+
+
+					<div class="wrap-input100 w-96 validate-input" data-validate = "@PhoneNumberErrMsg">
+						<input class="input100" type="tel" asp-for="Profile.PhoneNumber" placeholder="Phone Number">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fas fa-phone"></i>
+						</span>
+					</div>
+					<div class="d-flex flex-row w-96 justify-content-between">
+						<div class="wrap-input100 w-80 validate-input d-flex flex-row" data-validate = "@AddressErrMsg">
+							@{
+								string main_address = "";
+								if(Model.Addresses.Count() > 0)
+									main_address = Model.Addresses.ElementAt(0);
+							}
+							<input class="input100" type="text" name="Addresses" placeholder="Address" value="@main_address">
+							<span class="focus-input100"></span>
+							<span class="symbol-input100">
+								<i class="fas fa-address-card"></i>
+							</span>
+							
+						</div>
+						<span data-toggle="modal" data-target="#addresses" class="hover:cursor-pointer flex flex-row justify-content-center align-items-center w-16" > 
+							<span data-toggle="tooltip" data-placement="top" title="Add Alternative Addresses" >
+								<i class="fa fa-plus"></i>   
+							</span>    
+						</span>
+						<div class="modal fade mt-32" id="addresses" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title font-weight-bold" id="exampleModalLabel"> Alternative Addresses</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body overflow-auto">
+										
+										<div id="addressPartial-0" class="card mt-2 rounded">
+											<div id="address-tab">
+												<span data-toggle="tooltip" data-placement="top" title="Add additional photos" class="btn btn-link btn-simple-danger" id="add-other-address">
+													<i class="fa fa-plus" style="display: inline-block;border-radius: 60px; box-shadow: 0 0 2px #888; padding: 0.5em 0.6em;"></i>
+												</span>
+												@for(int i = 1; i < Model.Addresses.Count(); i++)
+												{
+													string value = Model.Addresses.ElementAt(i);
+
+													<div class="row mb-3 mt-4 ml-4">
+														<div class="col-sm-11">
+															<input type="text" name="Addresses" class="form-control" placeholder="Address" value="@value">
+														</div>
+													</div>
+												}
+											</div>
+										</div>
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="wrap-input100 w-96 validate-input" data-validate = "@EmailErrMsg">
+						<input class="input100" type="text" asp-for="Profile.Email" placeholder="Email">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					<div class="wrap-input100 w-96 validate-input" data-validate = "">
+						<input class="input100" type="password" asp-for="Profile.OldPassword" placeholder="Old Password">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					<div class="wrap-input100 w-96 validate-input" data-validate = "@PasswordErrMsg">
+						<input class="input100" type="password" asp-for="Profile.Password" placeholder="Password">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					<div class="wrap-input100 w-96 validate-input" data-validate = "@ConfirmPasswordErrMsg">
+						<input class="input100" type="password" asp-for="Profile.ConfirmPassword" placeholder="Confirm Password">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+					
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Save
+						</button>
+					</div>
+
+					
+				</div>
+			</form>
+			<div class="login100-pic d-flex flex-column" data-tilt>
+				<img src="~/img/register.jpg" class="mt-10" alt="Profile">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+@section Scripts{
+<script>
+	$("#add-other-address").on( "click",function() {
+		$("#address-tab").append("<div class='row mb-3 mt-4 ml-4'><div class='col-sm-11'><input type='text' name='Addresses' class='form-control' placeholder='Address'> </div></div>");
+	});
+</script>
+
+}

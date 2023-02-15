@@ -25,19 +25,19 @@ namespace Customer.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-           /* _uow.GetContext().Roles.Add(new ApplicationDbContext.Models.UserRole()
-            {
-                Name = "Admin",
-                NormalizedName = "ADMIN"
-            });
-            _uow.GetContext().SaveChanges();
-            _uow.GetContext().Roles.Add(new ApplicationDbContext.Models.UserRole()
-            {
-                Name = "Customer",
-                NormalizedName = "CUSTOMER"
-            });
-            _uow.GetContext().SaveChanges();
-*/
+            //_uow.GetContext().Roles.Add(new ApplicationDbContext.Models.UserRole()
+            //{
+            //    Name = "Admin",
+            //    NormalizedName = "ADMIN"
+            //});
+            //_uow.GetContext().SaveChanges();
+            //_uow.GetContext().Roles.Add(new ApplicationDbContext.Models.UserRole()
+            //{
+            //    Name = "Customer",
+            //    NormalizedName = "CUSTOMER"
+            //});
+            //_uow.GetContext().SaveChanges();
+
             UserRegisterVM userVM = new UserRegisterVM();
             return View(userVM);
         }
@@ -54,7 +54,7 @@ namespace Customer.Controllers
                 var result = await _userManager.CreateAsync(user, userVM.User.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Admin");
+                    await _userManager.AddToRoleAsync(user, "Customer");
 
                     var addressController = new AddressController(_uow, _mapper);
                     addressController.Create(user.Id, userVM.Addresses);
@@ -66,7 +66,7 @@ namespace Customer.Controllers
                 TempData["error"] = "Could Not Register!";
                 AddErrors(result);
             }
-            RegisterErrorsToView();
+            ErrorsToView("User.");
             return View(userVM);
         }
         private void AddErrors(IdentityResult result)
@@ -105,10 +105,10 @@ namespace Customer.Controllers
                 }
                 ModelState.AddModelError("DBError", "Invalid login attempt.");
             }
-            LoginErrorsToView();
+            ErrorsToView("");
             return View(userVM);
         }
-        private void RegisterErrorsToView()
+        private void ErrorsToView(string entity)
         {
             
             if (ModelState == null)
@@ -119,58 +119,40 @@ namespace Customer.Controllers
                 errMsg = errMsg.Replace("Username", "Email");
                 TempData["error"] = errMsg;
             }
-            if (ModelState.ContainsKey("User.FirstName") && ModelState["User.FirstName"].Errors.Count > 0)
+            if (ModelState.ContainsKey(entity + "FirstName") && ModelState[entity + "FirstName"].Errors.Count > 0)
             {
-                ViewBag.FirstNameErrMsg = ModelState["User.FirstName"].Errors[0].ErrorMessage;
+                ViewBag.FirstNameErrMsg = ModelState[entity + "FirstName"].Errors[0].ErrorMessage;
             }
 
-            if(ModelState.ContainsKey("User.LastName") && ModelState["User.LastName"].Errors.Count > 0)
+            if(ModelState.ContainsKey(entity + "LastName") && ModelState[entity + "LastName"].Errors.Count > 0)
 
             {
-                ViewBag.LastNameErrMsg = ModelState["User.LastName"].Errors[0].ErrorMessage;
+                ViewBag.LastNameErrMsg = ModelState[entity + "LastName"].Errors[0].ErrorMessage;
             }
-            if(ModelState.ContainsKey("User.PhoneNumber") && ModelState["User.PhoneNumber"].Errors.Count > 0)
+            if(ModelState.ContainsKey(entity + "PhoneNumber") && ModelState[entity + "PhoneNumber"].Errors.Count > 0)
 
             {
-                ViewBag.PhoneNumberErrMsg = ModelState["User.PhoneNumber"].Errors[0].ErrorMessage;
+                ViewBag.PhoneNumberErrMsg = ModelState[entity + "PhoneNumber"].Errors[0].ErrorMessage;
             }
             if(ModelState.ContainsKey("Addresses") && ModelState["Addresses"].Errors.Count > 0)
             {
                 ViewBag.AddressErrMsg = ModelState["Addresses"].Errors[0].ErrorMessage;
             }
-            if(ModelState.ContainsKey("User.Email") && ModelState["User.Email"].Errors.Count > 0)
+            if(ModelState.ContainsKey(entity + "Email") && ModelState[entity + "Email"].Errors.Count > 0)
             {
-                ViewBag.EmailErrMsg = ModelState["User.Email"].Errors[0].ErrorMessage;
+                ViewBag.EmailErrMsg = ModelState[entity + "Email"].Errors[0].ErrorMessage;
             }
-            if(ModelState.ContainsKey("User.Password") && ModelState["User.Password"].Errors.Count > 0)
+            if(ModelState.ContainsKey(entity + "Password") && ModelState[entity + "Password"].Errors.Count > 0)
 
             {
-                ViewBag.PasswordErrMsg = ModelState["User.Password"].Errors[0].ErrorMessage;
+                ViewBag.PasswordErrMsg = ModelState[entity + "Password"].Errors[0].ErrorMessage;
             }
-            if(ModelState.ContainsKey("User.ConfirmPassword") && ModelState["User.ConfirmPassword"].Errors.Count > 0)
+            if(ModelState.ContainsKey(entity + "ConfirmPassword") && ModelState[entity + "ConfirmPassword"].Errors.Count > 0)
             {
-                ViewBag.ConfirmPasswordErrMsg = ModelState["User.ConfirmPassword"].Errors[0].ErrorMessage;
+                ViewBag.ConfirmPasswordErrMsg = ModelState[entity + "ConfirmPassword"].Errors[0].ErrorMessage;
             }
         }
-        private void LoginErrorsToView()
-        {
-            if (ModelState == null)
-                return;
-            if (ModelState.ContainsKey("DBError") && ModelState["DBError"].Errors.Count > 0)
-            {
-                TempData["error"] = ModelState["DBError"].Errors[0].ErrorMessage;
-            }
-           
-            if (ModelState.ContainsKey("Email") && ModelState["Email"].Errors.Count > 0)
-            {
-                ViewBag.EmailErrMsg = ModelState["Email"].Errors[0].ErrorMessage;
-            }
-            if (ModelState.ContainsKey("Password") && ModelState["Password"].Errors.Count > 0)
-
-            {
-                ViewBag.PasswordErrMsg = ModelState["Password"].Errors[0].ErrorMessage;
-            }
-        }
+        
 
 
         [HttpPost]
@@ -190,6 +172,93 @@ namespace Customer.Controllers
         public IActionResult Dashboard()
         {
             return Redirect("https://localhost:7156");
+        }
+
+
+        [HttpGet]
+        public IActionResult Profile()
+        {
+            UserProfileVM profileVM = new UserProfileVM();
+            var userId = HttpContext.Session.GetString("UserId");
+
+            var user = _userManager.FindByIdAsync(userId).Result;
+
+            profileVM.Profile.FirstName = user.FirstName;
+            profileVM.Profile.LastName = user.LastName;
+            profileVM.Profile.Email = user.Email;
+            profileVM.Profile.PhoneNumber = user.PhoneNumber;
+            var addressController = new AddressController(_uow, _mapper);
+            var addresses = addressController.getAddressByUserId(user.Id).ToList();
+
+            foreach(var add in addresses)
+            {
+                profileVM.Addresses.Add(add.Location);
+            }
+            return View(profileVM);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile(UserProfileVM profileVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = HttpContext.Session.GetString("UserId");
+                var user = _userManager.FindByIdAsync(userId).Result;
+                
+                if(user.FirstName != profileVM.Profile.FirstName)
+                {
+                    user.FirstName = profileVM.Profile.FirstName;
+                    user.UpdatedDate = DateTime.Now;
+                }
+                if (user.LastName != profileVM.Profile.LastName)
+                {
+                    user.LastName = profileVM.Profile.LastName;
+                    user.UpdatedDate = DateTime.Now;
+                }
+                if (user.Email != profileVM.Profile.Email)
+                {
+                    user.Email = profileVM.Profile.Email;
+                    user.UpdatedDate = DateTime.Now;
+                }
+                if (user.PhoneNumber != profileVM.Profile.PhoneNumber)
+                {
+                    user.PhoneNumber = profileVM.Profile.PhoneNumber;
+                    user.UpdatedDate = DateTime.Now;
+                }
+                bool passError = false;
+                if (profileVM.Profile.Password != null && profileVM.Profile.OldPassword != null)
+                { 
+                    var passRes = await _userManager.ChangePasswordAsync(user, profileVM.Profile.OldPassword, profileVM.Profile.Password);
+                    if (passRes.Succeeded)
+                    {
+                        user.UpdatedDate = DateTime.Now;
+                    }
+                    else
+                    {
+                        passError = true;
+                        AddErrors(passRes);
+                        TempData["error"] = "Something Went Wrong!";
+                    }
+                }
+                if (!passError)
+                {
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        var addressController = new AddressController(_uow, _mapper);
+                        addressController.Update(user.Id, profileVM.Addresses);
+                        TempData["success"] = "Profile Saved!";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    TempData["error"] = "Something Went Wrong!";
+                    AddErrors(result);
+                }
+            }
+            ErrorsToView("Profile.");
+            return View(profileVM);
         }
 
     }
