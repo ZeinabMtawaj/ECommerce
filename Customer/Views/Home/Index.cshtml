@@ -482,7 +482,7 @@
                     <div class="portfolio-links">
                       <a href=@trend.Image data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>
                       <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="More Details"><i class="bx bx-link"></i></a>
-                      <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="Add To WishList"><i class="bx bx-heart"></i></a>
+                      <a class="wish"  title="Add To WishList" style="cursor: pointer;"><i class="bx bx-heart" value=@trend.Id></i></a>
                       <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="Add To Cart"><i class="bx bx-cart"></i></a>
 
 
@@ -916,47 +916,42 @@
 
 
 
-@*
+
 
     
 	<script type="text/javascript" >
 
 
-
-
         
-		$.ajax({
-			type:"GET",
-			url: '@(Url.Action("getAll","Trend"))',
-			dataType:"json",
-			success:function(result){
-                if (result != null){
-				    $.each(result,function(key,value){
-                       console.log(value);
-                           //  $('#trends').append("<div class='col-lg-4 col-md-6 portfolio-item filter-'"+"value.category.name"+"><div class='portfolio-wrap'><img src='~/img/portfolio/portfolio-1.jpg' class='img-fluid' alt=''> <div class='portfolio-info'> <h4>"+value.name+"</h4><p>"+value.price+"</p> <div class='portfolio-links'><a href='~/img/portfolio/portfolio-1.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a asp-action='Detail' asp-route-id='"+value.id+"' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
-                          //  $('#trends').append("<div class='col-lg-4 col-md-6 portfolio-item'><div class='portfolio-wrap'><img src='~/img/portfolio/portfolio-1.jpg' class='img-fluid ' alt=''> <div class='portfolio-info'> <h4>App 1</h4><p>App</p> <div class='portfolio-links'><a href='~/img/portfolio/portfolio-1.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a asp-action='Detail' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
-                    });
-                    	
-               
-                }
+        $('.wish').click(function(event){
+            let val =$(event.target).attr("value");   
+            let valId= parseInt(val);
+		    $.ajax({
+			    type:"GET",
+			    url: '@(Url.Action("create","WishList"))',
+                data :{
+                    productId: valId
+                },
+			    dataType:"json",
+			    success:function(result){
+                    if (result != null){
+				       console.log(result);
+                    }                        
 
-                
-                        
-
-			},
-			error: function(req, status, error){
-			console.log(status);
-			}
-            });
+			    },
+			    error: function(req, status, error){
+			    console.log(status);
+			    }
+                });
 
 
-
+              });
            
 
 
 
 
-    </script>*@
+    </script>
 
   </main><!-- End #main -->
 

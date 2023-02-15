@@ -69,7 +69,7 @@
 *@                    <div class="portfolio-links">
                       <a href=@trend.Image data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>
                       <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="More Details"><i class="bx bx-link"></i></a>
-                      <a asp-controller='Product' asp-action='Detail' asp-route-id =@trend.Id title='Add To WishList'><i class='bx bx-heart'></i></a>
+                      <a class="wish"  title="Add To WishList" style="cursor: pointer;"><i class="bx bx-heart" value=@trend.Id></i></a>
                       <a asp-controller='Product' asp-action='Detail' asp-route-id =@trend.Id title='Add To Cart'><i class='bx bx-cart'></i></a>
 
 
@@ -89,10 +89,13 @@
     <script type="text/javascript" >
        
 
-          let json_model = '@Html.Raw(Json.Serialize(ViewBag.exp))';
-          let searchType = JSON.parse(json_model);
-          let json_model2 = '@Html.Raw(Json.Serialize(ViewBag.match))';
-          let searchContent = JSON.parse(json_model2);
+        let json_model = '@Html.Raw(Json.Serialize(ViewBag.exp))';
+        let searchType = JSON.parse(json_model);
+        let json_model2 = '@Html.Raw(Json.Serialize(ViewBag.match))';
+        let searchContent = JSON.parse(json_model2);
+
+         createWish();
+
         
 
 
@@ -124,38 +127,13 @@
                             if (!price.includes(".")){
                                 price +=".00"
                             }
-                             $('#prods').append("<div class='col-lg-3 col-md-2 portfolio-item' ><div class='portfolio-wrap' style='height:170px;'> <span class='notify-badge'>"+price+"</span><img src='"+value.image+"' class='img-fluid h-100 w-100' alt=''> <div class='portfolio-info'> <h4>"+value.name+"</h4> <div class='portfolio-links'><a href='"+value.image+"' data-gallery='portfolioGallery' class='portfolio-lightbox' title='"+value.description+"'><i class='bx bx-plus'></i></a><a href='https://localhost:7068/Product/Detail/"+value.id+"' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
+                             $('#prods').append("<div class='col-lg-3 col-md-2 portfolio-item' ><div class='portfolio-wrap' style='height:170px;'> <span class='notify-badge'>"+price+"</span><img src='"+value.image+"' class='img-fluid h-100 w-100' alt=''> <div class='portfolio-info'> <h4>"+value.name+"</h4> <div class='portfolio-links'><a href='"+value.image+"' data-gallery='portfolioGallery' class='portfolio-lightbox' title='"+value.description+"'><i class='bx bx-plus'></i></a><a href='https://localhost:7068/Product/Detail/"+value.id+"' title='More Details'><i class='bx bx-link'></i></a><a class='wish'  title='Add To WishList' style='cursor: pointer;'><i class='bx bx-heart' value='"+value.id+"'></i></a></div> </div></div> </div>");
                          //   $('#prods').append("<div class='col-lg-3 col-md-2 portfolio-item'><div class='portfolio-wrap'><img src='https://m.media-amazon.com/images/I/81n2sLhksUL._AC_UL320_.jpg' class='img-fluid ' alt=''> <div class='portfolio-info'> <h4>App 1</h4><p>App</p> <div class='portfolio-links'><a href='https://m.media-amazon.com/images/I/81n2sLhksUL._AC_UL320_.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a href='https://localhost:7068/Product/Detail/1' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
                     });
                     $('.port-first').css("position","");
-                    $('#footer').remove();
-                    var newHeight = $(document).height() - 600;
-                    $(`  <footer id="footer"  style="position:relative;top:`+newHeight+`px;">
-    <div class="container">
-      <div class="row d-flex align-items-center">
-        <div class="col-lg-6 text-lg-left text-center">
-          <div class="copyright">
-            &copy; Copyright <strong>Vesperr</strong>. All Rights Reserved
-          </div>
-          <div class="credits">
-            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
-            <a href="#intro" class="scrollto">Home</a>
-            <a href="#about" class="scrollto">About</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Use</a>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-
-
-    `).insertAfter('#all-here');
+                    footerDesign();
+                    createWish();
+                   
 	
                
                 }
@@ -178,6 +156,61 @@
 
            
 
+           
+             function footerDesign(){
+                 $('#footer').remove();
+                    var newHeight = $(document).height() - 600;
+                    $(`  <footer id="footer"  style="position:relative;top:`+newHeight+`px;">
+                            <div class="container">
+                              <div class="row d-flex align-items-center">
+                                <div class="col-lg-6 text-lg-left text-center">
+                                  <div class="copyright">
+                                    &copy; Copyright <strong>Vesperr</strong>. All Rights Reserved
+                                  </div>
+                                  <div class="credits">
+                                    Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+                                    <a href="#intro" class="scrollto">Home</a>
+                                    <a href="#about" class="scrollto">About</a>
+                                    <a href="#">Privacy Policy</a>
+                                    <a href="#">Terms of Use</a>
+                                  </nav>
+                                </div>
+                              </div>
+                            </div>
+                          </footer>`).insertAfter('#all-here');
+                          }
+
+           
+             function createWish(){
+                     $('.wish').click(function(event){
+                     let val =$(event.target).attr("value");   
+                     let valId= parseInt(val);
+		             $.ajax({
+			            type:"GET",
+			            url: '@(Url.Action("create","WishList"))',
+                        data :{
+                            productId: valId
+                        },
+			            dataType:"json",
+			            success:function(result){
+                            if (result != null){
+				               console.log(result);
+                            }                        
+
+			            },
+			            error: function(req, status, error){
+			            console.log(status);
+			            }
+                        });
+
+
+                      });
+
+             }
 
 
 

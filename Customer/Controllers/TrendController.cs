@@ -9,13 +9,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Identity;
+
 
 
 namespace Customer.Controllers
 {
     public class TrendController : BaseController
     {
-        public TrendController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public TrendController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
 
         }
@@ -30,7 +32,7 @@ namespace Customer.Controllers
         public IEnumerable<Product> GetAll()
         {
             var items = _uow.TrendRepo.GetAll();
-            ProductController cont = new ProductController(_uow, _mapper);
+            ProductController cont = new ProductController(_uow, _mapper, _userManager, _signInManager);
             var trends = new List<Product>();
             var i = 0;
             Product trend;

@@ -1,12 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ApplicationDbContext.UOW;
+﻿using ApplicationDbContext.UOW;
+using Microsoft.AspNetCore.Mvc;
+using ApplicationDbContext.Models;
+using System.Linq;
+using Customer.Models;
+/*using ECommerce.Models.ViewModels;
+*/
+using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace Customer.Controllers
 {
     public class WishListController : BaseController
     {
-        public WishListController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public WishListController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
 
         }
@@ -20,6 +30,18 @@ namespace Customer.Controllers
         public IActionResult Detail()
         {
             return View();
+
+        }
+
+
+        public JsonResult Create( int productId)
+        {
+            getUserFromSession();
+
+            return Json("true");
+
+
+
 
         }
     }

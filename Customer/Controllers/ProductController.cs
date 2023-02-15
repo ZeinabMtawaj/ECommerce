@@ -7,13 +7,15 @@ using Customer.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Identity;
+
 
 
 namespace Customer.Controllers
 {
     public class ProductController : BaseController
     {
-        public ProductController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public ProductController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
 
         }
@@ -34,6 +36,8 @@ namespace Customer.Controllers
         [HttpGet]
         public IActionResult Detail(int id)
         {
+            getUserFromSession();
+
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.ProductSpecificationValues);
             lambdas.Add(x => x.Photos);
@@ -91,6 +95,8 @@ namespace Customer.Controllers
        
 
         public IActionResult Index(string match, string exp) {
+            getUserFromSession();
+
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.Category);
             IEnumerable<Product> products = null;
@@ -126,6 +132,8 @@ namespace Customer.Controllers
        
 
         public JsonResult getProducts(string match, string exp,int take, int skip) {
+            getUserFromSession();
+
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.Category);
             IEnumerable<Product> products = null;

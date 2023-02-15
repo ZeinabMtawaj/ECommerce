@@ -8,12 +8,14 @@ using Customer.Models;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace Customer.Controllers
 {
     public class CategoryController : BaseController
     {
-        public CategoryController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public CategoryController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
 
         }

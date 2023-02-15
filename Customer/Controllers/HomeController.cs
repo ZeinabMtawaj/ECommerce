@@ -9,7 +9,7 @@ namespace Customer.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
+        public HomeController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)    
         {
            
         }
@@ -17,7 +17,7 @@ namespace Customer.Controllers
         public IActionResult Index()
         {
             getUserFromSession();
-            TrendController trendCon = new TrendController(_uow, _mapper);
+            TrendController trendCon = new TrendController(_uow, _mapper, _userManager, _signInManager);
             var trends = trendCon.GetAll();
             ViewBag.Home = "true";
             return View(trends);
