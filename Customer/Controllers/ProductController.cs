@@ -96,6 +96,13 @@ namespace Customer.Controllers
 
         public IActionResult Index(string match, string exp) {
             getUserFromSession();
+            UserController userCon = new UserController(_uow, _mapper, _userManager, _signInManager);
+            string? userId = ViewBag.UserId;
+            IEnumerable<WishList> wishes = null;
+            if (userId != null)
+            {
+                wishes = userCon.getWishList(userId);
+            }
 
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.Category);
@@ -103,7 +110,7 @@ namespace Customer.Controllers
             int take = 20;
             if (exp == "all")
             {
-                products = _uow.ProductRepo.FindAll(x => x.Id >= 1, take, 0, lambdas);
+                products = _uow.ProductRepo.FindAll(x => x.Id >= 1, take, 0, lambdas);    
                 ViewBag.subtitle = "All Products";
             }
            else if (exp == "category")
@@ -124,6 +131,11 @@ namespace Customer.Controllers
             }
             ViewBag.exp = exp;
             ViewBag.match = match;
+            if ((wishes != null)&&(userId != null))
+            {
+                var prods = products.Where(x => wishes.Any(y => ((y.ProductId == x.Id) && (y.UserId == int.Parse(userId)))));
+                prods.ToList().ForEach(x => x.Sku ="wish");
+            }
             return View(products);
         
         }
@@ -133,6 +145,13 @@ namespace Customer.Controllers
 
         public JsonResult getProducts(string match, string exp,int take, int skip) {
             getUserFromSession();
+            UserController userCon = new UserController(_uow, _mapper, _userManager, _signInManager);
+            string? userId = ViewBag.UserId;
+            IEnumerable<WishList> wishes = null;
+            if (userId != null)
+            {
+                wishes = userCon.getWishList(userId);
+            }
 
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.Category);
@@ -162,6 +181,19 @@ namespace Customer.Controllers
             products.ToList().ForEach(x => x.Category = null);
             ViewBag.exp = exp;
             ViewBag.match = match;
+            if ((wishes != null) && (userId != null))
+            {
+               // var prods = products.Where(x => wishes.Any(y => ((y.ProductId == x.Id) && (y.UserId == int.Parse(userId)))));
+                products.ToList().ForEach(x => 
+                { 
+                    if (wishes.Any(y => ((y.ProductId == x.Id) && (y.UserId == int.Parse(userId)))))
+                    {
+                        x.Sku = "wish";
+
+                    }
+
+                });
+            }
 
             return Json(products);  
         

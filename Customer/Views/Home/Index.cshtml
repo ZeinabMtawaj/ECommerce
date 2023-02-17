@@ -482,8 +482,17 @@
                     <div class="portfolio-links">
                       <a href=@trend.Image data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>
                       <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="More Details"><i class="bx bx-link"></i></a>
-                      <a class="wish"  title="Add To WishList" style="cursor: pointer;"><i class="bx bx-heart" value=@trend.Id></i></a>
-                      <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="Add To Cart"><i class="bx bx-cart"></i></a>
+                        @if (ViewBag.UserName != null)
+                        {
+                                            @if(@trend.Sku == "wish")
+                                            {
+                                                <a class="wish"  title="Remove From WishList" style="cursor: pointer;"><i class="bx bxs-heart" value=@trend.Id></i></a>
+                                            }else
+                                            {
+                                                <a class="wish"  title="Add To WishList" style="cursor: pointer;"><i class="bx bx-heart" value=@trend.Id></i></a>
+                                            }
+                        <a class='insideCart'  title='Add To Cart' style='cursor: pointer;'><i class='bx bx-cart' value =@trend.Id></i></a>
+                        }
 
 
                     </div>
@@ -492,6 +501,7 @@
               </div>
           }
           }
+
 
           @* <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
@@ -920,8 +930,12 @@
 
     
 	<script type="text/javascript" >
+        let json_model = '@Html.Raw(Json.Serialize(ViewBag.userName))';
+        let user = JSON.parse(json_model);
 
-        manageWish();
+        if (user != null){
+            manageWish();
+        }
         
        function manageWish(){
                      $('.wish').click(function(event){
@@ -933,7 +947,7 @@
 			            url: '@(Url.Action("manage","WishList"))',
                         data :{
                             productId: valId,
-                            subtitle: ""
+                            subtitle: "none"
                         },
 			            dataType:"json",
 			            success:function(result){

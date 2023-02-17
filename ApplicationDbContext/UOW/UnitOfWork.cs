@@ -27,6 +27,9 @@ namespace ApplicationDbContext.UOW
 
         public IWishListRepo WishListRepo { get; set; }
 
+        public IUserRepo UserRepo { get; set; }
+
+
 
 
 
@@ -44,6 +47,8 @@ namespace ApplicationDbContext.UOW
             TrendRepo = new TrendRepo(db);
             AddressRepo = new AddressRepo(db);
             WishListRepo = new WishListRepo(db);
+            UserRepo = new UserRepo(db);
+
 
 
 

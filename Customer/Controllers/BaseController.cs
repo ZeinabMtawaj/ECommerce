@@ -34,6 +34,11 @@ namespace Customer.Controllers
             {
                 var userId = HttpContext.Session.GetString("UserId");
                 ViewBag.UserId = userId;
+                var userCon = new UserController(_uow, _mapper, _userManager, _signInManager);
+                string? id = userId;
+                ViewBag.WishNumber = (userCon.getWishList(id)).Count();
+
+                var z = ViewBag.Wishnumber;
 
                 var user = _userManager.FindByIdAsync(userId).Result;
                 ViewBag.UserName = user.FirstName + " " + user.LastName;

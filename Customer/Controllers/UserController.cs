@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using System.Linq.Expressions;
 
 namespace Customer.Controllers
 {
@@ -19,6 +20,20 @@ namespace Customer.Controllers
         public UserController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
             
+        }
+
+        public  IEnumerable<WishList> getWishList(string? userId)
+        {
+            //getUserFromSession();
+            var lambdas = new List<Expression<Func<User, object>>>();
+            lambdas.Add(x => x.WishLists);            
+           // int userId = ViewBag.UserId;
+            var user = _uow.UserRepo.Find(x => x.Id == int.Parse(userId), lambdas);
+
+            return user.WishLists;
+
+
+
         }
 
 

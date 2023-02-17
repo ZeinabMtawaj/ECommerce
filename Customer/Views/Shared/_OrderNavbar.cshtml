@@ -243,13 +243,21 @@
               
                     <li><a class="nav-link scrollto" href="#pricing">&nbsp;</a></li>
 
-                    <li class="nav-item">
-                        <button type="button" class="icon-button " onclick="location.href='@Url.Action("Detail","WishList")';">
+                    <li class="nav-item" >
+                        <button type="button" class="icon-button " id="wishNumberNav" onclick="location.href='@Url.Action("Index","WishList")';">
 @*            <span class="material-icons">notifications</span>
 *@            
                         <i  class="fa fa-heart " style="font-size:18px;"></i>
-                        <span class="icon-button__badge">2</span>
-               
+                            @if (@ViewBag.Wishnumber != 0)
+                            {
+                                <span class="icon-button__badge" id="wishNumber" style="display:inline;">@ViewBag.Wishnumber</span>
+                            }
+                            else
+                            {
+                               <span class="icon-button__badge" id="wishNumber" style="display:none;">@ViewBag.Wishnumber</span>
+
+                            }
+
                         </button>
                     </li>
           }
@@ -404,6 +412,7 @@
 
 
             }
+
 
 
 

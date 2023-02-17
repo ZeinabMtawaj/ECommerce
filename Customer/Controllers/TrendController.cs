@@ -29,21 +29,36 @@ namespace Customer.Controllers
 
 
         [HttpGet]
-        public IEnumerable<Product> GetAll()
+        public IEnumerable<Product> GetAll(string? userId)
         {
-            var items = _uow.TrendRepo.GetAll();
+            //getUserFromSession();
+            var items = _uow.TrendRepo.FindAll(x => x.Id >=1, 9, 0);
             ProductController cont = new ProductController(_uow, _mapper, _userManager, _signInManager);
             var trends = new List<Product>();
             var i = 0;
             Product trend;
             string name = "";
-            foreach(var item in items)
+            IEnumerable<WishList> wishes = null;
+            if (userId != null)
             {
-                if (i == 9)
+                UserController userCont = new UserController(_uow, _mapper, _userManager, _signInManager);
+                wishes = userCont.getWishList(userId);
+            }
+            foreach (var item in items)
+            {
+                /*if (i == 9)
                 {
                     break;
-                }
+                }*/
+
                 trend = cont.getCategory(item.ProductId);
+                if ((userId != null) && (wishes != null))
+                {
+                    if (wishes.Any(x => ((x.UserId == int.Parse(userId))&&(x.ProductId == trend.Id))))
+                    {
+                        trend.Sku = "wish";
+                    }
+                }
 
 
                /* if (trend.Category != null)
