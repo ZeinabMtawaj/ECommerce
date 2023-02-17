@@ -47,6 +47,7 @@ namespace Customer.Controllers
                 var roles = _userManager.GetRolesAsync(user).Result;
                 if (roles.Contains("Admin"))
                     ViewBag.HasDashboard = true;
+
             }
         }
     }
