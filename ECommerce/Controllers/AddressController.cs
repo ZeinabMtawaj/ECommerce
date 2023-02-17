@@ -10,18 +10,20 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.AspNetCore.Identity;
 namespace Ecommerce.Controllers
 {
-    public class RoleController : BaseController
+    public class AddressController : BaseController
 
     {
-        public RoleController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
+        public AddressController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
-
         }
 
-
-
+        public IEnumerable<string> GetAddressByUserId(int userId)
+        {
+            return _uow.AddressRepo.FindAll(x => x.UserId == userId).Select(u => u.Location);
+        }
+        
     }
 }

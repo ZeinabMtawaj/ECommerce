@@ -1,0 +1,225 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	
+}
+
+@model IEnumerable<UserRoleVM> 
+
+
+	
+<!-- Table -->
+<div class="table-responsive">
+	<table id="add-row" class="display table table-striped table-hover text-center" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>
+					First Name
+				</th>
+				<th>
+					Last Name
+				</th>
+				<th>
+					Email
+				</th>
+				<th>
+					Phone Number
+				</th>
+				<th>
+					Address
+				</th>
+				<th>
+					Roles
+				</th>
+				<th>
+					Creation Date
+				</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr></tr>
+		</tfoot>
+		<tbody>
+		@if(Model != null && Model.Count() > 0)
+		{
+					
+			@foreach(var item in Model)
+			{
+				<tr>
+					<td>
+						@item.User.FirstName
+					</td>
+					<td>
+						@item.User.LastName
+					</td>
+					<td>
+						@item.User.Email
+					</td>
+					<td>
+						@item.User.PhoneNumber
+					</td>
+					<td>
+						<span class="addressPartialCaller btn border-0" data-toggle="modal" data-target="#addressMainModel" item-id="@item.User.Id"> 
+							<i class='fas fa-angle-down text-primary text-3xl'></i>
+						</span>
+					</td>
+					<td>
+						<span class="rolesPartialcaller btn border-0" data-toggle="modal" data-target="#roleModel-@item.User.Id"> 
+							<i class='fas fa-angle-down text-primary text-3xl'></i>
+						</span>
+						<div class="modal fade" id="roleModel-@item.User.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title font-weight-bold" id="exampleModalLabel"> Roles</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body overflow-auto">
+										
+										<div id="addressPartial-0" class="card mt-2 rounded">
+											<div id="address-tab">
+												@foreach(var role in item.Roles){
+
+													<div class="row mb-3 mt-4 ml-4">
+														<div class="col-sm-11">
+															<span  class="form-control"> @role </span>
+														</div>
+													</div>
+												}
+							
+											</div>
+										</div>
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</td>
+
+					
+					<td>
+						@if(item.User.CreatedDate != null){
+							@item.User.CreatedDate.ToString("g");
+						}
+						else
+						{
+							@Html.Raw("No Date")
+						}
+					</td>
+					<td>
+						<div class="form-button-action">
+						
+							<span data-toggle="modal" data-target=@("#deleteModal" + @item.User.Id.ToString()) item-target = "@item.User.Id">
+								<button data-toggle="tooltip" data-placement="top" title="Remove" class="btn btn-link btn-simple-danger mt-1"> 
+									<i class="fa fa-times"></i>       
+								</button>
+							</span>
+
+
+
+
+							<div id=@("deleteModal" + @item.User.Id.ToString()) class="modal fade">
+								<div class="modal-dialog modal-confirm">
+									<div class="modal-content">
+										<div class="modal-header flex-column">
+											<div class="icon-box">
+												<i class="material-icons">&#xE5CD;</i>
+											</div>						
+											<h4 class="modal-title w-100">Are you sure?</h4>	
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										</div>
+										<div class="modal-body">
+											<p>Do you really want to delete? This process cannot be undone.</p>
+										</div>
+										<div class="modal-footer justify-content-center">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+											<form method="post" asp-controller="@ViewBag.deleteController" asp-action="@ViewBag.deleteAction">
+												<input name="Id" value="@item.User.Id" hidden>
+												<button type="submit" class="btn btn-danger">Delete</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>  
+						</div>
+					</td>
+				</tr>
+			}
+		}
+		</tbody>
+	</table>
+	<div class="modal fade" id="addressMainModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	    <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+			    <div class="modal-header">
+				    <h5 class="modal-title font-weight-bold" id="exampleModalLabel"> Addresses</h5>
+				    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+				    </button>
+			    </div>
+			    <div class="modal-body overflow-auto">
+										
+					<div id="addressPartial-0" class="card mt-2 rounded">
+						<div id="address-tab">
+							
+								@*string value = Model.Addresses.ElementAt(i);
+
+								<div class="row mb-3 mt-4 ml-4">
+									<div class="col-sm-11">
+										<input type="text" name="Addresses" class="form-control" placeholder="Address" value="@value">
+									</div>
+								</div>
+								
+								*@
+							
+						</div>
+					</div>
+
+				</div>
+			    <div class="modal-footer">
+				    <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+			    </div>
+		    </div>
+	    </div>
+    </div>
+</div>
+
+@section Scripts{
+	<script>
+		$('#add-row').DataTable({
+			"pageLength": 5,
+		});
+
+
+	</script>
+
+	<script>
+		$(".addressPartialCaller").click(function(){
+                let specPartialId = "#addressPartial-0";
+                let specPartial = $(specPartialId);
+				let userId = $(this).attr("item-id");
+                $.ajax({  
+                    type: "GET",  
+                    url: '/Address/GetAddressByUserId',  
+                    data: {"userId" : userId},
+                    success: function(data){
+					 let content = ""
+					 for(let i in data){
+						 content += '<div class="row mb-3 mt-4 ml-4">  <div class="col-sm-11"> <span class="form-control">'+ data[i] + ' </span></div></div>'
+					 }
+                     $(specPartialId).html(content);
+                    },
+                    error: function(xhr, status, error) {
+                        alert(status);
+                    }
+                });
+        });
+	</script>
+}

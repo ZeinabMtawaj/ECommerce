@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-
 namespace Ecommerce.Controllers
 {
     public class UserController : BaseController
@@ -19,7 +18,6 @@ namespace Ecommerce.Controllers
     {
         public UserController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
         {
-            
         }
 
 
@@ -88,6 +86,23 @@ namespace Ecommerce.Controllers
         }
 
 
+        public IActionResult Index()
+        {
+            ViewBag.deleteController = "User";
+            ViewBag.deleteAction = "Delete";
+            var users = _userManager.Users.ToList();
+            //var users = _userManager.Users.Include(u => u.Id).Include(u => u.FirstName).Include(u => u.LastName).Include(u => u.Email).Include(u => u.PhoneNumber).Include(u => u.Addresses).ToList();
+            var items = new List<UserRoleVM>();
+            foreach(var user in users)
+            {
+                items.Add(new UserRoleVM()
+                {
+                    User = user,
+                    Roles = _userManager.GetRolesAsync(user).Result
+                });
+            }
+            return View(items);
+        }
 
     }
 }
