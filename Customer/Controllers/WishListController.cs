@@ -99,5 +99,26 @@ namespace Customer.Controllers
 
 
         }
+        public JsonResult DeleteId(int id)
+        {
+            getUserFromSession();
+            int userId = int.Parse(ViewBag.UserId);
+            var wish = _uow.WishListRepo.Find(x=>((x.ProductId == id) && (x.UserId==userId)));
+            _uow.WishListRepo.Delete(wish);
+            _uow.SaveChanges();
+            return Json("True");
+        }
+        public JsonResult DeleteAll()
+        {
+            getUserFromSession();
+            int userId = int.Parse(ViewBag.UserId);
+            var wishes = _uow.WishListRepo.FindAll(x =>  (x.UserId == userId));
+            foreach (var wish in wishes)
+            {
+                _uow.WishListRepo.Delete(wish);
+            }
+            _uow.SaveChanges();
+            return Json("True");
+        }
     }
 }

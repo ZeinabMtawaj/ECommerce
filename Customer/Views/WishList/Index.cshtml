@@ -26,32 +26,37 @@
 
     <!-- ======= Order Details Section ======= -->
     @foreach(var wish in @Model){
-       <section id="portfolio-details" class="portfolio-details p-2">
+       <section id="portfolio-details" class="portfolio-details all p-2 sec-@wish.Id">
           <div class="container" style="margin-left:10%;">
             <div class="row gy-4">        
               <div class="col-lg-10">
                 <div class="portfolio-info ">
                     <div class="row ">
-                       <div class="col-6">
+                        <div class="col-6">
                             <img src=@wish.Image style="width:230px;height:120px;" />
                         </div>
                         <ul class="col-5">
-                            <li ><strong>Name</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @wish.Name &nbsp;&nbsp;</li >
-                            <li ><strong>Price</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @wish.Price &nbsp;&nbsp;</li >
+                            <li><strong>Name</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @wish.Name &nbsp;&nbsp;</li>
+                            <li><strong>Price</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @wish.Price &nbsp;&nbsp;</li>
                             <li>
                                 <div class="row-sm-10 d-flex flex-row mt-12" style="margin:auto;margin-top:5%;">
-                                <button type="button" class="btn btn-outline-primary ml-5" onclick="location.href='@Url.Action("Detail","Product")';"><i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                 Add To Cart</button>         
+                                    <button type="button" class="btn btn-outline-primary ml-5" onclick="location.href='@Url.Action("Detail","Product")';">
+                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                        Add To Cart
+                                    </button>
                                 </div>
                             </li>
                         </ul>
                         <div class="col-1 " style="margin:auto;">
-                           <button data-toggle="tooltip" data-placement="top" title="delete" class="btn btn-link btn-simple-danger mt-1" onclick="location.href='@Url.Action("Delete","WishList")';"> 
-									    <i class="fa fa-close text-danger"></i>       
-						    </button>
+                            <a class="wish" title="Delete From WishList" style="cursor: pointer;"><i class="fa fa-close text-danger" value=@wish.Id ></i></a>
                         </div>
-                   </div>
-                </div>
+                           @* <div class="col-1 " style="margin:auto;">
+                                <button data-toggle="tooltip" data-placement="top" title="delete" class="btn btn-link btn-simple-danger mt-1" onclick="location.href='@Url.Action("Delete","WishList")';">
+                                    <i class="fa fa-close text-danger"></i>
+                                </button>
+                            </div>*@
+                        </div>
+                    </div>
               </div>
            </div>
          </div>
@@ -60,11 +65,87 @@
   
 
       <div class="row-sm-10 d-flex flex-row mt-12" style="margin:auto;margin-top:5%;">
-            <button type="button" class="btn btn-outline-danger ml-5" onclick="location.href='@Url.Action("Detail","Product")';"><i class="fa fa-trash-o" aria-hidden="true"></i>
-            Reset WishList</button>
+            <a  class="btn btn-outline-danger ml-5"  id ="reset"><i class="fa fa-trash-o" aria-hidden="true"></i>
+            Reset WishList</a>
              </div>
    
-   
+       <script type="text/javascript" >
+
+           manageWish();
+           reset();
+
+             function manageWish(){
+                     $('.wish').click(function(event){
+                     let val =$(event.target).attr("value");   
+                     let valId= parseInt(val);
+                     console.log(valId);
+                     
+		             $.ajax({
+			            type:"GET",
+			            url: '@(Url.Action("deleteId","WishList"))',
+                        data :{
+                            id: valId
+                        },
+			            dataType:"json",
+			            success:function(result){
+                            console.log(result);
+                            var wishNumber = parseInt($('#wishNumber').text());
+                            $('.sec-'+valId).remove();
+
+                                 if (wishNumber != 1)
+                                    $('#wishNumber').text(wishNumber-1);
+                                 else{
+                                    $('#wishNumber').text('0');
+                                    $('#wishNumber').css("display","none");
+                                 }
+                             
+                             
+                        },
+			            error: function(req, status, error){
+			            console.log(status);
+			            }
+                        });
+
+
+                      });
+
+             }
+
+             function reset(){
+                 $('#reset').click(function(){
+                     $.ajax({
+			            type:"GET",
+			            url: '@(Url.Action("deleteAll","WishList"))',
+			            dataType:"json",
+			            success:function(result){
+                            console.log(result);
+                            $('.all').remove();
+                            $('#wishNumber').text('0');
+                            $('#wishNumber').css("display","none");
+                             
+                        },
+			            error: function(req, status, error){
+			            console.log(status);
+			            }
+                        });
+
+
+                      });
+
+                     
+
+
+
+             
+             
+             }
+
+
+
+
+
+
+        </script>
   </main><!-- End #main -->
 
   
