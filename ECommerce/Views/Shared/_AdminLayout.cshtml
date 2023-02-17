@@ -370,29 +370,28 @@
             <li class="nav-item dropdown position-static" style="margin-left:-200px">
 	    <a class="nav-link dropdown-toggle rounded active" href="#" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             
-                @Html.Raw(ViewBag.UserName);    
+                @Html.Raw(ViewBag.UserName)    
             
                         
         </a>
         <div class="border" style="position:absolute; margin-left:-30px">
             <div class="dropdown-menu p-3 w-20 ml-12" aria-labelledby="dropdown05">
-	        <div class="row" >
-	            <div class="col-md-12">
-                    @if(ViewBag.UserId != null)
-                    {
-                        <a class="dropdown-item  rounded border-bottom p-2" href="#"><i class="fa fa-info-circle" aria-hidden="true"></i>My Info</a>
-                        <a class="dropdown-item  rounded border-bottom p-2" href="@ViewBag.SiteLink"><i class="fa fa-home" aria-hidden="true"></i>Site</a>
-		                <a class="dropdown-item  rounded border-bottom p-2" href="#" onclick="document.getElementById('logout-form').submit();" ><i class="fa fa-sign-out" aria-hidden="true"></i>Log Out</a>
+	            <div class="row" >
+	                <div class="col-md-12">
+                        @if(ViewBag.UserId != null)
+                        {
+                            <a class="dropdown-item  rounded border-bottom p-2" href="@ViewBag.SiteLink"><i class="fa fa-home" aria-hidden="true"></i>Site</a>
+		                    <a class="dropdown-item  rounded border-bottom p-2" href="#" onclick="document.getElementById('logout-form').submit();" ><i class="fa fa-sign-out" aria-hidden="true"></i>Log Out</a>
                                     
-                        <span>
-                           <form id="logout-form" class="d-none" asp-controller="User" asp-action="Logout" method="post">
-                                <button type="submit" id="logout-btn">Logout</button>
-                            </form>
-                        </span>
-                    }
-                </div>
-	        </div>
-        </div>
+                            <span>
+                               <form id="logout-form" class="d-none" asp-controller="User" asp-action="Logout" method="post">
+                                    <button type="submit" id="logout-btn">Logout</button>
+                                </form>
+                            </span>
+                        }
+                    </div>
+	            </div>
+            </div>
         </div>
 	    
 

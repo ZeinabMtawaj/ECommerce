@@ -1,11 +1,11 @@
 ﻿using ApplicationDbContext.UOW;
 using AutoMapper;
-using Customer.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Customer.Models;
 using Customer.Models.ViewModels;
 using ApplicationDbContext.Models;
 using Microsoft.AspNetCore.Identity;
+using Customer.Models;
+using Customer.Controllers;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -54,7 +54,7 @@ namespace Customer.Controllers
                 var result = await _userManager.CreateAsync(user, userVM.User.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Customer");
+                    await _userManager.AddToRoleAsync(user, "Admin");
 
                     var addressController = new AddressController(_uow, _mapper);
                     addressController.Create(user.Id, userVM.Addresses);
@@ -194,6 +194,13 @@ namespace Customer.Controllers
             {
                 profileVM.Addresses.Add(add.Location);
             }
+
+
+            string currUrl = Request.Headers["Referer"].ToString();
+            if (!string.IsNullOrEmpty(currUrl))
+            {
+                HttpContext.Session.SetString("PrevUrl", currUrl);
+            }
             return View(profileVM);
         }
 
@@ -251,6 +258,13 @@ namespace Customer.Controllers
                         var addressController = new AddressController(_uow, _mapper);
                         addressController.Update(user.Id, profileVM.Addresses);
                         TempData["success"] = "Profile Saved!";
+
+                        string prevUrl = HttpContext.Session.GetString("PrevUrl");
+                        if (!string.IsNullOrEmpty(prevUrl))
+                        {
+                            return Redirect(prevUrl);
+                        }
+
                         return RedirectToAction("Index", "Home");
                     }
                     TempData["error"] = "Something Went Wrong!";

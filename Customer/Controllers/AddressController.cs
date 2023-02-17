@@ -37,7 +37,39 @@ namespace Customer.Controllers
 
         public void Update(int userId, IEnumerable<string> Addresses)
         {
-
+            var oldAddresses = _uow.AddressRepo.FindAll(x => x.UserId == userId);
+            Dictionary<string, int> indOfAddress = new Dictionary<string, int>();
+            Dictionary<int, bool> existed = new Dictionary<int, bool>();
+            List <string> addressesToBeAdded = new List<string>();
+            int ind = 0;
+            foreach (var address in oldAddresses)
+            {
+                indOfAddress.Add(address.Location, ind++);
+            }
+            for (int i = 0; i < Addresses.Count(); i++)
+            {
+                string newAddress = Addresses.ElementAt(i);
+                if (newAddress == null || newAddress.Trim() == "")
+                    continue;
+                if (indOfAddress.ContainsKey(newAddress))
+                {
+                    var oldAddress = oldAddresses.ElementAt(indOfAddress[newAddress]);
+                    existed.Add(oldAddress.Id, true);
+                }
+                else
+                {
+                    addressesToBeAdded.Add(newAddress);
+                }
+            }
+            foreach(var address in oldAddresses)
+            {
+                if (!existed.ContainsKey(address.Id))
+                {
+                    _uow.AddressRepo.Delete(address);
+                }
+            }
+            this.Create(userId, addressesToBeAdded); // has save changes
+            return;
         }
 
         public IEnumerable<Address> getAddressByUserId(int userId)
