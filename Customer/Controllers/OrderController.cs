@@ -23,11 +23,10 @@ namespace Customer.Controllers
         {
             getUserFromSession();
 
-            /*            ProductController cont = new ProductController(_uow, _mapper);
-                        var trends = cont.GetAll();*/
-            var lambdas = new List<Expression<Func<Product, object>>>();
-            lambdas.Add(x => x.Category);
-            var prodList = _uow.ProductRepo.FindAll(x=>x.Id>=1,null, null, lambdas);   
+           
+            var lambdas = new List<Expression<Func<Order, object>>>();
+            lambdas.Add(x => x.ProductOrders);
+            var prodList = _uow.OrderRepo.FindAll(x=>x.Id>=1,null, null, lambdas);   
             return View(prodList);  
         }
 
