@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ApplicationDbContext.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
-
+using System.Text.Json;
 
 namespace Customer.Controllers
 {
@@ -35,6 +35,11 @@ namespace Customer.Controllers
                 var userId = HttpContext.Session.GetString("UserId");
                 ViewBag.UserId = userId;
 
+                var userCon = new UserController(_uow, _mapper, _userManager, _signInManager);
+                string? id = userId;
+                ViewBag.WishNumber = (userCon.getWishList(id)).Count();
+
+
                 var user = _userManager.FindByIdAsync(userId).Result;
                 ViewBag.UserName = user.FirstName + " " + user.LastName;
 
@@ -42,6 +47,13 @@ namespace Customer.Controllers
                 var roles = _userManager.GetRolesAsync(user).Result;
                 if (roles.Contains("Admin"))
                     ViewBag.HasDashboard = true;
+
+                string cart = HttpContext.Session.GetString("Cart");
+               
+                var cartList = JsonSerializer.Deserialize<List<ProductOrder>>(cart);
+                ViewBag.Cart = cartList;
+                ViewBag.CartNumber = cartList.Count();  
+
             }
         }
     }
