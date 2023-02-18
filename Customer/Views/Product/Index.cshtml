@@ -123,7 +123,26 @@
 
     <script type="text/javascript" >
 
-         $('.cartElements').remove();
+        
+
+
+
+                 
+       
+
+        let json_model = '@Html.Raw(Json.Serialize(ViewBag.exp))';
+        let searchType = JSON.parse(json_model);
+        let json_model2 = '@Html.Raw(Json.Serialize(ViewBag.match))';
+        let searchContent = JSON.parse(json_model2);
+         let json_model3 = '@Html.Raw(Json.Serialize(ViewBag.subtitle))';
+        let subtitleView = JSON.parse(json_model3);
+         let json_model4 = '@Html.Raw(Json.Serialize(ViewBag.userName))';
+        var user = JSON.parse(json_model4);
+
+        if (user != null){
+            manageWish();
+            manageCart();
+             $('.cartElements').remove();
          $('.totalNum').remove();
          
 
@@ -131,7 +150,7 @@
 			    type:"GET",
 			    url: '@(Url.Action("addProduct","ProductOrder"))',
                 data :{
-                    productId: 1,
+                    productId: 0,
                     quantity: 0,
                     price : -1
                 },
@@ -161,21 +180,6 @@
 
 
 
-                 
-       
-
-        let json_model = '@Html.Raw(Json.Serialize(ViewBag.exp))';
-        let searchType = JSON.parse(json_model);
-        let json_model2 = '@Html.Raw(Json.Serialize(ViewBag.match))';
-        let searchContent = JSON.parse(json_model2);
-         let json_model3 = '@Html.Raw(Json.Serialize(ViewBag.subtitle))';
-        let subtitleView = JSON.parse(json_model3);
-         let json_model4 = '@Html.Raw(Json.Serialize(ViewBag.userName))';
-        var user = JSON.parse(json_model4);
-
-        if (user != null){
-            manageWish();
-            manageCart();
 
         }
         
@@ -410,7 +414,7 @@
                                      $.each(result,function(key,value){
                                          cartContent += 1;
                                          totalPrice += value.price;
-                                         $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' >"+value.name+"<img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
+                                         $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' >"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
                                      });
                                       $(" <a class='totalNum'>TOTAL: "+totalPrice+"</a>").insertBefore("#cartBefore");
                                       $('#cartNumber').text(cartContent);

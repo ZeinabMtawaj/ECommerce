@@ -44,7 +44,7 @@ namespace Customer.Controllers
                 cart = ViewBag.Cart;
                 decimal? totalPrice = 0;
                 var isHere = false;
-                if (cart.Count != 0)
+                if ((cart.Count != 0) && (productId >0))
                 {
                     int i = 0;
                     foreach (var item in cart.ToList())
@@ -96,6 +96,56 @@ namespace Customer.Controllers
                
 
             return Json(prods);
+
+        }
+
+        public JsonResult DeleteProduct(int productId)
+        {
+            getUserFromSession();
+            if (ViewBag.UserId != null)
+            {
+                var isHere = false;
+                decimal? totalPrice = 0;
+                List<ProductOrder> cart = new List<ProductOrder>();
+                if (cart.Count != 0)
+                {
+                    int i = 0;
+                    cart = ViewBag.Cart;    
+                    foreach (var item in cart.ToList())
+                    {
+                        if (item.ProductId == productId)
+                        {
+                            cart.RemoveAt(i);
+                            isHere = true;
+                            continue;
+                        }
+                        i++;
+                        totalPrice += (item.Price) * (item.Quantity);
+                    }
+
+                }
+                //var cart = JsonSerializer.Deserialize<List<ProductOrder>>(cartContent);
+
+               
+                if (isHere) 
+                {
+                    
+                    ViewBag.CartNumber = ViewBag.CartNumber - 1;
+                }
+
+                string serializeCart = JsonSerializer.Serialize(cart);
+                HttpContext.Session.SetString("Cart", serializeCart);
+                ViewBag.Cart = cart;
+               
+
+
+
+            }
+
+
+
+            return Json("true");
+        
 
         }
     }

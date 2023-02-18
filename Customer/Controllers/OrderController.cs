@@ -33,7 +33,31 @@ namespace Customer.Controllers
 
         public IActionResult Detail()
         {
-            return View();
+            getUserFromSession();
+            List<ProductOrder> cart = new List<ProductOrder>();
+            List<Product> prods = new List<Product>();
+
+            if (ViewBag.UserName != null)
+            {
+                cart = ViewBag.Cart;
+                foreach (var item in cart)
+                {
+                    var prod = _uow.ProductRepo.Find(x => x.Id == item.ProductId);
+                    prods.Add(prod);
+                }
+
+
+
+
+
+            }
+            OrderVM orderVM = new OrderVM()
+            {
+                Products = prods,
+                ProductsOrder = cart
+            };
+
+            return View(orderVM);
 
         }
 
