@@ -5,11 +5,16 @@ using AutoMapper;
 using Ecommerce.Models;
 using ApplicationDbContext.Models;
 using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Ecommerce.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CategorySpecificationValueController : BaseController
     {
-        public CategorySpecificationValueController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public CategorySpecificationValueController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<UserRole> roleManager) : base(uow, mapper, userManager, signInManager, roleManager)
         {
         }
 
@@ -102,7 +107,7 @@ namespace Ecommerce.Controllers
             {
                 valOfSpec.Add(catSpecVal.SpecificationId, catSpecVal.Value);
             }
-            var specController = new SpecificationController(_uow, _mapper);
+            var specController = new SpecificationController(_uow, _mapper, _userManager, _signInManager, _roleManager);
             var specs = specController.GetAll();
             foreach(var spec in specs)
             {

@@ -13,10 +13,11 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Ecommerce.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class SpecificationController : BaseController
     {
 
-        public SpecificationController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public SpecificationController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<UserRole> roleManager) : base(uow, mapper, userManager, signInManager, roleManager)
         {
 
         }
@@ -38,6 +39,7 @@ namespace Ecommerce.Controllers
         //[Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
+            getUserFromSession();
             var items = this.GetAllToView();
             ViewBag.cols = this.GetColNames();
             ViewBag.createController = "Specification";
@@ -47,6 +49,7 @@ namespace Ecommerce.Controllers
             ViewBag.deleteController = "Specification";
             ViewBag.deleteAction = "Delete";
 
+            ViewBag.Page = "Specification";
             return View(items);
         }
 
@@ -54,6 +57,9 @@ namespace Ecommerce.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            getUserFromSession();
+
+            ViewBag.Page = "Specification";
             return View();
         }
 
@@ -69,6 +75,8 @@ namespace Ecommerce.Controllers
                 _uow.SaveChanges();
                 return RedirectToAction("Index");
             }
+            getUserFromSession();
+            ViewBag.Page = "Specification";
             return View(obj);
         }
 
@@ -76,11 +84,14 @@ namespace Ecommerce.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
+            getUserFromSession();
             var obj = this.FindToView(id);
             if (obj == null)
             {
                 return NotFound();
             }
+
+            ViewBag.Page = "Specification";
             return View(obj);
         }
 
@@ -96,6 +107,9 @@ namespace Ecommerce.Controllers
                 _uow.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            getUserFromSession();
+            ViewBag.Page = "Specification";
             return View(obj);
         }
 

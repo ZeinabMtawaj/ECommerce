@@ -7,115 +7,124 @@
 
 
 
-	
+<div class="d-flex flex-row text-right">
 
-<!-- Button -->
-<div class="w-32 d-flex justify-content-center ml-auto">
-	<a class = "d-flex mt-3" asp-controller="@ViewBag.createController" asp-action="@ViewBag.createAction">
-		<span class="btn btn-primary btn-round ml-auto mb-3" data-toggle="modal" data-target="#addRowModal">
-			<i class="fa fa-plus"></i>
-			Create
-		</span>
-	</a>
+    <nav aria-label="breadcrumb" class="absolute left-5">
+	    <ol class="breadcrumb bg-white">
+		    <li class="breadcrumb-item active text-xl" style="color:black" aria-current="page">Specifications</li>
+	    </ol>
+    </nav>
 </div>
 
+<div class="mt-4">
+	<div class="w-32 d-flex justify-content-center ml-auto">
+		<a class = "d-flex mt-3" asp-controller="@ViewBag.createController" asp-action="@ViewBag.createAction">
+			<span class="btn btn-primary btn-round ml-auto mb-3" data-toggle="modal" data-target="#addRowModal">
+				<i class="fa fa-plus"></i>
+				Create
+			</span>
+		</a>
+	</div>
+
 	
-<!-- Table -->
-<div class="table-responsive">
-	<table id="add-row" class="display table table-striped table-hover text-center" cellspacing="0" width="100%">
-		<thead>
-			<tr>
-				@foreach(var col in ViewBag.cols){
-					<th>@col</th>
-				}
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tfoot>
-			<tr></tr>
-		</tfoot>
-		<tbody>
-		@if(Model != null && Model.Count() > 0)
-		{
-			@foreach(var item in Model)
-			{
+	<!-- Table -->
+	<div class="table-responsive">
+		<table id="add-row" class="display table table-striped table-hover text-center" cellspacing="0" width="100%">
+			<thead>
 				<tr>
-					<td>
-						@item.Name
-					</td>
-					<td>
-						@if(item.CreatedDate != null){
-							@item.CreatedDate.ToString("g");
-						}
-						else
-						{
-							@Html.Raw("No Date")
-						}
-					</td>
-					<td>
-						@if(item.UpdatedDate != null){
-							@item.UpdatedDate.ToString("g");
-						}
-						else
-						{
-							@Html.Raw("No Date")
-						}
-					</td>
-					<td>
-						<div class="form-button-action">
-							<a asp-controller="@ViewBag.editController" asp-action="@ViewBag.editAction" asp-route-id="@item.Id">
-								<button type="button" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-link btn-simple-primary btn-lg" data-original-title="Edit Task">
-									<i class="fa fa-edit"></i>
-								</button>
-							</a>
+					@foreach(var col in ViewBag.cols){
+						<th>@col</th>
+					}
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr></tr>
+			</tfoot>
+			<tbody>
+			@if(Model != null && Model.Count() > 0)
+			{
+				@foreach(var item in Model)
+				{
+					<tr>
+						<td>
+							@item.Name
+						</td>
+						<td>
+							@if(item.CreatedDate != null){
+								@item.CreatedDate.ToString("g");
+							}
+							else
+							{
+								@Html.Raw("No Date")
+							}
+						</td>
+						<td>
+							@if(item.UpdatedDate != null){
+								@item.UpdatedDate.ToString("g");
+							}
+							else
+							{
+								@Html.Raw("No Date")
+							}
+						</td>
+						<td>
+							<div class="form-button-action">
+								<a asp-controller="@ViewBag.editController" asp-action="@ViewBag.editAction" asp-route-id="@item.Id">
+									<button type="button" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-link btn-simple-primary btn-lg" data-original-title="Edit Task">
+										<i class="fa fa-edit"></i>
+									</button>
+								</a>
 
 
 
 
 
-							<span data-toggle="modal" data-target=@("#deleteModal" + @item.Id.ToString())>
-								<button data-toggle="tooltip" data-placement="top" title="Remove" class="btn btn-link btn-simple-danger mt-1"> 
-									<i class="fa fa-times"></i>       
-								</button>
-							</span>
+								<span data-toggle="modal" data-target=@("#deleteModal" + @item.Id.ToString())>
+									<button data-toggle="tooltip" data-placement="top" title="Remove" class="btn btn-link btn-simple-danger mt-1"> 
+										<i class="fa fa-times"></i>       
+									</button>
+								</span>
 
 
 
 
-							<div id=@("deleteModal" + @item.Id.ToString()) class="modal fade">
-								<div class="modal-dialog modal-confirm">
-									<div class="modal-content">
-										<div class="modal-header flex-column">
-											<div class="icon-box">
-												<i class="material-icons">&#xE5CD;</i>
-											</div>						
-											<h4 class="modal-title w-100">Are you sure?</h4>	
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-										</div>
-										<div class="modal-body">
-											<p>Do you really want to delete? This process cannot be undone.</p>
-										</div>
-										<div class="modal-footer justify-content-center">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-											<form method="post" asp-controller="@ViewBag.deleteController" asp-action="@ViewBag.deleteAction">
-												<input name="Id" value="@item.Id" hidden>
-												<button type="submit" class="btn btn-danger">Delete</button>
-											</form>
+								<div id=@("deleteModal" + @item.Id.ToString()) class="modal fade">
+									<div class="modal-dialog modal-confirm">
+										<div class="modal-content">
+											<div class="modal-header flex-column">
+												<div class="icon-box">
+													<i class="material-icons">&#xE5CD;</i>
+												</div>						
+												<h4 class="modal-title w-100">Are you sure?</h4>	
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+											</div>
+											<div class="modal-body">
+												<p>Do you really want to delete? This process cannot be undone.</p>
+											</div>
+											<div class="modal-footer justify-content-center">
+												<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+												<form method="post" asp-controller="@ViewBag.deleteController" asp-action="@ViewBag.deleteAction">
+													<input name="Id" value="@item.Id" hidden>
+													<button type="submit" class="btn btn-danger">Delete</button>
+												</form>
+											</div>
 										</div>
 									</div>
-								</div>
-							</div>  
+								</div>  
 
 
 
-						</div>
-					</td>
-				</tr>
+							</div>
+						</td>
+					</tr>
+				}
 			}
-		}
-		</tbody>
-	</table>
+			</tbody>
+		</table>
+	</div>
 </div>
+<!-- Button -->
 <script>
 	$('#add-row').DataTable({
 		"pageLength": 5,

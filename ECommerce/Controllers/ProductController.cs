@@ -7,21 +7,23 @@ using ECommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
 using System.Linq.Expressions;
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ecommerce.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ProductController : BaseController
     {
-        public ProductController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public ProductController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<UserRole> roleManager) : base(uow, mapper, userManager, signInManager, roleManager)
         {
-
+            
         }
 
 
         public IActionResult Index()
         {
-           
+            getUserFromSession();
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.ProductSpecificationValues);
             lambdas.Add(x => x.Photos);
@@ -73,11 +75,7 @@ namespace Ecommerce.Controllers
 
             }
             items.ToList().ForEach(item => { item.ProductSpecificationValues = null; item.Photos = null; item.Category.Products = null; item.Trend = null; });
-                //if (item.Trend != null) { item.Trend.Product = null;  } });
-            //items.ToList().ForEach(item => item.Category.Products = null);
-
-
-
+ 
             var viewItems = items.Select(item => _mapper.Map<ProductViewModel>(item)).ToList();
 
             for (var i= 0; i < viewItems.Count(); i++)
@@ -90,36 +88,8 @@ namespace Ecommerce.Controllers
                 viewItems[i].IsTrend = AllTrend[i];
 
             }
-            
-            //var i = 0;
-            //foreach(var item in items)
-            //{
-            //    var photos = item.Photos;
-            //    var specs = item.ProductSpecificationValues;
-            //    var specIds = new List<String>();
-            //    var specValues = new List<String>();
-            //    var additional = new List<String>();
 
-            //    if (specs != null)
-            //    {
-            //        foreach (var spec in specs)
-            //        {
-            //            specIds.Add((spec.SpecificationId).ToString());
-            //            specValues.Add(spec.Value);
-            //        }
-            //        viewItems.ElementAt(i).SpecsId = specIds;
-            //        viewItems.ElementAt(i).SpecsValue = specValues;
-            //    }
-            //    if (photos != null)
-            //    {
-            //        foreach (var photo in photos)
-            //        {
-            //            additional.Add(photo.Path);
-            //        }
-            //        viewItems.ElementAt(i).AdditionalPhoto = additional;
-            //    }
-            //    i = i + 1;  
-            //}
+            ViewBag.Page = "Product";
             return View(viewItems);
         }
 
@@ -128,7 +98,9 @@ namespace Ecommerce.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            ProductViewModel pvm = new ProductViewModel();  
+            getUserFromSession();
+            ProductViewModel pvm = new ProductViewModel();
+            ViewBag.Page = "Product";
             return View(pvm);
         }
 
@@ -140,6 +112,8 @@ namespace Ecommerce.Controllers
             if (IsSKUExist(obj.Sku))
             {
                 ModelState.AddModelError("SKU", "The SKU field already exists.");
+                getUserFromSession();
+                ViewBag.Page = "Product";
                 return View(obj);
             }
 
@@ -205,6 +179,8 @@ namespace Ecommerce.Controllers
                 TempData["success"] = "Created Successfully";
                 return RedirectToAction("Index");
             }
+            getUserFromSession();
+            ViewBag.Page = "Product";
             return View(obj);
         }
 
@@ -212,7 +188,7 @@ namespace Ecommerce.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            
+            getUserFromSession();
 
             var obj = FindToView(id);
             //sku = obj.Sku;
@@ -254,6 +230,8 @@ namespace Ecommerce.Controllers
             if (trend != null) { 
                 obj.IsTrend = "trend";  
             }
+            getUserFromSession();
+            ViewBag.Page = "Product";
             return View(obj);
         }
 
@@ -265,6 +243,8 @@ namespace Ecommerce.Controllers
             if (IsSKUExist(obj.Sku, obj.Id))
             {
                 ModelState.AddModelError("SKU", "The SKU field already exists.");
+                getUserFromSession();
+                ViewBag.Page = "Product";
                 return View(obj);
             }
 
@@ -409,6 +389,8 @@ namespace Ecommerce.Controllers
                 TempData["success"] = "Updated Successfully";
                 return RedirectToAction("Index");
             }
+            getUserFromSession();
+            ViewBag.Page = "Product";
             return View(obj);
         }
 
@@ -512,6 +494,12 @@ namespace Ecommerce.Controllers
 
 
 
+        }
+
+
+        public int GetProductsForCategory(int catId)
+        {
+            return _uow.ProductRepo.FindAll(x => x.CategoryId == catId).Count();
         }
     }
 }

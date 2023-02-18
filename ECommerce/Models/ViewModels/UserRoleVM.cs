@@ -12,8 +12,9 @@ namespace ECommerce.Models.ViewModels
         public UserRoleVM()
         {
             Roles = new List<string>(); 
+            Users = new List<User>();
         }
         public IEnumerable<string> Roles { get; set; }
-        public User User { get; set; }
+        public IEnumerable<User> Users { get; set; }
     }
 }

@@ -6,6 +6,18 @@
 @model SpecificationViewModel
 
 
+<div class="d-flex flex-row text-right">
+
+    <nav aria-label="breadcrumb" class="absolute right-0">
+	    <ol class="breadcrumb bg-white">
+            <li class="breadcrumb-item text-base" ><a  asp-action="Index" asp-controller="Specification" style="color:#1572e8" >Specifications</a></li>
+		    <li class="breadcrumb-item active text-base" aria-current="page">Create Specification</li>
+	    </ol>
+    </nav>
+</div>
+
+
+
 <div class="card-body">
      <h3 class="card-title mt-2  font-bold text-lg">Create New Specification</h3>
     <form class="mt-4" method="post" asp-action="Create">

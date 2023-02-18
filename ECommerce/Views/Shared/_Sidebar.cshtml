@@ -1,37 +1,70 @@
-﻿<!-- ======= Sidebar ======= -->
+﻿@{
+    string sty = "color: #106eea;  background: #f6f9ff;";
+}
+
+
+
+
+
+<!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" asp-controller="Admin" asp-action="Dashboard">
-          <i class="bi bi-grid"></i>
+        @{
+            string admin_style = "";
+            if (ViewBag.Page != null && ViewBag.Page == "Admin")
+                admin_style = sty;
+        }
+        <a class="nav-link collapsed" asp-controller="Admin" asp-action="Dashboard" style="@admin_style">
+          <i class="bi bi-speedometer2"></i>
           <span>Dashboard</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" asp-controller="Specification" asp-action="Index">
-          <i class="bi bi-grid"></i>
+       @{
+            string spec_style = "";
+            if (ViewBag.Page != null && ViewBag.Page == "Specification")
+                spec_style = sty;
+        }
+        <a class="nav-link collapsed" asp-controller="Specification" asp-action="Index" style="@spec_style">
+          <i class="bi bi-card-list"></i>
           <span>Specification</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" asp-controller="Category" asp-action="Index">
+        @{
+            string cat_spec = "";
+            if (ViewBag.Page != null && ViewBag.Page == "Category")
+                cat_spec = sty;
+        }
+        <a class="nav-link collapsed" asp-controller="Category" asp-action="Index" style="@cat_spec">
           <i class="bi bi-grid"></i>
           <span>Category</span>
         </a>
       </li>
       
       <li class="nav-item">
-        <a class="nav-link collapsed" asp-controller="Product" asp-action="Index">
-          <i class="bi bi-grid"></i>
+        @{
+            string prod_style = "";
+            if (ViewBag.Page != null && ViewBag.Page == "Product")
+                prod_style = sty;
+        }
+        <a class="nav-link collapsed" asp-controller="Product" asp-action="Index" style="@prod_style">
+          <i class="bi bi-tags"></i>
           <span>Product</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" asp-controller="User" asp-action="Index">
-          <i class="bi bi-grid"></i>
+        @{
+            string user_style = "";
+            if (ViewBag.Page != null && ViewBag.Page == "User")
+                user_style = sty;
+        }
+        <a class="nav-link collapsed" asp-controller="User" asp-action="Index" style="@user_style">
+          <i class="bi bi-people"></i>
           <span>Users</span>
         </a>
       </li>

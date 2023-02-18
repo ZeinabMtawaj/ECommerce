@@ -8,12 +8,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ecommerce.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CategoryController : BaseController
     {
-        public CategoryController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public CategoryController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<UserRole> roleManager) : base(uow, mapper, userManager, signInManager, roleManager)
         {
             
         }
@@ -21,6 +24,7 @@ namespace Ecommerce.Controllers
 
         public IActionResult Index()
         {
+            getUserFromSession();
             var items = this.GetAllToView();
             ViewBag.cols = this.GetColNames();
             ViewBag.createController = "Category";
@@ -29,6 +33,9 @@ namespace Ecommerce.Controllers
             ViewBag.editAction = "Edit";
             ViewBag.deleteController = "Category";
             ViewBag.deleteAction = "Delete";
+
+            ViewBag.Page = "Category";
+            ViewBag.Token = Request.Cookies[".AspNetCore.Identity.Application"];
             return View(items);
         }
 
@@ -44,11 +51,14 @@ namespace Ecommerce.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            getUserFromSession();
             // ILayoutDecider ld = .. based on role
             CategoryVM categoryVM = new CategoryVM()
             {
                 Category = new CategoryViewModel()
             };
+            ViewBag.Page = "Category";
+            ViewBag.Token = Request.Cookies[".AspNetCore.Identity.Application"];
             return View(categoryVM);
         }
 
@@ -65,11 +75,13 @@ namespace Ecommerce.Controllers
                 _uow.CategoryRepo.Add(newObj);
                 _uow.SaveChanges();
                 obj.Category.Id = newObj.Id;
-                var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper);
+                var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper, _userManager, _signInManager, _roleManager);
                 categorySpecificationValueController.Create(obj);
                 return RedirectToAction("Index");
             }
-           
+            getUserFromSession();
+            ViewBag.Page = "Category";
+            ViewBag.Token = Request.Cookies[".AspNetCore.Identity.Application"];
             //return View("~/Views/Category/testing.cshtml", obj);
             return View(obj);
         }
@@ -78,18 +90,21 @@ namespace Ecommerce.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
+            getUserFromSession();
             var obj = this.FindToView(id);
             if (obj == null)
             {
                 return NotFound();
             }
-            var catSpecValController = new CategorySpecificationValueController(_uow, _mapper);
+            var catSpecValController = new CategorySpecificationValueController(_uow, _mapper, _userManager, _signInManager, _roleManager);
             var specVals = catSpecValController.GetAllSpecVals(obj.Id);
             CategoryVM categoryVM = new CategoryVM()
             {
                 Category = obj,
                 SpecificationValues = specVals
             };
+            ViewBag.Page = "Category";
+            ViewBag.Token = Request.Cookies[".AspNetCore.Identity.Application"];
             return View(categoryVM);
         }
 
@@ -104,10 +119,13 @@ namespace Ecommerce.Controllers
                 newObj.Id = obj.Category.Id;
                 _uow.CategoryRepo.Update(newObj);
                 _uow.SaveChanges();
-                var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper);
+                var categorySpecificationValueController = new CategorySpecificationValueController(_uow, _mapper, _userManager, _signInManager, _roleManager);
                 categorySpecificationValueController.Edit(obj);
                 return RedirectToAction("Index");
             }
+            getUserFromSession();
+            ViewBag.Page = "Category";
+            ViewBag.Token = Request.Cookies[".AspNetCore.Identity.Application"];
             return View(obj);
         }
 
@@ -149,8 +167,8 @@ namespace Ecommerce.Controllers
         public List<String> GetColNames()
         {
             List<string> res = new List<string>();
-            res.Add("Image");
             res.Add("Name");
+            res.Add("Image");
             res.Add("Description");
             res.Add("Specifications");
             res.Add("Created At");
@@ -177,10 +195,10 @@ namespace Ecommerce.Controllers
         public IActionResult GetSpecs(string catId)
         {
             int categoryId = int.Parse(catId);
-            var catSpecValController = new CategorySpecificationValueController(_uow, _mapper);
+            var catSpecValController = new CategorySpecificationValueController(_uow, _mapper, _userManager, _signInManager, _roleManager);
             var specVals = catSpecValController.GetAllSpecVals(categoryId);
             var specVM = new SpecificationVM();
-            var specificationController = new SpecificationController(_uow, _mapper);
+            var specificationController = new SpecificationController(_uow, _mapper, _userManager, _signInManager, _roleManager);
             var specs = specificationController.GetAll();
             int cnt = 0;
             foreach (var spec in specs)
@@ -196,6 +214,12 @@ namespace Ecommerce.Controllers
             return PartialView("~/Views/Shared/_SpecsLoadView.cshtml", specVM);
         }
 
+
+
+        public IEnumerable<Category> getAllCategories()
+        {
+            return _uow.CategoryRepo.GetAll();
+        }
 
 
 

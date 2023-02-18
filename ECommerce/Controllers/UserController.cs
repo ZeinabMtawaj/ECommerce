@@ -10,13 +10,15 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Ecommerce.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : BaseController
 
     {
-        public UserController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
+        public UserController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<UserRole> roleManager) : base(uow, mapper, userManager, signInManager, roleManager)
         {
         }
 
@@ -25,6 +27,7 @@ namespace Ecommerce.Controllers
 
         [HttpGet]
         [Route("Account/Login")]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             UserLoginVM userLoginVM = new UserLoginVM();
@@ -35,6 +38,7 @@ namespace Ecommerce.Controllers
         [HttpPost]
         [Route("Account/Login")]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(UserLoginVM userVM)
         {
             if (ModelState.IsValid)
@@ -88,20 +92,19 @@ namespace Ecommerce.Controllers
 
         public IActionResult Index()
         {
+            getUserFromSession();
             ViewBag.deleteController = "User";
             ViewBag.deleteAction = "Delete";
-            var users = _userManager.Users.ToList();
-            //var users = _userManager.Users.Include(u => u.Id).Include(u => u.FirstName).Include(u => u.LastName).Include(u => u.Email).Include(u => u.PhoneNumber).Include(u => u.Addresses).ToList();
-            var items = new List<UserRoleVM>();
-            foreach(var user in users)
+            var roleController = new RoleController(_uow, _mapper, _userManager, _signInManager, _roleManager);
+            var model = new UserRoleVM()
             {
-                items.Add(new UserRoleVM()
-                {
-                    User = user,
-                    Roles = _userManager.GetRolesAsync(user).Result
-                });
-            }
-            return View(items);
+                Users = _userManager.Users.ToList(),
+                Roles = roleController.GetAllRoles()
+            };
+            ViewBag.Token = Request.Cookies[".AspNetCore.Identity.Application"];
+
+            ViewBag.Page = "User";  
+            return View(model);
         }
 
     }

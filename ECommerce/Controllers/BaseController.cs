@@ -14,18 +14,15 @@ namespace Ecommerce.Controllers
         protected readonly IMapper _mapper;
         protected readonly UserManager<User> _userManager;
         protected readonly SignInManager<User> _signInManager;
-        public BaseController(IUnitOfWork uow, IMapper mapper)
-        {
-            _uow = uow;
-            _mapper = mapper;
-        }
-
-        public BaseController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
+        protected readonly RoleManager<UserRole> _roleManager;
+        public BaseController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<UserRole> roleManager)
         {
             _uow = uow;
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
+            
         }
 
         protected void getUserFromSession()

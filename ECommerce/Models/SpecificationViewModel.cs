@@ -15,6 +15,7 @@ namespace Ecommerce.Models
 
         [RegularExpression(@"^.{3,}$", ErrorMessage = "Minimum 3 characters required")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Maximum 20 characters")]
+        [Required]
         public string? Name { get; set; }
         public virtual ICollection<CategorySpecificationValueViewModel> CategorySpecificationValues { get; set; }
         public virtual ICollection<ProductSpecificationValueViewModel> ProductSpecificationValues { get; set; }

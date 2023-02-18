@@ -10,174 +10,184 @@
 @model IEnumerable<ProductViewModel> 
 
 
+<div class="d-flex flex-row text-right">
 
-
-
-<!-- Button -->
-<div>
-	<a class = "d-flex mt-3" asp-controller="@ViewBag.createController" asp-action="@ViewBag.createAction">
-		<span class="btn btn-primary btn-round ml-auto mb-3" data-toggle="modal" data-target="#addRowModal">
-			<i class="fa fa-plus"></i>
-			Create
-		</span>
-	</a>
+    <nav aria-label="breadcrumb" class="absolute left-5">
+	    <ol class="breadcrumb bg-white">
+		    <li class="breadcrumb-item active text-xl" style="color:black" aria-current="page">Products</li>
+	    </ol>
+    </nav>
 </div>
 
+<div>
+
+    <!-- Button -->
+    <div>
+	    <a class = "d-flex mt-3" asp-controller="@ViewBag.createController" asp-action="@ViewBag.createAction">
+		    <span class="btn btn-primary btn-round ml-auto mb-3" data-toggle="modal" data-target="#addRowModal">
+			    <i class="fa fa-plus"></i>
+			    Create
+		    </span>
+	    </a>
+    </div>
+
 	
-<!-- Table -->
-<div class="table-responsive">
-	<table id="add-row" class="display table table-striped table-hover text-center" cellspacing="0" width="100%">
-		<thead>
-			<tr>
-				@foreach(var col in ViewBag.cols){
-					<th>@col</th>
-				}
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tfoot>
-			<tr></tr>
-		</tfoot>
-		<tbody>
-		@if(Model != null && Model.Count() > 0)
-		{
-            var i =0;
-			@foreach(var item in Model)
-			{
-				<tr  >
-					<td>
-						@item.Name
-					</td>
-					<td >
-						<div style="height: 50px;max-height: 50px;overflow: auto;">@item.Description</div>
-					</td>
-					<td>
-						@item.Price
-					</td>
-					<td>
-						<div class='p-1'>
-							<img class="w-16 h-16" src="@item.Image">
-						</div>
-					</td>
-					<td>
+    <!-- Table -->
+    <div class="table-responsive">
+	    <table id="add-row" class="display table table-striped table-hover text-center" cellspacing="0" width="100%">
+		    <thead>
+			    <tr>
+				    @foreach(var col in ViewBag.cols){
+					    <th>@col</th>
+				    }
+				    <th>Action</th>
+			    </tr>
+		    </thead>
+		    <tfoot>
+			    <tr></tr>
+		    </tfoot>
+		    <tbody>
+		    @if(Model != null && Model.Count() > 0)
+		    {
+                var i =0;
+			    @foreach(var item in Model)
+			    {
+				    <tr  >
+					    <td>
+						    @item.Name
+					    </td>
+					    <td class="overflow-auto">
+							@item.Description
+						</td>
+					    <td>
+						    @item.Price
+					    </td>
+					    <td>
+							<div class="p-1 justify-content-center d-flex">
+								<img class="w-16 h-16" src="@item.Image">
+							</div>
+						</td>
+					    <td>
 
-						@if(item.Category !=null)
-						{
-							@item.Category.Name
-						}
-					</td>
-					<td>
-@*						<button data-toggle="tooltip" data-placement="top" title="Photos" class="btn btn-link btn-simple-danger mt-1"> 
-									<i class="fa fa-camera"></i>       
-						</button>*@
-                            @if (item.IsTrend != null)
-                            {
-                                <span class="specPartialCaller btn border-0" data-toggle="modal" data-target="#specsMainModel" item-id="@item.Id" number = "@i"> 
-                                    <i class='fas fa-angle-down text-danger text-3xl'></i>
-                                </span>
-                            }
-                            else{
-                                <span class="specPartialCaller btn border-0" data-toggle="modal" data-target="#specsMainModel" item-id="@item.Id" number = "@i"> 
-							        <i class='fas fa-angle-down text-primary text-3xl'></i>
-						        </span>
-                            }
-					</td>
-					@*<td>
-						<button data-toggle="tooltip" data-placement="top" title="Specification" class="btn btn-link btn-simple-danger mt-1"> 
-									<i class="fa fa-asterisk"></i>       
-						</button>
-					</td>*@
-					<td>
+						    @if(item.Category !=null)
+						    {
+							    @item.Category.Name
+						    }
+					    </td>
+					    <td>
+    @*						<button data-toggle="tooltip" data-placement="top" title="Photos" class="btn btn-link btn-simple-danger mt-1"> 
+									    <i class="fa fa-camera"></i>       
+						    </button>*@
+                                @if (item.IsTrend != null)
+                                {
+                                    <span class="specPartialCaller btn border-0" data-toggle="modal" data-target="#specsMainModel" item-id="@item.Id" number = "@i"> 
+                                        <i class='fas fa-angle-down text-primary text-3xl'></i>
+                                    </span>
+                                }
+                                else{
+                                    <span class="specPartialCaller btn border-0" data-toggle="modal" data-target="#specsMainModel" item-id="@item.Id" number = "@i"> 
+							            <i class='fas fa-angle-down text-primary text-3xl'></i>
+						            </span>
+                                }
+					    </td>
+					    @*<td>
+						    <button data-toggle="tooltip" data-placement="top" title="Specification" class="btn btn-link btn-simple-danger mt-1"> 
+									    <i class="fa fa-asterisk"></i>       
+						    </button>
+					    </td>*@
+					    <td>
 
-						@item.CreatedDate.ToString("g");
+						    @item.CreatedDate.ToString("g");
 
-					</td>
-					<td>
-						@item.UpdatedDate.ToString("g");
+					    </td>
+					    <td>
+						    @item.UpdatedDate.ToString("g");
 
-					</td>
-					<td>
-						<div class="form-button-action">
-							<a asp-controller="@ViewBag.editController" asp-action="@ViewBag.editAction" asp-route-id="@item.Id">
-								<button type="button" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-link btn-simple-primary btn-lg" data-original-title="Edit Task">
-									<i class="fa fa-edit"></i>
-								</button>
-							</a>
+					    </td>
+					    <td>
+						    <div class="form-button-action">
+							    <a asp-controller="@ViewBag.editController" asp-action="@ViewBag.editAction" asp-route-id="@item.Id">
+								    <button type="button" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-link btn-simple-primary btn-lg" data-original-title="Edit Task">
+									    <i class="fa fa-edit"></i>
+								    </button>
+							    </a>
 									
-							<span data-toggle="modal" data-target=@("#deleteModal" + @item.Id.ToString())>
-								<button data-toggle="tooltip" data-placement="top" title="Remove" class="btn btn-link btn-simple-danger mt-1"> 
-									<i class="fa fa-times"></i>       
-								</button>
-							</span>
+							    <span data-toggle="modal" data-target=@("#deleteModal" + @item.Id.ToString())>
+								    <button data-toggle="tooltip" data-placement="top" title="Remove" class="btn btn-link btn-simple-danger mt-1"> 
+									    <i class="fa fa-times"></i>       
+								    </button>
+							    </span>
 
 
 
 
-							<div id=@("deleteModal" + @item.Id.ToString()) class="modal fade">
-								<div class="modal-dialog modal-confirm">
-									<div class="modal-content">
-										<div class="modal-header flex-column">
-											<div class="icon-box">
-												<i class="material-icons">&#xE5CD;</i>
-											</div>						
-											<h4 class="modal-title w-100">Are you sure?</h4>	
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-										</div>
-										<div class="modal-body">
-											<p>Do you really want to delete? This process cannot be undone.</p>
-										</div>
-										<div class="modal-footer justify-content-center">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-											<form method="post" asp-controller="@ViewBag.deleteController" asp-action="@ViewBag.deleteAction">
-												<input name="Id" value="@item.Id" hidden>
-												<button type="submit" class="btn btn-danger">Delete</button>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>  
-						</div>
-					</td>
-				</tr>
-                i = i+1;
-			}
-		}
-		</tbody>
-	</table>
+							    <div id=@("deleteModal" + @item.Id.ToString()) class="modal fade">
+								    <div class="modal-dialog modal-confirm">
+									    <div class="modal-content">
+										    <div class="modal-header flex-column">
+											    <div class="icon-box">
+												    <i class="material-icons">&#xE5CD;</i>
+											    </div>						
+											    <h4 class="modal-title w-100">Are you sure?</h4>	
+											    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										    </div>
+										    <div class="modal-body">
+											    <p>Do you really want to delete? This process cannot be undone.</p>
+										    </div>
+										    <div class="modal-footer justify-content-center">
+											    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+											    <form method="post" asp-controller="@ViewBag.deleteController" asp-action="@ViewBag.deleteAction">
+												    <input name="Id" value="@item.Id" hidden>
+												    <button type="submit" class="btn btn-danger">Delete</button>
+											    </form>
+										    </div>
+									    </div>
+								    </div>
+							    </div>  
+						    </div>
+					    </td>
+				    </tr>
+                    i = i+1;
+			    }
+		    }
+		    </tbody>
+	    </table>
 	
 
-        <div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="SpecModal">
-	                <div class="modal-dialog modal-dialog-scrollable" role="document" >
-		                <div class="modal-content">
-			                <div class="modal-header">
-				               @* <h5 class="modal-title font-weight-bold" id="exampleModalLabel"> Specifications</h5>*@
-                               <ul class="nav nav-pills nav-primary card-header-pills">
-		                            <li class="nav-item">
-		                            <a class="nav-link"  id="spec_id">Specification</a>
-		                            </li>
-		                            <li class="nav-item">
-		                            <a class="nav-link"  id="photo_id">Photos</a>
-		                            </li>
-	                            </ul>
-				                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-					                <span aria-hidden="true">&times;</span>
-				                </button>
-			                </div>
-			                <div class="modal-body overflow-auto" id="search_input">
-				               @* <div>
-                                        <input id="searchbox" class="search__input " type="text" placeholder="Search">
+            <div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="SpecModal">
+	                    <div class="modal-dialog modal-dialog-scrollable" role="document" >
+		                    <div class="modal-content">
+			                    <div class="modal-header">
+				                   @* <h5 class="modal-title font-weight-bold" id="exampleModalLabel"> Specifications</h5>*@
+                                   <ul class="nav nav-pills nav-primary card-header-pills">
+		                                <li class="nav-item">
+		                                <a class="nav-link"  id="spec_id">Specification</a>
+		                                </li>
+		                                <li class="nav-item">
+		                                <a class="nav-link"  id="photo_id">Photos</a>
+		                                </li>
+	                                </ul>
+				                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					                    <span aria-hidden="true">&times;</span>
+				                    </button>
+			                    </div>
+			                    <div class="modal-body overflow-auto" id="search_input">
+				                   @* <div>
+                                            <input id="searchbox" class="search__input " type="text" placeholder="Search">
                                               
-                                </div>*@
-                                <div class="card mt-2 rounded" id = "Specifications">
-	                            </div>
+                                    </div>*@
+                                    <div class="card mt-2 rounded" id = "Specifications">
+	                                </div>
 
-			                </div>
-			                <div class="modal-footer">
-				                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Done</button>
-			                </div>
-		                </div>
-	                </div>
-                </div>
+			                    </div>
+			                    <div class="modal-footer">
+				                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Done</button>
+			                    </div>
+		                    </div>
+	                    </div>
+                    </div>
+    </div>
+
 </div>
 <script>
 	$('#add-row').DataTable({

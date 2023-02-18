@@ -3,3 +3,202 @@
     ViewData["Title"] = "CreateCategory";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
+
+@model StatsVM
+
+
+
+
+<div class="d-flex flex-row text-right">
+
+    <nav aria-label="breadcrumb" class="absolute left-5">
+	    <ol class="breadcrumb bg-white">
+		    <li class="breadcrumb-item active text-xl" style="color:black" aria-current="page">Dashboard</li>
+	    </ol>
+    </nav>
+</div>
+
+<div class="p-5 border justify-content-around align-items-center mt-14" style="min-height:80vh">
+
+
+	<div class="h-72">
+		<canvas id="category-product"></canvas>
+	</div>
+
+
+
+	<div class="d-flex flex-row justify-content-around mt-44">
+
+		<div class="h-72">
+			<canvas id="user-role"></canvas>
+		</div>
+
+
+
+
+
+
+		<div class="h-72">
+			<canvas id="order-state"></canvas>
+		</div>
+
+	</div>
+</div>
+
+
+
+<script>
+
+	let colors = [
+		'rgba(255, 99, 132, 0.8)',
+		'rgba(54, 162, 235, 0.8)',
+		'rgba(255, 206, 86, 0.8)',
+		'rgba(75, 192, 192, 0.8)',
+		'rgba(153, 102, 255, 0.8)',
+		'rgba(255, 159, 64, 0.8)',
+		'rgba(255, 120, 120, 0.8)',
+		'rgba(100, 200, 255, 0.8)',
+		'rgba(200, 200, 100, 0.8)',
+		'rgba(130, 130, 230, 0.8)',
+		'rgba(200, 100, 200, 0.8)',
+		'rgba(100, 255, 150, 0.8)',
+		'#f3545d',
+		'#fdaf4b',
+		'#1d7af3'
+	];
+
+
+	function getColors(numberOfColors){
+		let shuffled = colors.sort(() => 0.5 - Math.random());
+		return shuffled.slice(0, numberOfColors)
+	}
+
+
+
+
+    var userRoleCanvas = document.getElementById('user-role').getContext('2d');
+		
+	var userRoleChart = new Chart(userRoleCanvas, {
+		type: 'pie',
+		data: {
+			datasets: [{
+				label: "Roles", 
+				data:[
+					@foreach(var item in Model.Role_Users){
+						@Html.Raw(item.Value)
+						@Html.Raw(",")
+					}
+				],
+				backgroundColor :getColors(@Model.Role_Users.Count()),
+				borderWidth: 0
+			}],
+			labels: [
+				@foreach(var item in Model.Role_Users){
+					@Html.Raw("'")
+					@Html.Raw(item.Key)
+					@Html.Raw("',")
+				}
+			]
+		},
+		options : {
+			responsive: true,
+			maintainAspectRatio: false,
+			legend: {
+				position : 'bottom',
+				labels : {
+					fontColor: 'rgb(154, 154, 154)',
+					fontSize: 11,
+					usePointStyle : true,
+					padding: 20
+				}
+			}
+		}
+	});
+
+
+
+
+
+
+	var catgoryProductCanvas = document.getElementById('category-product').getContext('2d');
+
+	var categoryProductChart = new Chart(catgoryProductCanvas, {
+		type: 'bar',
+		data: {
+			labels: [
+				@foreach(var item in Model.Category_Products){
+					@Html.Raw("'")
+					@Html.Raw(item.Key)
+					@Html.Raw("',")
+				}
+			],
+			datasets : [{
+				label: "Products",
+				backgroundColor: 'rgb(23, 125, 255)',
+				borderColor: 'rgb(23, 125, 255)',
+				data: [
+					@foreach(var item in Model.Category_Products){
+						@Html.Raw(item.Value)
+						@Html.Raw(",")
+					}
+				],
+			}],
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero:true
+					}
+				}]
+			},
+		}
+	});
+
+
+
+
+	var orderStateCanvas = document.getElementById('order-state').getContext('2d');
+
+	var orderStateChart = new Chart(orderStateCanvas, {
+		type: 'doughnut',
+		data: {
+			datasets: [{
+				lable: "Orders",
+				data: [
+					@foreach(var item in Model.Order_States){
+						@Html.Raw(item.Value)
+						@Html.Raw(",")
+					}
+				],
+				backgroundColor: getColors(@Model.Order_States.Count())
+			}],
+
+			labels: [
+				@foreach(var item in Model.Order_States){
+					@Html.Raw("'")
+					@Html.Raw(item.Key)
+					@Html.Raw("',")
+				}
+			]
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			legend : {
+				position: 'bottom'
+			},
+			layout: {
+				padding: {
+					left: 20,
+					right: 20,
+					top: 20,
+					bottom: 20
+				}
+			}
+		}
+	});
+</script>

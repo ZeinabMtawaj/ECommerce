@@ -14,18 +14,20 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Ecommerce.Controllers
 {
-    [Authorize(Roles="Admin")]
-    public class AddressController : BaseController
+    [Authorize(Roles = "Admin")]
+    public class OrderController : BaseController
 
     {
-        public AddressController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<UserRole> roleManager) : base(uow, mapper, userManager, signInManager, roleManager)
-        {
+        public OrderController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<UserRole> roleManager) : base(uow, mapper, userManager, signInManager, roleManager) 
+        { 
+
+
         }
 
-        public IEnumerable<string> GetAddressByUserId(int userId)
+
+        public IEnumerable<Order> GetAllOrders()
         {
-            return _uow.AddressRepo.FindAll(x => x.UserId == userId).Select(u => u.Location);
+            return new List<Order>();
         }
-        
     }
 }
