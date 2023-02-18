@@ -26,6 +26,18 @@ namespace ApplicationDbContext.UOW
 
         public IWishListRepo WishListRepo { get; set; }
 
+        public IUserRepo UserRepo { get; set; }
+
+        public IProductOrderRepo ProductOrderRepo { get; set; }
+
+
+        public IOrderRepo OrderRepo { get; set; }
+
+        public IRatingRepo RatingRepo { get; set; }
+
+
+
+
 
         public ECommerceDBContext GetContext();
         public void SaveChanges ();

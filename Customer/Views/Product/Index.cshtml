@@ -15,15 +15,12 @@
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>@ViewBag.subtitle</h2>
-         @* <ol>
-            <li><a href="index.html">Order</a></li>
-            <li>WishList Details</li>
-          </ol>*@
+          <h2>Products</h2>
+      
         </div>
 
       </div>
-    </section><!-- End Breadcrumbs -->
+    </section>
 
 
 
@@ -40,7 +37,7 @@
         </div>*@
 
     
-        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="400" id="prods">
+        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="400" id="prods" >
 
 
 
@@ -56,37 +53,80 @@
                 }
 *@  
         @foreach( var trend in Model){
-            @if( @trend.Category !=null){
                 var @e = Math.Round(@trend.Price.Value,2);
               <div class="col-lg-3 col-md-2 portfolio-item port-first " >
                 <div class="portfolio-wrap" style="height:170px;">
                     
-                      <span class="notify-badge">@e</span>
+                      <span class="notify-badge" id="pr-@trend.Id">@e</span>
                   <img src=@trend.Image class="img-fluid h-100 w-100" alt="" >
                   <div class="portfolio-info" >
                     <h4>@trend.Name</h4>
 @*                    <p style="opacity:20;"></p>
 *@                    <div class="portfolio-links">
-                      <a href=@trend.Image data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>
+                      @*<a href=@trend.Image data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>*@
                       <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="More Details"><i class="bx bx-link"></i></a>
-                      <a class="wish"  title="Add To WishList" style="cursor: pointer;"><i class="bx bx-heart" value=@trend.Id></i></a>
-                      <a asp-controller='Product' asp-action='Detail' asp-route-id =@trend.Id title='Add To Cart'><i class='bx bx-cart'></i></a>
-
-
+                       @if (ViewBag.UserName != null)
+                       {
+                            @if(@trend.Sku == "wish")
+                            {
+                                <a class="wish"  title="Remove From WishList" style="cursor: pointer;"><i class="bx bxs-heart" value=@trend.Id></i></a>
+                            }else
+                            {
+                                <a class="wish"  title="Add To WishList" style="cursor: pointer;"><i class="bx bx-heart" value=@trend.Id></i></a>
+                            }
+                            <a class="insideCart"  title="Add To Cart" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target=@("#orderModal" + @trend.Id.ToString())><i class='bx bx-cart' value =@trend.Id></i></a>
+                       }
+                       
                     </div>
                   </div>
                 </div>
               </div>
-          }}
+
+              
+            <div id=@("orderModal" + @trend.Id.ToString()) class="modal fade">
+					 <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header text-center">
+                            <h4 class="modal-title w-100 font-weight-bold">Add To Cart</h4>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body mx-3">
+                            <div class="md-form mb-5">
+                              <label >Quantity: </label>
+                              
+                              <input type="number" value="1" id="input-@trend.Id"/>
+                              <p id='total-@trend.Id'>total: &nbsp;&nbsp;@trend.Price</p>
+                               
+                            </div>
+                          </div>
+                          <div class="modal-footer d-flex justify-content-center">
+                            <button class="btn btn-default addcart"  data-bs-dismiss="modal" id= "btn-@trend.Id">Add</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
 
-         
+          }
+
+
+
+
+
         </div>
 
       </div>
 
 
     <script type="text/javascript" >
+
+        
+
+
+
+                 
        
 
         let json_model = '@Html.Raw(Json.Serialize(ViewBag.exp))';
@@ -95,9 +135,52 @@
         let searchContent = JSON.parse(json_model2);
          let json_model3 = '@Html.Raw(Json.Serialize(ViewBag.subtitle))';
         let subtitleView = JSON.parse(json_model3);
+         let json_model4 = '@Html.Raw(Json.Serialize(ViewBag.userName))';
+        var user = JSON.parse(json_model4);
 
-         manageWish();
+        if (user != null){
+            manageWish();
+            manageCart();
+             $('.cartElements').remove();
+         $('.totalNum').remove();
+         
 
+         $.ajax({
+			    type:"GET",
+			    url: '@(Url.Action("addProduct","ProductOrder"))',
+                data :{
+                    productId: 0,
+                    quantity: 0,
+                    price : -1
+                },
+			    dataType:"json",
+			    success:function(result){                                  
+                        let  cartContent = 0;
+                        let totalPrice = 0;
+                        $.each(result,function(key,value){
+                            cartContent += 1;
+                            totalPrice += value.price;
+                            $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"'id='notify-"+value.id+"' >"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
+                        });
+                        $(" <a class='totalNum'>TOTAL: "+totalPrice+"</a>").insertBefore("#cartBefore");
+                        $('#cartNumber').text(cartContent);
+                        if (cartContent > 0 ){
+                            $('#cartNumber').css("opacity","1");
+                        } else {
+                            $('#cartNumber').css("opacity","0");
+                        }
+                                
+                },
+			    error: function(req, status, error){
+			    console.log(status);
+			    }
+                });
+
+
+
+
+
+        }
         
 
 
@@ -129,12 +212,49 @@
                             if (!price.includes(".")){
                                 price +=".00"
                             }
-                             $('#prods').append("<div class='col-lg-3 col-md-2 portfolio-item' ><div class='portfolio-wrap' style='height:170px;'> <span class='notify-badge'>"+price+"</span><img src='"+value.image+"' class='img-fluid h-100 w-100' alt=''> <div class='portfolio-info'> <h4>"+value.name+"</h4> <div class='portfolio-links'><a href='"+value.image+"' data-gallery='portfolioGallery' class='portfolio-lightbox' title='"+value.description+"'><i class='bx bx-plus'></i></a><a href='https://localhost:7068/Product/Detail/"+value.id+"' title='More Details'><i class='bx bx-link'></i></a><a class='wish'  title='Add To WishList' style='cursor: pointer;'><i class='bx bx-heart' value='"+value.id+"'></i></a></div> </div></div> </div>");
-                         //   $('#prods').append("<div class='col-lg-3 col-md-2 portfolio-item'><div class='portfolio-wrap'><img src='https://m.media-amazon.com/images/I/81n2sLhksUL._AC_UL320_.jpg' class='img-fluid ' alt=''> <div class='portfolio-info'> <h4>App 1</h4><p>App</p> <div class='portfolio-links'><a href='https://m.media-amazon.com/images/I/81n2sLhksUL._AC_UL320_.jpg' data-gallery='portfolioGallery' class='portfolio-lightbox' title='Zoom In'><i class='bx bx-plus'></i></a><a href='https://localhost:7068/Product/Detail/1' title='More Details'><i class='bx bx-link'></i></a> </div> </div></div> </div>");
-                    });
+                             if (user != null){
+                                 console.log(value.sku);
+                                 if (value.sku =="wish")
+                                 {
+                                    $('#prods').append("<div class='col-lg-3 col-md-2 portfolio-item' ><div class='portfolio-wrap' style='height:170px;'> <span class='notify-badge'>"+price+"</span><img src='"+value.image+"' class='img-fluid h-100 w-100' alt=''> <div class='portfolio-info'> <h4>"+value.name+"</h4> <div class='portfolio-links'><a href='https://localhost:7068/Product/Detail/"+value.id+"' title='More Details'><i class='bx bx-link'></i></a><a class='wish'  title='Remove From WishList' style='cursor: pointer;'><i class='bx bxs-heart' value='"+value.id+"'></i></a><a class='insideCart'  title='Add To Cart' style='cursor: pointer;' data-bs-toggle='modal' data-bs-target='#orderModal"+value.Id+"'><i class='bx bx-cart' value ='"+value.Id+"'></i></a></div> </div></div> </div>");
+                                 }else 
+                                 {
+                                     $('#prods').append("<div class='col-lg-3 col-md-2 portfolio-item' ><div class='portfolio-wrap' style='height:170px;'> <span class='notify-badge'>"+price+"</span><img src='"+value.image+"' class='img-fluid h-100 w-100' alt=''> <div class='portfolio-info'> <h4>"+value.name+"</h4> <div class='portfolio-links'><a href='https://localhost:7068/Product/Detail/"+value.id+"' title='More Details'><i class='bx bx-link'></i></a><a class='wish'  title='Add To WishList' style='cursor: pointer;'><i class='bx bx-heart' value='"+value.id+"'></i></a><a class='insideCart'  title='Add To Cart' style='cursor: pointer;' data-bs-toggle='modal' data-bs-target='#orderModal"+value.Id+"'><i class='bx bx-cart' value ='"+value.Id+"'></i></a></div> </div></div> </div>");
+
+                                  }
+                                  $('#prods').append(`  <div id="orderModal`+ value.Id+`" class="modal fade">
+					                                         <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                  <div class="modal-header text-center">
+                                                                    <h4 class="modal-title w-100 font-weight-bold">Add To Cart</h4>
+                                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                                      <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                  </div>
+                                                                  <div class="modal-body mx-3">
+                                                                    <div class="md-form mb-5">
+                                                                      <label >Quantity: </label>
+                                                                      <input type="number" value="1" id="input-`+ value.Id+`"/>
+                                                                        <p id="total-`+ value.Id+`">total: &nbsp;&nbsp;`+ value.Price+`"</p>
+                                                                    </div>
+                                                                  </div>
+                                                                  <div class="modal-footer d-flex justify-content-center">
+                                                                    <button class="btn btn-default addcart"  data-bs-dismiss="modal" id= "btn-`+ value.Id+`">Add</button>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            </div> `);
+                             } else {
+                             $('#prods').append("<div class='col-lg-3 col-md-2 portfolio-item' ><div class='portfolio-wrap' style='height:170px;'> <span class='notify-badge'>"+price+"</span><img src='"+value.image+"' class='img-fluid h-100 w-100' alt=''> <div class='portfolio-info'> <h4>"+value.name+"</h4> <div class='portfolio-links'><a href='https://localhost:7068/Product/Detail/"+value.id+"' title='More Details'><i class='bx bx-link'></i></a></div> </div></div> </div>");
+
+                             }
+                     });
                     $('.port-first').css("position","");
                     footerDesign();
-                    manageWish();
+                    if (user !=null){
+                        manageWish();
+                        manageCart();
+                    }
                    
 	
                
@@ -144,7 +264,7 @@
 
 
 
-                       // skip_value +=20;
+                      // skip_value +=20;
 
 			},
 			error: function(req, status, error){
@@ -202,12 +322,23 @@
 			            dataType:"json",
 			            success:function(result){
                             console.log(result);
+                            var wishNumber = parseInt($('#wishNumber').text());
                             if (result == "Add")
                             {
                                  $(event.target).removeClass("bx-heart");
                                  $(event.target).addClass("bxs-heart");
                                  $(event.target).parent().removeAttr("title");
-                                 $(event.target).parent().attr("title","remove from wishlist");                                                    
+                                 $(event.target).parent().attr("title","remove from wishlist"); 
+                                 if (wishNumber != 0){
+                                    $('#wishNumber').text(wishNumber+1);
+
+                                 }
+                                 else{
+                                   // $('#wishNumberNav').append("<span class='icon-button__badge' id='wishNumber'>1</span>");
+                                    $('#wishNumber').text('1');
+                                    $('#wishNumber').css("opacity","1");
+                                 }
+                                 
 
 			                 }
                              if (result == "Delete")
@@ -216,6 +347,12 @@
                                  $(event.target).addClass("bx-heart");
                                  $(event.target).parent().removeAttr("title");
                                  $(event.target).parent().attr("title","add to wishlist"); 
+                                 if (wishNumber != 1)
+                                    $('#wishNumber').text(wishNumber-1);
+                                 else{
+                                    $('#wishNumber').text('0');
+                                    $('#wishNumber').css("opacity","0");
+                                 }
                              
                              }
                         },
@@ -227,7 +364,84 @@
 
                       });
 
+
+
+
+                     
+
              }
+
+              function manageCart(){
+
+                          $('.insideCart').click(function(){                               
+                            $('.modal-backdrop').remove();
+                             
+                             $("input").bind("keyup", function(event){
+                                  let val =$(event.target).attr("Id");   
+                                  let prodId = val.split("-");
+                                  let valId= parseInt(prodId[1]);
+                                  let quantity = $('#input-'+prodId[1]).val();
+                                  let valQuantity = parseInt(quantity);
+                                  let price = $('#pr-'+prodId[1]).text();
+                                  let valPrice = parseFloat(price);
+                                $('#total-'+prodId[1]).text("total:   "+(valPrice*valQuantity));
+                              });
+                            $('.addcart').click(function(event){
+                              let val =$(event.target).attr("Id");   
+                              let prodId = val.split("-");
+                              let valId= parseInt(prodId[1]);
+                              let quantity = $('#input-'+prodId[1]).val();
+                              let valQuantity = parseInt(quantity);
+                              let price = $('#pr-'+prodId[1]).text();
+                              let valPrice = parseFloat(price);
+                             
+                              console.log(valPrice);
+                              $.ajax({
+			                    type:"GET",
+			                    url: '@(Url.Action("addProduct","ProductOrder"))',
+                                data :{
+                                    productId: valId,
+                                    quantity: valQuantity,
+                                    price : valPrice
+                                },
+			                    dataType:"json",
+			                    success:function(result){                                  
+                                     let  cartContent = 0;
+                                     let totalPrice = 0;
+                                     $('.cartElements').remove();
+                                     $('.totalNum').remove();
+                                     $.each(result,function(key,value){
+                                         cartContent += 1;
+                                         totalPrice += value.price;
+                                         $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' id='notify-"+value.id+"'>"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
+                                     });
+                                      $(" <a class='totalNum'>TOTAL: "+totalPrice+"</a>").insertBefore("#cartBefore");
+                                      $('#cartNumber').text(cartContent);
+                                     if (cartContent > 0 ){
+                                         $('#cartNumber').css("opacity","1");
+                                     } else {
+                                         $('#cartNumber').css("opacity","0");
+                                     }
+
+
+
+                                
+                                },
+			                    error: function(req, status, error){
+			                    console.log(status);
+			                    }
+                                });
+
+
+
+
+                              
+                                  });
+                                  });
+                         
+                      }
+
+
 
 
 

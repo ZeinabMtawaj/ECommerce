@@ -18,7 +18,10 @@ namespace Customer.Controllers
         {
             getUserFromSession();
             TrendController trendCon = new TrendController(_uow, _mapper, _userManager, _signInManager);
-            var trends = trendCon.GetAll();
+            string? x = ViewBag.UserId;
+            var trends = trendCon.GetAll(x);
+
+           
             ViewBag.Home = "true";
             return View(trends);
         }
