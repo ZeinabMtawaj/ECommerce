@@ -9,6 +9,8 @@
 @for(int i = 0;i < Model.SpecificationIds.Count(); i++)
 {
     string Val = Model.SpecificationValues[i];
+	if(Val == null || Val.Length == 0)
+		continue;
 	int Id = Model.SpecificationIds[i];
 	string Name = Model.SpecificationNames[i];
     <div class="box">
