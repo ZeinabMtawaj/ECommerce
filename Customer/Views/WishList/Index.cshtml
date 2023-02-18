@@ -49,10 +49,10 @@
                             <li><strong>Price</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @wish.Price &nbsp;&nbsp;</li>
                             <li>
                                 <div class="row-sm-10 d-flex flex-row mt-12" style="margin:auto;margin-top:5%;">
-                                    <button type="button" class="btn btn-outline-primary ml-5" onclick="location.href='@Url.Action("Detail","Product")';">
+                                    <a  class="btn btn-outline-primary ml-5 addcart" value=@wish.Price id=@wish.Id>
                                         <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                         Add To Cart
-                                    </button>
+                                    </a>
                                 </div>
                             </li>
                         </ul>
@@ -82,6 +82,7 @@
 
            manageWish();
            reset();
+            manageCart();
            $('.cartElements').remove();
            $('.totalNum').remove();
          
@@ -183,6 +184,64 @@
 
              
              
+             }
+
+              function manageCart(){
+
+                          
+                            $('.addcart').click(function(event){
+                              let val = $(event.target).attr("value");   
+                              let valPrice = parseFloat(val);
+                              let prodIdVal = $(event.target).attr("id");
+                              let prodId = parseInt(prodIdVal);
+                              
+                             
+                              console.log(valPrice);
+
+                              $.ajax({
+			                    type:"GET",
+			                    url: '@(Url.Action("addProduct","ProductOrder"))',
+                                data :{
+                                    productId: prodId,
+                                    quantity: 1,
+                                    price : valPrice
+                                },
+			                    dataType:"json",
+			                    success:function(result){                                  
+                                    
+                                     let  cartContent = 0;
+                                     let totalPrice = 0;
+                                     $('.cartElements').remove();
+                                     $('.totalNum').remove();
+                                     $.each(result,function(key,value){
+                                         cartContent += 1;
+                                         totalPrice += value.price;
+                                         $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' id='notify-"+value.id+"'>"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
+                                     });
+                                      $(" <a class='totalNum'>TOTAL: "+totalPrice+"</a>").insertBefore("#cartBefore");
+                                      $('#cartNumber').text(cartContent);
+                                     if (cartContent > 0 ){
+                                         $('#cartNumber').css("opacity","1");
+                                     } else {
+                                         $('#cartNumber').css("opacity","0");
+                                     }
+                                  
+                                     
+                                
+                                },
+			                    error: function(req, status, error){
+			                    console.log(status);
+			                    }
+                                });
+
+
+
+
+                              
+                                  });
+                                 
+                         
+                      
              }
 
 
