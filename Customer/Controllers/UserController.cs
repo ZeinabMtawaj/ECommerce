@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using System.Linq.Expressions;
+using System.Text.Json;
 
 namespace Customer.Controllers
 {
@@ -76,6 +77,11 @@ namespace Customer.Controllers
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     TempData["success"] = "Registered! Now You Are Logged In!";
                     HttpContext.Session.SetString("UserId", user.Id.ToString());
+
+                    var cart = new List<ProductOrder>();
+                    string serializeCart = JsonSerializer.Serialize(cart);
+                    HttpContext.Session.SetString("Cart", serializeCart);
+
                     return RedirectToAction("Index", "Home");
                 }
                 TempData["error"] = "Could Not Register!";
@@ -115,6 +121,11 @@ namespace Customer.Controllers
                     var user = await _userManager.FindByEmailAsync(userVM.Email);
                     string userId = user.Id.ToString();
                     HttpContext.Session.SetString("UserId", userId);
+
+                    var cart = new List<ProductOrder>();
+                    string serializeCart = JsonSerializer.Serialize(cart);
+                    HttpContext.Session.SetString("Cart", serializeCart);
+
                     TempData["success"] = "Logged In Successfuly";
                     return RedirectToAction("Index", "Home");
                 }
@@ -194,6 +205,7 @@ namespace Customer.Controllers
         {
             await _signInManager.SignOutAsync();
             HttpContext.Session.Remove("UserId");
+            HttpContext.Session.Remove("Cart");
             TempData["success"] = "Logged Out Successfully!";
             return RedirectToAction("Index", "Home");
         }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ApplicationDbContext.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
-
+using System.Text.Json;
 
 namespace Customer.Controllers
 {
@@ -47,6 +47,12 @@ namespace Customer.Controllers
                 var roles = _userManager.GetRolesAsync(user).Result;
                 if (roles.Contains("Admin"))
                     ViewBag.HasDashboard = true;
+
+                string cart = HttpContext.Session.GetString("Cart");
+               
+                var cartList = JsonSerializer.Deserialize<List<ProductOrder>>(cart);
+                ViewBag.Cart = cartList;
+                ViewBag.CartNumber = cartList.Count();  
 
             }
         }

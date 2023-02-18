@@ -96,7 +96,7 @@
                                     $('#wishNumber').text(wishNumber-1);
                                  else{
                                     $('#wishNumber').text('0');
-                                    $('#wishNumber').css("display","none");
+                                    $('#wishNumber').css("opacity","0");
                                  }
                              
                              
@@ -121,7 +121,7 @@
                             console.log(result);
                             $('.all').remove();
                             $('#wishNumber').text('0');
-                            $('#wishNumber').css("display","none");
+                            $('#wishNumber').css("opacity","0");
                              
                         },
 			            error: function(req, status, error){

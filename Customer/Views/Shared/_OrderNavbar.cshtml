@@ -204,17 +204,25 @@
           	              <a class="nav-link dropdown-toggle rounded "  href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   <button type="button" class="icon-button" asp-action="Index">
                                    <i class="fa fa-shopping-cart " style="font-size:19px;"></i>
-                                       <span class="icon-button__badge bg-primary" >2</span>
+                                   @if (@ViewBag.CartNumber != 0)
+                                    {
+                                        <span class="icon-button__badge bg-primary" id="cartNumber" style="opacity:1;">@ViewBag.CartNumber</span>
+                                    }
+                                    else
+                                    {
+                                       <span class="icon-button__badge bg-primary" id="cartNumber" style="opacity:0;">@ViewBag.CartNumber</span>
+
+                                    }
                                   </button>
                                   &nbsp;
                             </a>
 	              <div class="dropdown-menu p-2 w-50 ml-12 " aria-labelledby="dropdown04" style="max-height:600px;overflow:auto;">
 	              	<div class="row " >
-	              		<div class="col-md-12 ">
-	              			<a class="   border-bottom" href="#">Page 1 <img  style="width:25%;height:25%;"src="~/img/more-services-1.jpg"/><i class="fa fa-close"></i> </a>
+	              		<div class="col-md-12" id="cartContent">
+	              			@*<a class="   border-bottom" href="#">Page 1 <img  style="width:25%;height:25%;"src="~/img/more-services-1.jpg"/><i class="fa fa-close"></i> </a>
 	              			<a class="   border-bottom" href="#">Page 2 <img  style="width:25%;height:25%;"src="~/img/more-services-1.jpg"/><i class="fa fa-close"></i> </a>
-                            <a >TOTAL: </a>
-                                       <div class="row-sm-10 d-flex flex-row mt-12"> &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a >TOTAL: </a>*@
+                                       <div class="row-sm-10 d-flex flex-row mt-12" id="cartBefore"> &nbsp;&nbsp;&nbsp;&nbsp;
             <button type="button" class="btn btn-outline-primary ml-5" onclick="location.href='@Url.Action("Detail","Order")';">
            View Cart</button>
             <div class="ml-2">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
@@ -248,13 +256,13 @@
 @*            <span class="material-icons">notifications</span>
 *@            
                         <i  class="fa fa-heart " style="font-size:18px;"></i>
-                            @if (@ViewBag.Wishnumber != 0)
+                            @if (@ViewBag.WishNumber != 0)
                             {
-                                <span class="icon-button__badge" id="wishNumber" style="display:inline;">@ViewBag.Wishnumber</span>
+                                <span class="icon-button__badge" id="wishNumber" style="opacity:1;">@ViewBag.WishNumber</span>
                             }
                             else
                             {
-                               <span class="icon-button__badge" id="wishNumber" style="display:none;">@ViewBag.Wishnumber</span>
+                               <span class="icon-button__badge" id="wishNumber" style="opacity:0;">@ViewBag.WishNumber</span>
 
                             }
 
