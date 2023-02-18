@@ -7,7 +7,7 @@
     @model IEnumerable<Product>
 
 
-<main id="main">
+<main id="main" class="mainWish">
 
     <!-- ======= Breadcrumbs ======= -->
     <section id="breadcrumbs" class="breadcrumbs mr-0">
@@ -25,6 +25,15 @@
     </section><!-- End Breadcrumbs -->
 
     <!-- ======= Order Details Section ======= -->
+    @if (@Model.Count() == 0)
+    {
+        <div class="p-3" style="margin-left:270px;">
+				<img src="~/img/empty-wishlist.png" class="mt-10 w-75 h-75" alt="Wishlist">
+			</div>
+    }
+
+
+
     @foreach(var wish in @Model){
        <section id="portfolio-details" class="portfolio-details all p-2 sec-@wish.Id">
           <div class="container" style="margin-left:10%;">
@@ -73,6 +82,41 @@
 
            manageWish();
            reset();
+           $('.cartElements').remove();
+           $('.totalNum').remove();
+         
+
+         $.ajax({
+			    type:"GET",
+			    url: '@(Url.Action("addProduct","ProductOrder"))',
+                data :{
+                    productId: 0,
+                    quantity: 0,
+                    price : -1
+                },
+			    dataType:"json",
+			    success:function(result){                                  
+                        let  cartContent = 0;
+                        let  totalPrice = 0;
+                        $.each(result,function(key,value){
+                            cartContent += 1;
+                            totalPrice += value.price;
+                            $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' id='notify-"+value.id+"'>"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
+                        });
+                        $(" <a class='totalNum'>TOTAL: "+totalPrice+"</a>").insertBefore("#cartBefore");
+                        $("#totalOrderDetail").text(""+totalPrice);
+                        $('#cartNumber').text(cartContent);
+                        if (cartContent > 0 ){
+                            $('#cartNumber').css("opacity","1");
+                        } else {
+                            $('#cartNumber').css("opacity","0");
+                        }
+                                
+                },
+			    error: function(req, status, error){
+			    console.log(status);
+			    }
+                });
 
              function manageWish(){
                      $('.wish').click(function(event){
@@ -97,6 +141,7 @@
                                  else{
                                     $('#wishNumber').text('0');
                                     $('#wishNumber').css("opacity","0");
+                                   
                                  }
                              
                              

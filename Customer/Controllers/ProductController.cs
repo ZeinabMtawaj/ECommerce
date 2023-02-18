@@ -37,7 +37,7 @@ namespace Customer.Controllers
         public IActionResult Detail(int id)
         {
             getUserFromSession();
-
+          
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.ProductSpecificationValues);
             lambdas.Add(x => x.Photos);
@@ -87,6 +87,17 @@ namespace Customer.Controllers
 /*                    product_detail.ProductSpecificationValues.ElementAt(i).Value = name;
 */
                 }
+            }
+            if (ViewBag.UserId != null)
+            {
+                var userCon = new UserController(_uow, _mapper, _userManager, _signInManager);
+                string? userId = ViewBag.UserId;
+                var wishes = (userCon.getWishList(userId));
+                if (wishes.Any(x => x.ProductId == id))
+                {
+                    product_detail.Sku = "wish";
+                }
+
             }
             return View(product_detail);  
         

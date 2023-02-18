@@ -478,7 +478,7 @@
                   <img src=@trend.Image class="img-fluid h-100 w-100" alt="" >
                   <div class="portfolio-info">
                     <h4>@trend.Name</h4>
-                    <p>@trend.Price</p>
+                    <p id="pr-@trend.Id">@trend.Price</p>
                     <div class="portfolio-links">
                       <a href=@trend.Image data-gallery="portfolioGallery" class="portfolio-lightbox" title=@trend.Description><i class="bx bx-plus"></i></a>
                       <a asp-controller="Product" asp-action="Detail" asp-route-id =@trend.Id title="More Details"><i class="bx bx-link"></i></a>
@@ -491,7 +491,7 @@
                                             {
                                                 <a class="wish"  title="Add To WishList" style="cursor: pointer;"><i class="bx bx-heart" value=@trend.Id></i></a>
                                             }
-                        <a class='insideCart'  title='Add To Cart' style='cursor: pointer;' ><i class='bx bx-cart' value =@trend.Id></i></a>
+                        <a class='insideCart'  title='Add To Cart' style='cursor: pointer;'  data-bs-toggle="modal" data-bs-target=@("#orderModal" + @trend.Id.ToString())><i class='bx bx-cart' value =@trend.Id></i></a>
                         }
 
 
@@ -499,6 +499,30 @@
                   </div>
                 </div>
               </div>
+              <div id=@("orderModal" + @trend.Id.ToString()) class="modal fade">
+					 <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header text-center">
+                            <h4 class="modal-title w-100 font-weight-bold">Add To Cart</h4>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body mx-3">
+                            <div class="md-form mb-5">
+                              <label >Quantity: </label>
+                              
+                              <input type="number" value="1" id="input-@trend.Id"/>
+                              <p id='total-@trend.Id'>total: &nbsp;&nbsp;@trend.Price</p>
+                               
+                            </div>
+                          </div>
+                          <div class="modal-footer d-flex justify-content-center">
+                            <button class="btn btn-default addcart"  data-bs-dismiss="modal" id= "btn-@trend.Id">Add</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
           }
           }
 
@@ -935,6 +959,8 @@
 
         if (user != null){
             manageWish();
+            manageCart();
+
         }
         
        function manageWish(){
@@ -978,6 +1004,60 @@
                       });
 
              }
+
+              function manageCart(){
+
+                          $('.insideCart').click(function(){                               
+                            $('.modal-backdrop').remove();
+                             
+                             $("input").bind("keyup", function(event){
+                                  let val =$(event.target).attr("Id");   
+                                  let prodId = val.split("-");
+                                  let valId= parseInt(prodId[1]);
+                                  let quantity = $('#input-'+prodId[1]).val();
+                                  let valQuantity = parseInt(quantity);
+                                  let price = $('#pr-'+prodId[1]).text();
+                                  let valPrice = parseFloat(price);
+                                $('#total-'+prodId[1]).text("total:   "+(valPrice*valQuantity));
+                              });
+                            $('.addcart').click(function(event){
+                              let val =$(event.target).attr("Id");   
+                              let prodId = val.split("-");
+                              let valId= parseInt(prodId[1]);
+                              let quantity = $('#input-'+prodId[1]).val();
+                              let valQuantity = parseInt(quantity);
+                              let price = $('#pr-'+prodId[1]).text();
+                              let valPrice = parseFloat(price);
+                             
+                              console.log(valPrice);
+                              $.ajax({
+			                    type:"GET",
+			                    url: '@(Url.Action("addProduct","ProductOrder"))',
+                                data :{
+                                    productId: valId,
+                                    quantity: valQuantity,
+                                    price : valPrice
+                                },
+			                    dataType:"json",
+			                    success:function(result){                                  
+                                    
+                                         console.log(1);                                    
+                                     
+                                
+                                },
+			                    error: function(req, status, error){
+			                    console.log(status);
+			                    }
+                                });
+
+
+
+
+                              
+                                  });
+                                  });
+                         
+                      }
 
            
 

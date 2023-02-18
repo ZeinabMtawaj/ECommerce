@@ -53,7 +53,6 @@
                 }
 *@  
         @foreach( var trend in Model){
-            @if( @trend.Category !=null){
                 var @e = Math.Round(@trend.Price.Value,2);
               <div class="col-lg-3 col-md-2 portfolio-item port-first " >
                 <div class="portfolio-wrap" style="height:170px;">
@@ -110,7 +109,7 @@
                     </div>
 
 
-          }}
+          }
 
 
 
@@ -161,7 +160,7 @@
                         $.each(result,function(key,value){
                             cartContent += 1;
                             totalPrice += value.price;
-                            $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' >"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
+                            $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"'id='notify-"+value.id+"' >"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
                         });
                         $(" <a class='totalNum'>TOTAL: "+totalPrice+"</a>").insertBefore("#cartBefore");
                         $('#cartNumber').text(cartContent);
@@ -414,7 +413,7 @@
                                      $.each(result,function(key,value){
                                          cartContent += 1;
                                          totalPrice += value.price;
-                                         $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' >"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
+                                         $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' id='notify-"+value.id+"'>"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
                                      });
                                       $(" <a class='totalNum'>TOTAL: "+totalPrice+"</a>").insertBefore("#cartBefore");
                                       $('#cartNumber').text(cartContent);

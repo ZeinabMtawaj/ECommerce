@@ -77,7 +77,7 @@
           <div class="col-lg-5">
             <div class="portfolio-info ">
               <h3>@Model.Name</h3>
-              <ul>
+              <ul id="descript">
 
 
 
@@ -138,7 +138,7 @@
                 {
                     <li><strong>Category</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @Model.Category.Name</li>
                 }
-                <li><strong>Price</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @Model.Price</li>
+                <li value=@Model.Price id="price-@Model.Id"><strong>Price</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @Model.Price</li>
                 
 @*                <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>                  
            *@              @if (@Model.ProductSpecificationValues != null)
@@ -181,9 +181,11 @@
             <li class="row mb-3 mt-2 ml-4">
                     <label  class="col-sm-3 form-label font-weight-bold"><strong>Quantity:</strong></label>
                     <div class="col-sm-9">
-                        <input type="number" "class="form-control" >
+                        <input type="number" class="form-control quantity" id="quantity-@Model.Id" value="1">
                     </div>
                 </li>
+
+                <li id="totalAfterQuantity"><strong>Total</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @Model.Price</li>
             
                  </ul>
 
@@ -200,11 +202,16 @@
             
             @if (ViewBag.UserName != null){
             <div class="row-sm-10 d-flex flex-row mt-12">
-            <button type="button" class="btn btn-outline-primary ml-5" onclick="location.href='@Url.Action("Detail","Product")';"><i class='fa fa-cart-plus'></i>
-            Add to Cart</button>
+            <a  class="btn btn-outline-primary ml-5 addcart" id="addcart-@Model.Id"><i class='fa fa-cart-plus'></i>
+            Add to Cart</a>
             <div class="ml-2">  &nbsp;&nbsp;&nbsp;&nbsp; </div>
-            <button type="button" class="btn  btn-outline-danger ml-5 " onclick="location.href='@Url.Action("Detail","Product")';"><i class="fa fa-heart" aria-hidden="true"></i>
-            Add to WishList</button>
+            @if(@Model.Sku != "wish"){
+                <a  class="btn  btn-outline-danger ml-5 " id="addwish" value=@Model.Id><i class="fa fa-heart" aria-hidden="true"></i>
+                Add to WishList</a>
+            }else{
+                <a  class="btn  btn-outline-danger ml-5 " id="addwish" value=@Model.Id>
+                Remove from WishList</a>
+            }
              </div>
              }
              
@@ -218,15 +225,15 @@
              @if (ViewBag.UserName != null){
              <div class="star-widget" style="margin-right:18%;">
  
-                <input type="radio" name="rating" id="rate-5" class="btns" value="5">
+                <input type="radio" name="rating" id="rate-5" class="btns starInput" value="5" >
                 <label for="rate-5" class="fa fa-star"></label>
-                <input type="radio" name="rating" id="rate-4" class="btns" value="4">
+                <input type="radio" name="rating" id="rate-4" class="btns starInput" value="4">
                 <label for="rate-4" class="fa fa-star"></label>
-                <input type="radio" name="rating" id="rate-3" class="btns" value="3">
+                <input type="radio" name="rating" id="rate-3" class="btns starInput" value="3">
                 <label for="rate-3" class="fa fa-star"></label>
-                <input type="radio" name="rating" id="rate-2" class="btns" value="2">
+                <input type="radio" name="rating" id="rate-2" class="btns starInput" value="2">
                 <label for="rate-2" class="fa fa-star"></label>
-                <input type="radio" name="rating" id="rate-1" class="btns" value="1">
+                <input type="radio" name="rating" id="rate-1" class="btns starInput" value="1">
                 <label for="rate-1" class="fa fa-star"></label>
                   <header></header>
                   
@@ -295,7 +302,256 @@
 
 
     </script>
+
 *@
+    <script type="text/javascript">
+
+         let json_model4 = '@Html.Raw(Json.Serialize(ViewBag.userName))';
+        var user = JSON.parse(json_model4);
+       
+
+        if (user != null){
+            manageWish();
+            manageCart();
+            manageRating();
+             $('.cartElements').remove();
+         $('.totalNum').remove();
+         
+
+         $.ajax({
+			    type:"GET",
+			    url: '@(Url.Action("addProduct","ProductOrder"))',
+                data :{
+                    productId: 0,
+                    quantity: 0,
+                    price : -1
+                },
+			    dataType:"json",
+			    success:function(result){                                  
+                        let  cartContent = 0;
+                        let totalPrice = 0;
+                        $.each(result,function(key,value){
+                            cartContent += 1;
+                            totalPrice += value.price;
+                            $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"'id='notify-"+value.id+"' >"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
+                        });
+                        $(" <a class='totalNum'>TOTAL: "+totalPrice+"</a>").insertBefore("#cartBefore");
+                        $('#cartNumber').text(cartContent);
+                        if (cartContent > 0 ){
+                            $('#cartNumber').css("opacity","1");
+                        } else {
+                            $('#cartNumber').css("opacity","0");
+                        }
+                                
+                },
+			    error: function(req, status, error){
+			    console.log(status);
+			    }
+                });
+
+
+
+               // isinCart();
+
+        }
+
+
+        function manageRating(){
+            let all = $('.quantity').attr("id");
+            let splitter = all.split("-");
+            let prodId = parseInt(splitter[1]);
+             $.ajax({
+			    type:"GET",
+			    url: '@(Url.Action("getRating","Rating"))',
+                data :{
+                    productId: prodId,
+                   
+                },
+			    dataType:"json",
+			    success:function(result){  
+                    if (result != "0"){
+                     $('#rate-'+result).click();
+                    }
+                    
+                                
+                },
+			    error: function(req, status, error){
+			    console.log(status);
+			    }
+                });
+                $('.starInput').click(function(event){
+                    let val = $(event.target).attr("value");
+                    let all = $('.quantity').attr("id");
+                    let splitter = all.split("-");
+                    let prodId = parseInt(splitter[1]);
+                     $.ajax({
+			            type:"GET",
+			            url: '@(Url.Action("manageRating","Rating"))',
+                        data :{
+                            productId: prodId,
+                            value: parseInt(val)
+                   
+                        },
+			            dataType:"json",
+			            success:function(result){  
+                           
+                                
+                        },
+			            error: function(req, status, error){
+			            console.log(status);
+			            }
+                        });
+
+
+
+
+
+
+
+                
+                
+                
+                })
+
+
+        }
+
+
+       
+
+
+         function manageCart(){
+
+                          
+                             
+                             $(".quantity").bind("keyup", function(event){
+                              
+                                  let quantity = $(event.target).val();
+                                  let valQuantity = parseInt(quantity);
+                                  let all = $(event.target).attr("id");
+                                  let splitAll = all.split("-");
+                                  let price = $('#price-'+splitAll[1]).attr("value");
+                                  let valPrice = parseFloat(price);
+                                  let num = valPrice*valQuantity;
+                                  $("#totalAfterQuantity").remove();
+                                  $('#descript').append("<li id='totalAfterQuantity'><strong>Total</strong>: &nbsp;&nbsp;&nbsp;&nbsp; "+num+"</li>");
+                              });
+                            $('.addcart').click(function(event){
+                                   let all = $(event.target).attr("id");
+                                  let splitter = all.split("-");
+
+                                  let quantity = $('.quantity').val();
+                                  let valQuantity = parseInt(quantity);
+                                  let price = $('#price-'+splitter[1]).attr("value");
+                                  let valPrice = parseFloat(price);
+                                  let num = valPrice*valQuantity;
+                             
+                              $.ajax({
+			                    type:"GET",
+			                    url: '@(Url.Action("addProduct","ProductOrder"))',
+                                data :{
+                                    productId: parseInt(splitter[1]),
+                                    quantity: valQuantity,
+                                    price : valPrice
+                                },
+			                    dataType:"json",
+			                    success:function(result){                                  
+                                     let  cartContent = 0;
+                                     let totalPrice = 0;
+                                     $('.cartElements').remove();
+                                     $('.totalNum').remove();
+                                     $.each(result,function(key,value){
+                                         cartContent += 1;
+                                         totalPrice += value.price;
+                                         $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' id='notify-"+value.id+"'>"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
+                                     });
+                                      $(" <a class='totalNum'>TOTAL: "+totalPrice+"</a>").insertBefore("#cartBefore");
+                                      $('#cartNumber').text(cartContent);
+                                     if (cartContent > 0 ){
+                                         $('#cartNumber').css("opacity","1");
+                                     } else {
+                                         $('#cartNumber').css("opacity","0");
+                                     }
+
+
+
+                                
+                                },
+			                    error: function(req, status, error){
+			                    console.log(status);
+			                    }
+                                });
+
+
+
+
+                              
+                                  });
+                         
+                      }
+
+                       function manageWish(){
+                     $('#addwish').click(function(event){
+                     let val =$(event.target).attr("value");   
+                     let valId= parseInt(val);
+                     let heart = $(event.target);
+		             $.ajax({
+			            type:"GET",
+			            url: '@(Url.Action("manage","WishList"))',
+                        data :{
+                            productId: valId,
+                            subtitle: ""
+                        },
+			            dataType:"json",
+			            success:function(result){
+                            console.log(result);
+                            var wishNumber = parseInt($('#wishNumber').text());
+                            if (result == "Add")
+                            {
+                                
+                                 $(event.target).text("Remove from WishList");
+                               
+                                 if (wishNumber != 0){
+                                    $('#wishNumber').text(wishNumber+1);
+
+                                 }
+                                 else{
+                                    $('#wishNumber').text('1');
+                                    $('#wishNumber').css("opacity","1");
+                                 }
+                                 
+
+			                 }
+                             if (result == "Delete")
+                             {
+                                   $(event.target).html("<i class='fa fa-heart' aria-hidden='true'></i> Add to WishList");
+                                 if (wishNumber != 1)
+                                    $('#wishNumber').text(wishNumber-1);
+                                 else{
+                                    $('#wishNumber').text('0');
+                                    $('#wishNumber').css("opacity","0");
+                                 }
+                             
+                             }
+                        },
+			            error: function(req, status, error){
+			            console.log(status);
+			            }
+                        });
+
+
+                      });
+
+
+
+
+                     
+
+             }
+        
+
+
+    </script>
   </main><!-- End #main -->
 
   

@@ -102,15 +102,17 @@ namespace Customer.Controllers
         public JsonResult DeleteProduct(int productId)
         {
             getUserFromSession();
+            decimal? totalPrice = 0;
             if (ViewBag.UserId != null)
             {
                 var isHere = false;
-                decimal? totalPrice = 0;
+               
                 List<ProductOrder> cart = new List<ProductOrder>();
+                cart = ViewBag.Cart;
+
                 if (cart.Count != 0)
                 {
                     int i = 0;
-                    cart = ViewBag.Cart;    
                     foreach (var item in cart.ToList())
                     {
                         if (item.ProductId == productId)
@@ -144,7 +146,7 @@ namespace Customer.Controllers
 
 
 
-            return Json("true");
+            return Json(totalPrice);
         
 
         }

@@ -25,10 +25,16 @@
     </section><!-- End Breadcrumbs -->
 
     <!-- ======= Order Details Section ======= -->
+    @if (@Model.Products.Count() == 0)
+    {
+        <div class="p-3" style="margin-left:250px;">
+				<img src="~/img/117-1170538_404-your-cart-is-empty.png" class="mt-10 w-75 h-75" alt="Register">
+			</div>
+    }
     @{var i =0;}
     @foreach(var prod in @Model.Products){
         var subtotal = (@prod.Price * @Model.ProductsOrder[i].Quantity);
-        <section id="portfolio-details" class="portfolio-details p-2">
+        <section id="portfolio-details" class="portfolio-details p-2 sec-@prod.Id">
           <div class="container" style="margin-left:10%;">
             <div class="row gy-4">        
               <div class="col-lg-10">
@@ -39,20 +45,20 @@
                         </div>
                         <ul class="col-4 p-2">
                             <li ><strong>Name</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @prod.Name &nbsp;&nbsp;</li >
-                            <li ><strong>Price</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @prod.Price &nbsp;&nbsp;</li >
+                            <li  id="pr-@prod.Id"><strong>Price</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @prod.Price &nbsp;&nbsp;</li >
                      
                             <li class="row mb-2 mt-3 ml-4">
                                 <label  class="col-sm-3 form-label font-weight-bold"><strong>Quantity: </strong></label>
                                 <div class="col-sm-9">
-                                    <input type="number" class="form-control w-25 h-75" value=@Model.ProductsOrder[i].Quantity>
+                                    <input type="number" id="inp-@prod.Id" class="form-control w-25 h-75" value=@Model.ProductsOrder[i].Quantity>
                                 </div>                 
                              </li>
                         </ul>
 
                         <ul class="col-4 border-sm-start-none border-start p-3">
-                             <li><strong>&nbsp;&nbsp;Total</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @subtotal</li>
-                              <li>&nbsp;&nbsp;<button type="button" class="btn btn-outline-danger ml-5" onclick="location.href='@Url.Action("Detail","Product")';"><i class="fa fa-trash-o" aria-hidden="true"></i>
-                               Delete Product</button></li>
+                             <li id="total-@prod.Id"><strong>&nbsp;&nbsp;Total</strong>: &nbsp;&nbsp;&nbsp;&nbsp; @subtotal</li>
+                              <li>&nbsp;&nbsp;<a  class="btn btn-outline-danger ml-5 deleteElementFromCart"  value=@prod.Id><i class="fa fa-trash-o" aria-hidden="true"></i>
+                               Delete Product</a></li>
                         </ul>
                         @*<div class="col-1 " style="margin:auto;">
                            <button data-toggle="tooltip" data-placement="top" title="delete" class="btn btn-link btn-simple-danger mt-1"> 
@@ -70,8 +76,9 @@
 
   }
 
+   <div ><strong>&nbsp;&nbsp;Total</strong>: &nbsp;&nbsp;&nbsp;&nbsp; <span id="totalOrderDetail">0</span></div>
 @*
-
+    
    <section id="portfolio-details" class="portfolio-details" >
       <div class="container" style="margin-left:10%;">
 
@@ -140,26 +147,29 @@
 *@
 
               <div class="row-sm-10 d-flex flex-row mt-12" style="margin:auto;margin-top:5%;">
-            <button type="button" class="btn btn-outline-danger ml-5" onclick="location.href='@Url.Action("Detail","Product")';"><i class="fa fa-trash-o" aria-hidden="true"></i>
+            <button type="button" class="btn btn-outline-danger ml-5" onclick="location.href='@Url.Action("DeleteAll","Order")';"><i class="fa fa-trash-o" aria-hidden="true"></i>
             Reset Cart</button>
-            <div class="ml-2">  &nbsp;&nbsp;&nbsp;&nbsp; </div>
+
+          @*  <div class="ml-2">  &nbsp;&nbsp;&nbsp;&nbsp; </div>
             <button type="button" class="btn  btn-outline-primary ml-5 " onclick="location.href='@Url.Action("Detail","Product")';"><i class="fa fa-refresh" aria-hidden="true"></i>
-            Update Cart</button>
+            Update Cart</button>*@
              
              <div class="ml-2">  &nbsp;&nbsp;&nbsp;&nbsp; </div>
-            <button type="button" class="btn  btn-outline-success ml-5 " onclick="location.href='@Url.Action("Detail","Product")';">
+            <button type="button" class="btn  btn-outline-success ml-5 " onclick="location.href='@Url.Action("Create","Order")';">
             Check Out <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
              </div>
            
              
  <script type="text/javascript" >
 
+    
       let json_model4 = '@Html.Raw(Json.Serialize(ViewBag.userName))';
       var user = JSON.parse(json_model4);
 
      if (user != null){
             manageWish();
             manageCart();
+            deleteElement();
              $('.cartElements').remove();
          $('.totalNum').remove();
          
@@ -179,9 +189,10 @@
                         $.each(result,function(key,value){
                             cartContent += 1;
                             totalPrice += value.price;
-                            $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' >"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
+                            $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' id='notify-"+value.id+"'>"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
                         });
                         $(" <a class='totalNum'>TOTAL: "+totalPrice+"</a>").insertBefore("#cartBefore");
+                        $("#totalOrderDetail").text(""+totalPrice);
                         $('#cartNumber').text(cartContent);
                         if (cartContent > 0 ){
                             $('#cartNumber').css("opacity","1");
@@ -269,29 +280,20 @@
 
               function manageCart(){
 
-                          $('.insideCart').click(function(){                               
-                            $('.modal-backdrop').remove();
+                         
                              
                              $("input").bind("keyup", function(event){
                                   let val =$(event.target).attr("Id");   
                                   let prodId = val.split("-");
                                   let valId= parseInt(prodId[1]);
-                                  let quantity = $('#input-'+prodId[1]).val();
+                                  let quantity = $('#inp-'+prodId[1]).val();
                                   let valQuantity = parseInt(quantity);
                                   let price = $('#pr-'+prodId[1]).text();
-                                  let valPrice = parseFloat(price);
-                                $('#total-'+prodId[1]).text("total:   "+(valPrice*valQuantity));
-                              });
-                            $('.addcart').click(function(event){
-                              let val =$(event.target).attr("Id");   
-                              let prodId = val.split("-");
-                              let valId= parseInt(prodId[1]);
-                              let quantity = $('#input-'+prodId[1]).val();
-                              let valQuantity = parseInt(quantity);
-                              let price = $('#pr-'+prodId[1]).text();
-                              let valPrice = parseFloat(price);
-                             
-                              console.log(valPrice);
+                                  let price2 = price.split(":");
+                                  let valPrice = parseFloat(price2[1]);
+                                $('#total-'+prodId[1]).html("<strong>&nbsp;&nbsp;Total</strong>: &nbsp;&nbsp;&nbsp;&nbsp; "+(valPrice*valQuantity));
+                              
+                           
                               $.ajax({
 			                    type:"GET",
 			                    url: '@(Url.Action("addProduct","ProductOrder"))',
@@ -309,9 +311,11 @@
                                      $.each(result,function(key,value){
                                          cartContent += 1;
                                          totalPrice += value.price;
-                                         $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' >"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
+                                         $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' id='notify-'"+value.id+">"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
                                      });
                                       $(" <a class='totalNum'>TOTAL: "+totalPrice+"</a>").insertBefore("#cartBefore");
+                                      $("#totalOrderDetail").text(""+totalPrice);
+
                                       $('#cartNumber').text(cartContent);
                                      if (cartContent > 0 ){
                                          $('#cartNumber').css("opacity","1");
@@ -331,10 +335,60 @@
 
 
 
-                              
-                                  });
-                                  });
+                             });  
+                                 
+                                 
                          
+                      }
+
+                      function deleteElement(){
+
+
+                          $('.deleteElementFromCart').click(function(event){
+                              let val =$(event.target).attr("value");   
+                              let valId= parseInt(val);
+                               $.ajax({
+			                    type:"GET",
+			                    url: '@(Url.Action("deleteProduct","ProductOrder"))',
+                                data :{
+                                    productId: valId,
+                                   
+                                },
+			                    dataType:"json",
+			                    success:function(result){
+                                    $('.sec-'+valId).remove();
+                                    $('#notify-'+valId).remove();
+                                     $('.totalNum').remove();
+                                    // $.each(result,function(key,value){
+                                     //    cartContent += 1;
+                                       //  totalPrice += value.price;
+                                       //  $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' id='notify-"+value.id+"'>"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
+                                     //});
+                                      $(" <a class='totalNum'>TOTAL: "+result+"</a>").insertBefore("#cartBefore");
+                                      $("#totalOrderDetail").text(""+result);
+                                      let cartContent = $('#cartNumber').text();
+                                      $('#cartNumber').text(parseInt(cartContent)-1);
+                                     if (cartContent-1 > 0){
+                                         $('#cartNumber').css("opacity","1");
+                                     } else {
+                                         $('#cartNumber').css("opacity","0");
+                                     }
+                                     console.log(result);
+
+
+
+                                
+                                },
+			                    error: function(req, status, error){
+			                    console.log(status);
+			                    }
+                                });
+                               
+
+
+
+
+                          })
                       }
 
 
