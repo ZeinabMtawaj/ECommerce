@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json;
+using Customer.Models.ViewModels;
 
 namespace Customer.Controllers
 {
@@ -149,6 +150,33 @@ namespace Customer.Controllers
             return Json(totalPrice);
         
 
+        }
+
+
+        public IActionResult GetProductsOrder(int orderId)
+        {
+
+            getUserFromSession();
+            List<ProductOrder> orderProds = new List<ProductOrder>();
+            List<Product> prods = new List<Product>();
+            if (ViewBag.UserId != null) {
+                var orderPs = _uow.ProductOrderRepo.FindAll(x => (x.OrderId == orderId));
+                foreach (var orderProd in orderPs)
+                {
+                    var prod = _uow.ProductRepo.Find(x => x.Id == orderProd.ProductId);
+                    prods.Add(prod);
+
+                }
+                orderProds = orderPs.ToList();
+            }
+            
+            OrderVM orderVM = new OrderVM()
+            {
+                Products = prods,
+                ProductsOrder = orderProds
+            };
+
+            return View(orderVM);
         }
     }
 }

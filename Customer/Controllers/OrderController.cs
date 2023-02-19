@@ -22,12 +22,15 @@ namespace Customer.Controllers
         public IActionResult Index()
         {
             getUserFromSession();
-
-           
-            var lambdas = new List<Expression<Func<Order, object>>>();
-            lambdas.Add(x => x.ProductOrders);
-            var prodList = _uow.OrderRepo.FindAll(x=>x.Id>=1,null, null, lambdas);   
-            return View(prodList);  
+            IEnumerable<Order> orderList = null; 
+            if (ViewBag.UserId != null)
+            {
+                int userId = int.Parse(ViewBag.UserId);
+               /* var lambdas = new List<Expression<Func<Order, object>>>();
+                lambdas.Add(x => x.ProductOrders);*/
+                orderList = _uow.OrderRepo.FindAll(x => (x.CustomerId == userId));
+            }
+            return View(orderList);  
         }
 
         public IActionResult Detail()
