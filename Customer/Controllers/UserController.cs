@@ -74,7 +74,7 @@ namespace Customer.Controllers
                 var result = await _userManager.CreateAsync(user, userVM.User.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Admin");
+                    await _userManager.AddToRoleAsync(user, "Customer");
 
                     var addressController = new AddressController(_uow, _mapper);
                     addressController.Create(user.Id, userVM.Addresses);

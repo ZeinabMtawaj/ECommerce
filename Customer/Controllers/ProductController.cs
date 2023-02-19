@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Customer.Controllers
 {
-    [Authorize(Roles = "Customer")]
     public class ProductController : BaseController
     {
         public ProductController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
@@ -118,7 +117,7 @@ namespace Customer.Controllers
             var lambdas = new List<Expression<Func<Product, object>>>();
             lambdas.Add(x => x.Category);
             IEnumerable<Product> products = null;
-            int take = 20;
+            int take = 5;
             if (exp == "all")
             {
                 products = _uow.ProductRepo.FindAll(x => x.Id >= 1, take, 0, lambdas);    
@@ -151,8 +150,6 @@ namespace Customer.Controllers
         
         }
 
-
-       
 
         public JsonResult getProducts(string match, string exp,int take, int skip) {
             getUserFromSession();

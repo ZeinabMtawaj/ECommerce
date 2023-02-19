@@ -149,7 +149,7 @@ namespace Customer.Controllers
 
           
             IEnumerable<Product> products = null;
-            int take = 20;          
+            int take = 5;          
             products = _uow.ProductRepo.FindAll(x => x.Id >= 1, take, 0);
             ViewBag.subtitle = "All Products";
             ViewBag.exp = "all";
