@@ -92,7 +92,7 @@
                                             Express 20
                                           </label>
                                        </li>*@
-                                       <li><a  class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#orderModal" style="cursor:pointer;" >&nbsp;&nbsp;Select Address</a></li>
+                                       <li><a  class="btn btn-outline-primary adding" data-bs-toggle="modal" data-bs-target="#orderModal" style="cursor:pointer;" >&nbsp;&nbsp;Select Address</a></li>
 
                                     </ul>
                                 </div>
@@ -225,6 +225,7 @@
             manageWish();
             manageCart();
             deleteElement();
+            manageAddress();
              $('.cartElements').remove();
          $('.totalNum').remove();
          
@@ -337,7 +338,7 @@
 
                          
                              
-                             $("input").bind("keyup", function(event){
+                             $("input[type=number]").bind("keyup", function(event){
                                   let val =$(event.target).attr("Id");   
                                   let prodId = val.split("-");
                                   let valId= parseInt(prodId[1]);
@@ -448,56 +449,33 @@
 
                         function manageAddress(){
 
-                          $('.insideCart').click(function(){                               
-                            $('.modal-backdrop').remove();
+                          $('.adding').click(function(){                               
+                          $('.modal-backdrop').remove();
                              
                             
                             $('.addAddress').click(function(event){
-                              let val =$(event.target).attr("Id");   
-                              let prodId = val.split("-");
-                              let valId= parseInt(prodId[1]);
-                              let quantity = $('#input-'+prodId[1]).val();
-                              let valQuantity = parseInt(quantity);
-                              let price = $('#pr-'+prodId[1]).text();
-                              let valPrice = parseFloat(price);
-                             
-                              console.log(valPrice);
-                              $.ajax({
-			                    type:"GET",
-			                    url: '@(Url.Action("addProduct","ProductOrder"))',
-                                data :{
-                                    productId: valId,
-                                    quantity: valQuantity,
-                                    price : valPrice
-                                },
-			                    dataType:"json",
-			                    success:function(result){                                  
-                                     let  cartContent = 0;
-                                     let totalPrice = 0;
-                                     $('.cartElements').remove();
-                                     $('.totalNum').remove();
-                                     $.each(result,function(key,value){
-                                         cartContent += 1;
-                                         totalPrice += value.price;
-                                         $("<a class='border-bottom cartElements' href='https://localhost:7068/Product/Detail/"+value.id+"' id='notify-"+value.id+"'>"+value.name+"<p>"+value.price+"</p><img  style='width:25%;height:25%;' src='"+value.image+"'/></a>").insertBefore("#cartBefore");
-                                     });
-                                      $(" <a class='totalNum'>TOTAL: "+totalPrice+"</a>").insertBefore("#cartBefore");
-                                      $('#cartNumber').text(cartContent);
-                                     if (cartContent > 0 ){
-                                         $('#cartNumber').css("opacity","1");
-                                     } else {
-                                         $('#cartNumber').css("opacity","0");
-                                     }
-
-
+                              let val =$('#input-address').val();   
+                            
+                             if (val != null){
+                                  $.ajax({
+			                        type:"GET",
+			                        url: '@(Url.Action("addAddress","Address"))',
+                                    data :{
+                                        location: val
+                                   
+                                    },
+			                        dataType:"json",
+			                        success:function(result){     
+                                        console.log(result);
+                                    
 
                                 
-                                },
-			                    error: function(req, status, error){
-			                    console.log(status);
-			                    }
-                                });
-
+                                    },
+			                        error: function(req, status, error){
+			                        console.log(status);
+			                        }
+                                    });
+                                }
 
 
 

@@ -76,5 +76,31 @@ namespace Customer.Controllers
         {
             return _uow.AddressRepo.FindAll(x => x.UserId == userId);
         }
+
+
+        public JsonResult addAddress(string location)
+        {
+            getUserFromSession();
+            var userId = ViewBag.UserId;
+            if (userId != null) {
+                var address = _uow.AddressRepo.Find(x => x.Location == location);
+                if (address == null)
+                {
+                    var first = new Address()
+                    {
+                        Location = location,
+                        UserId = int.Parse(userId)
+                    };
+                    _uow.AddressRepo.Add(first);
+                    _uow.SaveChanges();
+
+                }
+
+                HttpContext.Session.SetString("Address", location);
+                return Json("true");
+            }
+            return Json("false");
+
+        }
     }
 }
