@@ -155,13 +155,14 @@
 					
 				</div>
 			</form>
-			<button  class="btn btn-outline-primary ml-5 addcart">
-                <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                Add To Cart
-            </button>
+			 
 			<div class="login100-pic d-flex flex-column" data-tilt>
 				<img src="~/img/register.jpg" class="mt-10" alt="Profile">
+				<button type="button" class="btn btn-outline-secondary " onclick="location.href='@Url.Action("Index","Order")';">
+			 <i class="fas fa-cart-arrow-down" aria-hidden="true"></i>
+             My Orders</button>
 			</div>
+			
 		</div>
 	</div>
 </div>
