@@ -17,7 +17,7 @@
         <div class="d-flex justify-content-between align-items-center">
           <h2>Order Details</h2>
           <ol>
-            <li><a href="index.html">Order</a></li>
+            <li><a asp-controller="Product" asp-action="Index" asp-route-exp="all" asp-route-match="">Products</a></li>
             <li>Order Details</li>
           </ol>
         </div>
@@ -41,7 +41,7 @@
                 <div class="p-3" style="margin-left:250px;">
 				        <img src="~/img/117-1170538_404-your-cart-is-empty.png" class="mt-10 w-75 h-75" alt="Register">
 			        </div>
-            }
+            }else{
           <table class="table table-striped">
               <thead class="thead-dark">
                 <tr>
@@ -80,7 +80,7 @@
               </tbody>
             </table>
 
-            
+            }
          </div>
       </div>
     </section><!-- End Portfolio Section -->

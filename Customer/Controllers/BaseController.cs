@@ -51,8 +51,8 @@ namespace Customer.Controllers
                 string cart = HttpContext.Session.GetString("Cart");
 
 
-                string address = HttpContext.Session.GetString("Address");
-                ViewBag.Address = address;  
+                //string address = HttpContext.Session.GetString("Address");
+                //ViewBag.Address = address;  
 
                 var cartList = JsonSerializer.Deserialize<List<ProductOrder>>(cart);
                 ViewBag.Cart = cartList;

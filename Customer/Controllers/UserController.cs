@@ -85,7 +85,7 @@ namespace Customer.Controllers
                     var cart = new List<ProductOrder>();
                     string serializeCart = JsonSerializer.Serialize(cart);
                     HttpContext.Session.SetString("Cart", serializeCart);
-                    HttpContext.Session.SetString("Address", "");
+                    //HttpContext.Session.SetString("Address", "");
 
 
                     return RedirectToAction("Index", "Home");
@@ -133,7 +133,7 @@ namespace Customer.Controllers
                     var cart = new List<ProductOrder>();
                     string serializeCart = JsonSerializer.Serialize(cart);
                     HttpContext.Session.SetString("Cart", serializeCart);
-                    HttpContext.Session.SetString("Address", "");
+                    //HttpContext.Session.SetString("Address", "");
 
 
                     TempData["success"] = "Logged In Successfuly";
@@ -199,7 +199,7 @@ namespace Customer.Controllers
             await _signInManager.SignOutAsync();
             HttpContext.Session.Remove("UserId");
             HttpContext.Session.Remove("Cart");
-            HttpContext.Session.Remove("Address");
+            //HttpContext.Session.Remove("Address");
 
 
             TempData["success"] = "Logged Out Successfully!";

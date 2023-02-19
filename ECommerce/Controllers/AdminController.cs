@@ -72,7 +72,6 @@ namespace Ecommerce.Controllers
             }
             order_states.Add("Delivered", 15);
             order_states.Add("Delivering", 20);
-            order_states.Add("Pending", 50);
             var model = new StatsVM()
             {
                 Category_Products = category_products,
