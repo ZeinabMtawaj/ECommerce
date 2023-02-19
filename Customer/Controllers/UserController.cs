@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using System.Linq.Expressions;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Customer.Controllers
 {
@@ -23,6 +24,7 @@ namespace Customer.Controllers
             
         }
 
+        [Authorize(Roles = "Customer")]
         public  IEnumerable<WishList> getWishList(string? userId)
         {
             //getUserFromSession();
@@ -39,6 +41,7 @@ namespace Customer.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             //_uow.GetContext().Roles.Add(new ApplicationDbContext.Models.UserRole()
@@ -62,6 +65,7 @@ namespace Customer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(UserRegisterVM userVM)
         {
             if (ModelState.IsValid)
@@ -103,6 +107,7 @@ namespace Customer.Controllers
 
         [HttpGet]
         [Route("Account/Login")]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             UserLoginVM userLoginVM = new UserLoginVM();
@@ -112,6 +117,7 @@ namespace Customer.Controllers
 
         [HttpPost]
         [Route("Account/Login")]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserLoginVM userVM)
         {
@@ -187,6 +193,7 @@ namespace Customer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -203,6 +210,7 @@ namespace Customer.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public IActionResult Dashboard()
         {
             return Redirect("https://localhost:7156");
@@ -210,6 +218,7 @@ namespace Customer.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public IActionResult Profile()
         {
             UserProfileVM profileVM = new UserProfileVM();
@@ -242,6 +251,7 @@ namespace Customer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Profile(UserProfileVM profileVM)
         {
             if (ModelState.IsValid)

@@ -137,19 +137,28 @@ namespace Ecommerce.Controllers
             Category? obj = null;
             if (Id != null)
             {
-                obj = _uow.CategoryRepo.Find(Id.Value);
+                var lambdas = new List<Expression<Func<Category, object>>>();
+                lambdas.Add(x => x.Products);
+                lambdas.Add(x => x.CategorySpecificationValues);
+                obj = _uow.CategoryRepo.Find(x => (x.Id == Id), lambdas);
             }
             if (obj == null)
             {
-                // TempData["alert-type"] = "danger";
-                // TempData["alert"] = "Something Went Wront..";
+                TempData["error"] = "Something Went Wront..";
             }
             else
             {
-                // TempData["alert-type"] = "success";
-                // TempData["alert"] = "Deleted Successfully";
-                _uow.CategoryRepo.Delete(Id.Value);
-                _uow.SaveChanges();
+                if ((obj.Products.Count() != 0) || (obj.CategorySpecificationValues.Count() != 0))
+                {
+                    TempData["error"] = "Something Went Wront..";
+                }
+                else
+                {
+                    _uow.CategoryRepo.Delete(Id.Value);
+                    _uow.SaveChanges();
+                    TempData["success"] = "Deleted Successfully";
+                }
+
             }
             return RedirectToAction("Index");
         }

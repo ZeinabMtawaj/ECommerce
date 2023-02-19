@@ -319,7 +319,7 @@
                     else
                     {
                     
-                        <a class="dropdown-item  rounded border-bottom p-2" href="#"><i class="fa fa-info-circle" aria-hidden="true"></i>My Info</a>
+                        <a class="dropdown-item  rounded border-bottom p-2" asp-action="Profile" asp-controller="User"><i class="fa fa-info-circle" aria-hidden="true"></i>My Info</a>
                         @if(ViewBag.hasDashboard != null)
                         {
                             <a class="dropdown-item  rounded border-bottom p-2" asp-action="Dashboard" asp-controller="User" ><i class="fa fa-dashboard" aria-hidden="true"></i>Dashboard</a>  
@@ -337,7 +337,6 @@
         </div>
 
     </li>
-
 
 
 

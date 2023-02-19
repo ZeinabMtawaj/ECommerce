@@ -27,7 +27,7 @@ namespace Ecommerce.Controllers
 
         public IEnumerable<Order> GetAllOrders()
         {
-            return new List<Order>();
+            return _uow.OrderRepo.GetAll();
         }
     }
 }

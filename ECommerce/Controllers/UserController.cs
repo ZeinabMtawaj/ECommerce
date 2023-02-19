@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq.Expressions;
 
 namespace Ecommerce.Controllers
 {
@@ -87,6 +88,52 @@ namespace Ecommerce.Controllers
             HttpContext.Session.Remove("UserId");
             TempData["success"] = "Logged Out Successfully!";
             return Redirect("https://localhost:7068");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int? Id)
+        {
+            User? obj = null;
+            if (Id != null)
+            {
+                var lambdas = new List<Expression<Func<User, object>>>();
+                lambdas.Add(x => x.Ratings);
+                lambdas.Add(x => x.WishLists);
+                lambdas.Add(x => x.Orders);
+                lambdas.Add(x => x.Addresses);
+                obj = _uow.UserRepo.Find(x => (x.Id == Id), lambdas);
+            }
+            if (obj == null)
+            {
+                TempData["error"] = "Something Went Wront..";
+            }
+            else
+            {
+                if ((obj.Ratings.Count() != 0) || (obj.WishLists.Count() != 0) || (obj.Orders.Count() != 0) || (obj.Addresses.Count() != 0))
+                {
+                    TempData["error"] = "Something Went Wront..";
+                }
+                else
+                {
+                    var user = _userManager.FindByIdAsync(Id.ToString()).Result;
+                    var result = _userManager.DeleteAsync(user).Result;
+                    if (result.Succeeded)
+                    {
+                        TempData["success"] = "Deleted Successfully";
+                        _uow.SaveChanges();
+                        return RedirectToAction("Index", "User");
+                    }
+                    else
+                    {
+                        TempData["error"] = "Something Went Wrong..";
+                    }
+                        
+                }
+
+            }
+            return RedirectToAction("Index");
         }
 
 

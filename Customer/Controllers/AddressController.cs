@@ -9,9 +9,11 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Customer.Controllers
 {
+    [Authorize(Roles="Customer")]
     public class AddressController : BaseController
     {
         public AddressController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)

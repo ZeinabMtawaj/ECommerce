@@ -10,10 +10,11 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Customer.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class WishListController : BaseController
     {
         public WishListController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)

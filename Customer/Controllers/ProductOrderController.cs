@@ -12,9 +12,11 @@ using System.Linq.Expressions;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json;
 using Customer.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Customer.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class ProductOrderController : BaseController
     {
         public ProductOrderController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)

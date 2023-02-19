@@ -4,15 +4,19 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using ApplicationDbContext.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Customer.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class HomeController : BaseController
     {
         public HomeController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)    
         {
            
         }
+
+        [AllowAnonymous]
 
         public IActionResult Index()
         {

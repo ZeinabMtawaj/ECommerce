@@ -47,11 +47,27 @@
                
         <div class="row mb-3 mt-4 ml-4">
             <label asp-for="Image" class="col-sm-2 col-form-label font-weight-bold"></label>
-            <div class="col-sm-9">
+            <div class="col-sm-8">
                 <input type="text" asp-for="Image" class="form-control" placeholder="URL">               
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
 
+            <div class="col-sm-1">
+                
+	            <div class="border rounded-circle d-flex flex-row justify-content-center align-items-center h-7 w-7 hover:cursor-pointer " data-toggle="modal" data-target="#myModal">
+		            <i class="bi bi-image"></i>
+	            </div>
+
+                <div id="myModal" class="imgModal modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body d-flex flex-row justify-content-center align-items-center">
+                            <img src="@Model.Image" class="img-responsive">
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
                 <span data-toggle="tooltip" data-placement="top" title="Add additional photos" class="btn btn-link btn-simple-danger col-1" id="photo_span" > 
 								<i class="fa fa-plus"></i>       
 			</span>

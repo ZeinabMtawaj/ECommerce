@@ -9,9 +9,11 @@ using AutoMapper;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Customer.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class OrderController : BaseController
     {
         public OrderController(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) : base(uow, mapper, userManager, signInManager)
